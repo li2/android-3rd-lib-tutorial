@@ -1,4 +1,4 @@
-package me.li2.android.androidtutorial;
+package me.li2.android.tutorial;
 
 import org.junit.Test;
 

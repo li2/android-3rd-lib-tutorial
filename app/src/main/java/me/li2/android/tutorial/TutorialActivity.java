@@ -1,13 +1,13 @@
-package me.li2.android.androidtutorial;
+package me.li2.android.tutorial;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class AndroidTutorialActivity extends AppCompatActivity {
+public class TutorialActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_android_tutorial);
+        setContentView(R.layout.activity_tutorial);
     }
 }
