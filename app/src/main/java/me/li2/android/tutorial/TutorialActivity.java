@@ -1,13 +1,13 @@
 package me.li2.android.tutorial;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import me.li2.android.tutorial.Retrofit2.RetrofitTutorialActivity;
 
-public class TutorialActivity extends AppCompatActivity {
-
+public class TutorialActivity extends SimpleTutorialActivity {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tutorial);
+    public Class[] getTutorialActivities() {
+        Class[] tutorialActivities = new Class[]{
+                RetrofitTutorialActivity.class,
+        };
+        return tutorialActivities;
     }
 }
