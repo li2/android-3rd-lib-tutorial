@@ -7,6 +7,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.li2.android.tutorial.Retrofit2.L3CreatingSustainableClient.ServiceGenerator;
 import me.li2.android.tutorial.SimpleListActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,7 +55,13 @@ public class GettingStartedActivity extends SimpleListActivity {
         Retrofit retrofit = builder.build();
 
         // create a client which points the GitHub API endpoint.
-        GitHubClient client = retrofit.create(GitHubClient.class);
+        //GitHubClient client = retrofit.create(GitHubClient.class);
+
+        /**
+         * For one requests, above looks fine. But if you have dozens of network requests throughout your app,
+         * it'll be a nightmare to manage. With our {@link ServiceGenerator}, you only need a single line:
+         */
+        GitHubClient client = ServiceGenerator.createService(GitHubClient.class);
 
         // fetch a list of the GitHub repositories
         Call<List<GitHubRepo>> call = client.reposForUser(USER);
