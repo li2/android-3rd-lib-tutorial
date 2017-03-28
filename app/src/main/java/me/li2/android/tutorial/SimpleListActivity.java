@@ -1,40 +1,51 @@
 package me.li2.android.tutorial;
 
-import android.app.ListActivity;
 import android.os.Bundle;
-import android.widget.ListAdapter;
-import android.widget.SimpleAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by weiyi on 25/03/2017.
  * https://github.com/li2
  */
 
-public abstract class SimpleListActivity extends ListActivity {
+public abstract class SimpleListActivity extends AppCompatActivity {
 
-    private static final String KEY_TITLE = "title";
+    private SimpleListFragment mFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_simple_list);
+
         setTitle(this.getClass().getSimpleName());
+
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.simple_list_fragment_container_id);
+
+        if (fragment == null) {
+            fragment = new SimpleListFragment();
+            fm.beginTransaction().add(R.id.simple_list_fragment_container_id, fragment).commit();
+        }
+
+        mFragment = (SimpleListFragment) fragment;
+        mFragment.setOnSimpleListItemClickListener(new SimpleListFragment.OnSimpleListItemClickListener() {
+            @Override
+            public void onListItemClick(int position) {
+                onSimpleListItemClick(position);
+            }
+        });
+    }
+
+    protected void onSimpleListItemClick(final int position) {
     }
 
     public void setListData(List<String> titles) {
-        List<Map<String, String>> data = new ArrayList<>();
-        for (String title : titles) {
-            Map<String, String> item = new HashMap<>();
-            item.put(KEY_TITLE, title);
-            data.add(item);
+        if (mFragment != null) {
+            mFragment.setListData(titles);
         }
-
-        ListAdapter listAdapter = new SimpleAdapter(this, data, android.R.layout.simple_list_item_1,
-                new String[] {KEY_TITLE}, new int[] {android.R.id.text1});
-        setListAdapter(listAdapter);
     }
 }

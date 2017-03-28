@@ -2,8 +2,7 @@ package me.li2.android.tutorial;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ListView;
+import android.os.Handler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +17,23 @@ public abstract class SimpleTutorialActivity extends SimpleListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        List<String> titles = new ArrayList<>();
-        for (Class c : getTutorialActivities()) {
-            titles.add(c.getSimpleName());
-        }
-        setListData(titles);
+        /**
+         * It's weird if not postDelay, the {@link SimpleListFragment#getActivity()} always return null.
+         */
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                List<String> titles = new ArrayList<>();
+                for (Class c : getTutorialActivities()) {
+                    titles.add(c.getSimpleName());
+                }
+                setListData(titles);
+            }
+        }, 1000);
     }
 
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+    protected void onSimpleListItemClick(int position) {
         Class[] tutorialActivities = getTutorialActivities();
         if (tutorialActivities != null && tutorialActivities.length > position) {
             startActivity(new Intent(this, tutorialActivities[position]));
