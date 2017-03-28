@@ -29,7 +29,7 @@ public abstract class SimpleTutorialActivity extends SimpleListActivity {
                 }
                 setListData(titles);
             }
-        }, 1000);
+        }, 250);
     }
 
     @Override

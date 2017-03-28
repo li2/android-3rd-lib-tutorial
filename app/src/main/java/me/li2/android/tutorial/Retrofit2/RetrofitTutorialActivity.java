@@ -1,6 +1,7 @@
 package me.li2.android.tutorial.Retrofit2;
 
 import me.li2.android.tutorial.Retrofit2.L1GettingStarted.GettingStartedActivity;
+import me.li2.android.tutorial.Retrofit2.L5SendObjectsInRequestBody.SendObjectsInRequestBody;
 import me.li2.android.tutorial.SimpleTutorialActivity;
 
 /**
@@ -13,6 +14,7 @@ public class RetrofitTutorialActivity extends SimpleTutorialActivity {
     public Class[] getTutorialActivities() {
         Class[] tutorialActivities = new Class[]{
                 GettingStartedActivity.class,
+                SendObjectsInRequestBody.class,
         };
         return tutorialActivities;
     }

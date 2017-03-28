@@ -19,6 +19,7 @@
 
         <activity android:name=".Retrofit2.RetrofitTutorialActivity"/>
         <activity android:name=".Retrofit2.L1GettingStarted.GettingStartedActivity"/>
+        <activity android:name=".Retrofit2.L5SendObjectsInRequestBody.SendObjectsInRequestBody"/>
 
     </application>
 
