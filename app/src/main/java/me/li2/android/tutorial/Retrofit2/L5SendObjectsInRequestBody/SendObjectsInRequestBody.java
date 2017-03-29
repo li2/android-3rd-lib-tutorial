@@ -37,15 +37,15 @@ public class SendObjectsInRequestBody extends SimpleOneButtonActivity {
         tasks.add(new Task(id++, "Programming"));
 
         TaskService taskService = ServiceGenerator.createService(TaskService.class);
-        taskService.createTasks(tasks).enqueue(new Callback<Void>() {
+        taskService.createTasks(tasks).enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                Toast.makeText(SendObjectsInRequestBody.this, "succeed to send tasks", Toast.LENGTH_SHORT).show();
-                // result: R.drawable.retrofit_send_objects_in_request_body
+            public void onResponse(Call<String> call, Response<String> response) {
+                Toast.makeText(SendObjectsInRequestBody.this, "succeed to send tasks " + response.body(), Toast.LENGTH_SHORT).show();
+                // more details refer to image R.drawable.retrofit_send_objects_in_request_body
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Toast.makeText(SendObjectsInRequestBody.this, "error :( " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
             }

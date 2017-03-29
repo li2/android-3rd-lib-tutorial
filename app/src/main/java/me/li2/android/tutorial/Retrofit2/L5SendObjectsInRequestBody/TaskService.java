@@ -35,7 +35,20 @@ public interface TaskService {
     java.lang.IllegalStateException: Expected BEGIN_ARRAY but was STRING at line 1 column 1 path $
     change Call<Task> to Call<Void> will avoid this exception.
     DON'T KNOW WHY :(
+
+    Answer from FutureStudio: http://disq.us/p/1hdcx4v
+    The type in the Call<> describes the server response type. Your first option says the server should
+    respond with a JSON object. http://requestb.in/10hf7r31 responds with a string, so Retrofit and Gson
+    can't map that to a Java object. The second option with Call<void> ignores the server response and
+    doesn't do any mapping. That's why you won't run into an issue.
+
+    On the other hand, the method's return type is critical. You have to define what kind of data you
+    expect from the server. If you don't care at all what the server responds, you can use Void. In all those cases,
+    you'll have to wrap it into a typed Retrofit Call<> class.
+    https://futurestud.io/tutorials/retrofit-2-basics-of-api-description
+
+    After i change the return type to Call<String>, i can get string "ok" from response.body().
      */
     @POST("http://requestb.in/10hf7r31")
-    Call<Void> createTasks(@Body List<Task> tasks);
+    Call<String> createTasks(@Body List<Task> tasks);
 }
