@@ -32,7 +32,12 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
 
     // Retrofit XML converter (Simple)
-    compile 'com.squareup.retrofit2:converter-simplexml:2.2.0'
+    compile ('com.squareup.retrofit2:converter-simplexml:2.2.0'){
+        // http://stackoverflow.com/a/31762551/2722270
+        exclude group: 'xpp3', module: 'xpp3'
+        exclude group: 'stax', module: 'stax-api'
+        exclude group: 'stax', module: 'stax'
+    }
 
     // Butter Knife
     compile 'com.jakewharton:butterknife:8.4.0'

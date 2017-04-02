@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 /**
  * Centralize Retrofit client.
@@ -34,7 +34,9 @@ public class ServiceGenerator {
     private static Retrofit.Builder builder =
             new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create(gson));
+                    //.addConverterFactory(GsonConverterFactory.create(gson))
+                    .addConverterFactory(SimpleXmlConverterFactory.create())
+            ;
 
     private static Retrofit retrofit = builder.build();
 
