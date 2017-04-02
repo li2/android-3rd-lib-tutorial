@@ -1,6 +1,5 @@
 package me.li2.android.tutorial;
 
-import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -27,23 +26,25 @@ public class LogHelper {
         return makeLogTag(cls.getSimpleName());
     }
 
-    public static void LOGD(Context context, String tag, CharSequence text) {
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+    private static final int TOAST_DURATION = Toast.LENGTH_LONG;
+
+    public static void LOGD(String tag, CharSequence text) {
+        Toast.makeText(MainApplication.getAppContext(), text, TOAST_DURATION).show();
         Log.d(tag, text.toString());
     }
 
-    public static void LOGW(Context context, String tag, CharSequence text) {
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+    public static void LOGW(String tag, CharSequence text) {
+        Toast.makeText(MainApplication.getAppContext(), text, TOAST_DURATION).show();
         Log.w(tag, text.toString());
     }
 
-    public static void LOGE(Context context, String tag, CharSequence text) {
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+    public static void LOGE(String tag, CharSequence text) {
+        Toast.makeText(MainApplication.getAppContext(), text, TOAST_DURATION).show();
         Log.e(tag, text.toString());
     }
 
-    public static void LOGE(Context context, String tag, CharSequence text, Throwable t) {
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+    public static void LOGE(String tag, CharSequence text, Throwable t) {
+        Toast.makeText(MainApplication.getAppContext(), text, TOAST_DURATION).show();
         Log.e(tag, text.toString());
         t.printStackTrace();
     }
