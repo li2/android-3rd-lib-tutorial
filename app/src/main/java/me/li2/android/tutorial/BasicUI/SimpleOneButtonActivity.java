@@ -1,4 +1,4 @@
-package me.li2.android.tutorial;
+package me.li2.android.tutorial.BasicUI;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,7 @@ import android.widget.Button;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.li2.android.tutorial.R;
 
 public abstract class SimpleOneButtonActivity extends AppCompatActivity {
 

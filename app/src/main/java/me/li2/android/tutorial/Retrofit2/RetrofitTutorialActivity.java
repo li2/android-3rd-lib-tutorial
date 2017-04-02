@@ -3,7 +3,7 @@ package me.li2.android.tutorial.Retrofit2;
 import me.li2.android.tutorial.Retrofit2.L1GettingStarted.GettingStartedActivity;
 import me.li2.android.tutorial.Retrofit2.L5SendObjectsInRequestBody.SendObjectsInRequestBody;
 import me.li2.android.tutorial.Retrofit2.L9IntegrateXMLConverter.IntegrateXMLConverter;
-import me.li2.android.tutorial.SimpleTutorialActivity;
+import me.li2.android.tutorial.BasicUI.SimpleTutorialActivity;
 
 /**
  * Created by weiyi on 25/03/2017.

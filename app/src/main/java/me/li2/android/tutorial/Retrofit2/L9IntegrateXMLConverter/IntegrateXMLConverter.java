@@ -9,15 +9,15 @@ import org.simpleframework.xml.core.Persister;
 import java.io.File;
 
 import me.li2.android.tutorial.Retrofit2.L3CreatingSustainableClient.ServiceGenerator;
-import me.li2.android.tutorial.SimpleOneButtonActivity;
+import me.li2.android.tutorial.BasicUI.SimpleOneButtonActivity;
 import me.li2.android.tutorial.StorageUtils.StorageUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static me.li2.android.tutorial.LogHelper.LOGD;
-import static me.li2.android.tutorial.LogHelper.LOGE;
-import static me.li2.android.tutorial.LogHelper.makeLogTag;
+import static me.li2.android.tutorial.BasicUI.LogHelper.LOGD;
+import static me.li2.android.tutorial.BasicUI.LogHelper.LOGE;
+import static me.li2.android.tutorial.BasicUI.LogHelper.makeLogTag;
 
 /**
  * Created by weiyi on 29/03/2017.

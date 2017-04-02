@@ -11,8 +11,8 @@ import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 
-import static me.li2.android.tutorial.LogHelper.LOGE;
-import static me.li2.android.tutorial.LogHelper.makeLogTag;
+import static me.li2.android.tutorial.BasicUI.LogHelper.LOGE;
+import static me.li2.android.tutorial.BasicUI.LogHelper.makeLogTag;
 
 /**
  * Created by weiyi on 02/04/2017.

@@ -1,4 +1,4 @@
-package me.li2.android.tutorial;
+package me.li2.android.tutorial.BasicUI;
 
 import android.content.Intent;
 import android.os.Bundle;

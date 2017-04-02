@@ -1,4 +1,4 @@
-package me.li2.android.tutorial;
+package me.li2.android.tutorial.BasicUI;
 
 import me.li2.android.tutorial.Retrofit2.RetrofitTutorialActivity;
 

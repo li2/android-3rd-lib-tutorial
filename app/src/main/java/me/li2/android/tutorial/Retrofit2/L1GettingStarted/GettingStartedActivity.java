@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.li2.android.tutorial.Retrofit2.L3CreatingSustainableClient.ServiceGenerator;
-import me.li2.android.tutorial.SimpleListActivity;
+import me.li2.android.tutorial.BasicUI.SimpleListActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
