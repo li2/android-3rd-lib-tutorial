@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
@@ -51,11 +52,19 @@ public class ServiceGenerator {
                     .baseUrl(BASE_URL)
                     .addConverterFactory(SimpleXmlConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create(gson))
+                    .client(getOkHttpClientBuilder().build())
             ;
 
     private static Retrofit retrofit = builder.build();
 
-    private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+    private static OkHttpClient.Builder getOkHttpClientBuilder() {
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.addInterceptor(loggingInterceptor);
+        return builder;
+    }
 
     public static <S> S createService(Class<S> serviceClass) {
         return retrofit.create(serviceClass);
