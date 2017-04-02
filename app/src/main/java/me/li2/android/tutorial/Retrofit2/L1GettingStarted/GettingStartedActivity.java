@@ -7,13 +7,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.li2.android.tutorial.Retrofit2.L3CreatingSustainableClient.ServiceGenerator;
 import me.li2.android.tutorial.BasicUI.SimpleListActivity;
+import me.li2.android.tutorial.Retrofit2.L3CreatingSustainableClient.ServiceGenerator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static me.li2.android.tutorial.BasicUI.LogHelper.LOGE;
 
 /**
  * Created by weiyi on 25/03/2017.
@@ -62,9 +64,22 @@ public class GettingStartedActivity extends SimpleListActivity {
          * it'll be a nightmare to manage. With our {@link ServiceGenerator}, you only need a single line:
          */
         GitHubClient client = ServiceGenerator.createService(GitHubClient.class);
+        Call<List<GitHubRepo>> call = null;
 
-        // fetch a list of the GitHub repositories
-        Call<List<GitHubRepo>> call = client.reposForUser(USER);
+        try {
+            // fetch a list of the GitHub repositories
+            call = client.reposForUser(USER);
+        } catch (Exception e) {
+            // missing GSON converter will cause crash:
+            // IllegalArgumentException: Unable to create converter for List<GitHubRepo>
+            // IllegalArgumentException: Could not locate ResponseBody converter for List<GitHubRepo>
+            e.printStackTrace();
+            LOGE(TAG, "error :( fetch a list of GitHub repositories:\n " + e.getMessage());
+        }
+
+        if (call == null) {
+            return;
+        }
 
         // execute the call asynchronously. get a positive or negative callback.
         call.enqueue(new Callback<List<GitHubRepo>>() {

@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 /**
@@ -31,11 +32,25 @@ public class ServiceGenerator {
             .setLenient()
             .create();
 
+    /*
+     Crash:
+     com.google.gson.JsonSyntaxException: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+
+     Reason:
+     The GsonConverter thinks it can handle any data and (mistakenly) also accept XML data.
+
+     Dealing with Multiple Converters:
+     Make sure to add the SimpleXmlConverter before the GsonConverter, to support both XML and JSON within your app.
+     Make sure you specify the special-purpose converters with limited abilities first and general converters (like Gson) last.
+
+     http://disq.us/p/1fuwzgz
+     https://speakerdeck.com/jakewharton/making-retrofit-work-for-you-ohio-devfest-2016
+      */
     private static Retrofit.Builder builder =
             new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    //.addConverterFactory(GsonConverterFactory.create(gson))
                     .addConverterFactory(SimpleXmlConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
             ;
 
     private static Retrofit retrofit = builder.build();
