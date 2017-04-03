@@ -1,5 +1,6 @@
 package me.li2.android.tutorial.Retrofit2;
 
+import me.li2.android.tutorial.Retrofit2.L11QueryParameters.QueryParameters;
 import me.li2.android.tutorial.Retrofit2.L1GettingStarted.GettingStartedActivity;
 import me.li2.android.tutorial.Retrofit2.L5SendObjectsInRequestBody.SendObjectsInRequestBody;
 import me.li2.android.tutorial.Retrofit2.L9IntegrateXMLConverter.IntegrateXMLConverter;
@@ -16,7 +17,8 @@ public class RetrofitTutorialActivity extends SimpleTutorialActivity {
         Class[] tutorialActivities = new Class[]{
                 GettingStartedActivity.class,
                 SendObjectsInRequestBody.class,
-                IntegrateXMLConverter.class
+                IntegrateXMLConverter.class,
+                QueryParameters.class,
         };
         return tutorialActivities;
     }

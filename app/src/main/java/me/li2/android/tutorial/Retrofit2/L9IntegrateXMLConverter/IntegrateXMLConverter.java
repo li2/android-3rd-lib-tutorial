@@ -30,6 +30,11 @@ public class IntegrateXMLConverter extends SimpleOneButtonActivity {
     private Weather mWeather;
 
     @Override
+    protected String getButtonText() {
+        return "Request London Weather from OpenWeather with XML data response";
+    }
+
+    @Override
     public void doAction() {
         WeatherService weatherService = ServiceGenerator.createService(WeatherService.class);
         weatherService.getLondonWeather().enqueue(new Callback<Weather>() {
