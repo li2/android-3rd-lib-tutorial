@@ -47,6 +47,8 @@ public class QueryParameters extends SimpleOneButtonActivity {
             LOGD(TAG, "test QueryMap");
             Map<String, String> options = new HashMap<>();
             options.put("q", QUERY_PARAM_LOCATION);
+            // TODO if comment put("mode", ...) line, onFailure will be called:
+            // RuntimeException: org.xmlpull.v1.XmlPullParserException: Unexpected token (position:TEXT {"coord":{"lon":...
             options.put("mode", QUERY_PARAM_FORMAT);
             options.put("appid", QUERY_PARAM_APIKEY);
             call = weatherService.getLondonWeather(options);
