@@ -3,7 +3,12 @@ package me.li2.android.tutorial.Retrofit2.L3CreatingSustainableClient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
+
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -57,12 +62,42 @@ public class ServiceGenerator {
 
     private static Retrofit retrofit = builder.build();
 
+    /**
+     * Create a Request Interceptor, and intercept the request on the network layer provided by OkHttp.
+     * These headers are passed with every request ! but it seems not work here now.
+     *
+     * Request header: Headers containing more information about the resource to be fetched or about the client itself.
+     * https://developer.mozilla.org/en-US/docs/Glossary/Request_header
+     * 
+     * @return
+     */
+    private static Interceptor createRequestInterceptor() {
+        Interceptor requestInterceptor = new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request original = chain.request();
+                Request request = original.newBuilder()
+                        .header("LI2-Interceptor-Headers-1", "key-value-pair as a list, i")
+                        .header("LI2-Interceptor-Headers-2", "key-value-pair as a list, love")
+                        .header("LI2-Interceptor-Headers-3", "key-value-pair as a list, programming")
+                        .header("LI2-Interceptor-Headers-4", "key-value-pair as a list, &")
+                        .header("LI2-Interceptor-Headers-5", "key-value-pair as a list, legela")
+                        .method(original.method(), original.body())
+                        .build();
+                return chain.proceed(request);
+            }
+        };
+        return requestInterceptor;
+    }
+
     private static OkHttpClient.Builder getOkHttpClientBuilder() {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.addInterceptor(loggingInterceptor);
+        // TODO not work !
+        builder.addInterceptor(createRequestInterceptor());
         return builder;
     }
 
