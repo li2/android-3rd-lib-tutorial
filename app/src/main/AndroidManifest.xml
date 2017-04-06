@@ -24,7 +24,7 @@
         <activity android:name=".Retrofit2.L5SendObjectsInRequestBody.SendObjectsInRequestBody"/>
         <activity android:name=".Retrofit2.L9IntegrateXMLConverter.IntegrateXMLConverter"/>
         <activity android:name=".Retrofit2.L11QueryParameters.QueryParameters"/>
-
+        <activity android:name=".Retrofit2.L14SendDataFormUrlencoded.SendDataFormUrlencoded"/>
     </application>
 
 </manifest>
