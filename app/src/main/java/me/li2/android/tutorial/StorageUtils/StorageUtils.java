@@ -2,7 +2,9 @@ package me.li2.android.tutorial.StorageUtils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -59,5 +61,9 @@ public class StorageUtils {
             LOGE(TAG, "error to create file :( " + e.getMessage());
             return null;
         }
+    }
+
+    public static Uri getRawFileUri(Context context, int resId) {
+        return Uri.parse("android.resource://" + context.getApplicationContext().getPackageName() + "/" + resId);
     }
 }

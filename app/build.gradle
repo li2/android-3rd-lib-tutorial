@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "me.li2.android.tutorial"
-        minSdkVersion 17
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -17,6 +17,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+repositories {
+    /*
+     NOTE21: use dirchooser lib will cause crash:
+     java.lang.NoClassDefFoundError: Failed resolution of: Lcom/gu/option/Option;
+     to fix the crash, use @Phantast's solution
+     https://github.com/passy/Android-DirectoryChooser/issues/65
+     */
+    maven { url 'http://guardian.github.com/maven/repo-releases' }
+    maven { url  "http://dl.bintray.com/lukaville/maven" }
 }
 
 dependencies {
@@ -44,4 +55,11 @@ dependencies {
     // Butter Knife
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+
+    // Directory Chooser
+    compile 'com.gu:option:1.3'
+    compile 'net.rdrei.android.dirchooser:library:3.2@aar'
+
+    // File Chooser
+    compile 'com.nbsp:library:1.2'
 }

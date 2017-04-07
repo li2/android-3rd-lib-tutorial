@@ -2,6 +2,7 @@ package me.li2.android.tutorial.Retrofit2;
 
 import me.li2.android.tutorial.Retrofit2.L11QueryParameters.QueryParameters;
 import me.li2.android.tutorial.Retrofit2.L14SendDataFormUrlencoded.SendDataFormUrlencoded;
+import me.li2.android.tutorial.Retrofit2.L15UploadFiles.UploadFile;
 import me.li2.android.tutorial.Retrofit2.L1GettingStarted.GettingStartedActivity;
 import me.li2.android.tutorial.Retrofit2.L5SendObjectsInRequestBody.SendObjectsInRequestBody;
 import me.li2.android.tutorial.Retrofit2.L9IntegrateXMLConverter.IntegrateXMLConverter;
@@ -21,6 +22,7 @@ public class RetrofitTutorialActivity extends SimpleTutorialActivity {
                 IntegrateXMLConverter.class,
                 QueryParameters.class,
                 SendDataFormUrlencoded.class,
+                UploadFile.class,
         };
         return tutorialActivities;
     }
