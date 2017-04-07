@@ -1,7 +1,9 @@
 package me.li2.android.tutorial.Retrofit2.L15UploadFiles;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
@@ -60,7 +62,7 @@ public class UploadFile extends SimpleOneButtonActivity {
          NullPointerException: Attempt to invoke interface method 'int java.lang.CharSequence.length()' on a null object reference
          at okhttp3.MediaType.parse(MediaType.java:51)
          */
-        RequestBody requestFile =RequestBody.create(MediaType.parse(type), file);
+        RequestBody requestFile = new ProgressRequestBody(MediaType.parse(type), file, mUploadCallbacks);
 
         // add the file wrapped into a MultipartBody.Part instance, which is used to appropriately
         // upload files from client-side, also the actual file name.
@@ -79,7 +81,8 @@ public class UploadFile extends SimpleOneButtonActivity {
                 /**
                  * Refer to the image for result:
                  */
-                int image = R.drawable.retrofit_upload_file;
+                int image1 = R.drawable.retrofit_upload_file;
+                int image2 = R.drawable.retrofit_upload_file_with_progress;
             }
 
             @Override
@@ -87,6 +90,52 @@ public class UploadFile extends SimpleOneButtonActivity {
                 LOGE(TAG, "upload failed : " + t.getMessage(), t);
             }
         });
+
+        mFileName = file.getName();
+    }
+
+    private ProgressRequestBody.UploadCallbacks mUploadCallbacks = new ProgressRequestBody.UploadCallbacks() {
+        @Override
+        public void onProgressUpdate(final int percentage, final long uploaded, final long total) {
+            Log.d(TAG, "upload progress " + percentage);
+            updateProgressView(percentage, uploaded, total);
+        }
+
+        @Override
+        public void onError() {
+        }
+
+        @Override
+        public void onFinish() {
+        }
+    };
+
+    private String mFileName;
+    private ProgressDialog mProgressDialog;
+
+    private ProgressDialog createProgressDialog() {
+        ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setTitle("Upload Progress");
+        dialog.setMessage("" + mFileName + "\nis uploading to \nhttp://requestb.in/r2k92yr2");
+        dialog.setProgress(0);
+        dialog.setProgressNumberFormat("");
+        dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        return dialog;
+    }
+
+    private void updateProgressView(int percentage, long uploaded, long total) {
+        if (mProgressDialog == null) {
+            mProgressDialog = createProgressDialog();
+        }
+        if (!mProgressDialog.isShowing()) {
+            mProgressDialog.show();
+        }
+
+        double mbUploaded = uploaded*1.0f/(1024*1024);
+        double mbLength = total*1.0f/(1024*1024);
+
+        mProgressDialog.setProgress(percentage);
+        mProgressDialog.setProgressNumberFormat(String.format("%.2f MB / %.2f MB", mbUploaded, mbLength));
     }
 
     //-------- choose file ----------------------------------------------------
