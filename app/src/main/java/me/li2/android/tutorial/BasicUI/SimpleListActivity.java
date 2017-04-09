@@ -3,7 +3,6 @@ package me.li2.android.tutorial.BasicUI;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ import me.li2.android.tutorial.R;
  * https://github.com/li2
  */
 
-public abstract class SimpleListActivity extends AppCompatActivity {
+public abstract class SimpleListActivity extends BasicActivity {
 
     private SimpleListFragment mFragment;
 
@@ -22,9 +21,6 @@ public abstract class SimpleListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple_list);
-
-        setTitle(this.getClass().getSimpleName());
-
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.simple_list_fragment_container_id);
 

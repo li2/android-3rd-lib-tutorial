@@ -21,7 +21,6 @@ public class ImageLoading extends SimpleListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("Loading Image From");
         mLoadingOptions = options();
         /**
          * It's weird if not postDelay, the {@link SimpleListFragment#getActivity()} always return null.
