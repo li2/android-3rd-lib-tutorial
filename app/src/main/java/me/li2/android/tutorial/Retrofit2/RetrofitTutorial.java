@@ -14,6 +14,8 @@ import me.li2.android.tutorial.BasicUI.SimpleTutorialActivity;
  */
 
 public class RetrofitTutorial extends SimpleTutorialActivity {
+    public static final String TAG = "Retrofit";
+
     @Override
     public Class[] getTutorialActivities() {
         Class[] tutorialActivities = new Class[]{

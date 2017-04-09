@@ -14,7 +14,12 @@ public class BasicActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(getClass().getSimpleName());
+        String titlePrefix = getTitlePrefix();
+        String title = getClass().getSimpleName();
+        if (titlePrefix != null && titlePrefix.length() > 0) {
+            title = titlePrefix + "/" + title;
+        }
+        setTitle(title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -27,5 +32,9 @@ public class BasicActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    protected String getTitlePrefix() {
+        return "";
     }
 }

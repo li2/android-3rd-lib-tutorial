@@ -9,6 +9,8 @@ import me.li2.android.tutorial.Picasso.L1ImageLoading.ImageLoading;
  */
 
 public class PicassoTutorial extends SimpleTutorialActivity {
+    public static final String TAG = "Picasso";
+
     @Override
     public Class[] getTutorialActivities() {
         Class[] tutorialActivities = new Class[]{

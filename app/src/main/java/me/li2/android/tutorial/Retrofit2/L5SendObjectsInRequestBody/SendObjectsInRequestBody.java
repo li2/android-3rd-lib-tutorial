@@ -5,8 +5,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.li2.android.tutorial.Retrofit2.L3CreatingSustainableClient.ServiceGenerator;
 import me.li2.android.tutorial.BasicUI.SimpleOneButtonActivity;
+import me.li2.android.tutorial.Retrofit2.L3CreatingSustainableClient.ServiceGenerator;
+import me.li2.android.tutorial.Retrofit2.RetrofitTutorial;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -17,6 +18,10 @@ import retrofit2.Response;
  */
 
 public class SendObjectsInRequestBody extends SimpleOneButtonActivity {
+    @Override
+    protected String getTitlePrefix() {
+        return RetrofitTutorial.TAG;
+    }
 
     @Override
     protected String getButtonText() {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import me.li2.android.tutorial.BasicUI.SimpleOneButtonActivity;
 import me.li2.android.tutorial.R;
 import me.li2.android.tutorial.Retrofit2.L3CreatingSustainableClient.ServiceGenerator;
+import me.li2.android.tutorial.Retrofit2.RetrofitTutorial;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,6 +22,11 @@ import static me.li2.android.tutorial.BasicUI.LogHelper.makeLogTag;
 
 public class SendDataFormUrlencoded extends SimpleOneButtonActivity {
     private static final String TAG = makeLogTag(SendDataFormUrlencoded.class);
+
+    @Override
+    protected String getTitlePrefix() {
+        return RetrofitTutorial.TAG;
+    }
 
     @Override
     protected String getButtonText() {

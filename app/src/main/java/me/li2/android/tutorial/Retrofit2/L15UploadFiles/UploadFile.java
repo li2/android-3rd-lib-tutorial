@@ -17,6 +17,7 @@ import java.net.URLConnection;
 import me.li2.android.tutorial.BasicUI.SimpleOneButtonActivity;
 import me.li2.android.tutorial.R;
 import me.li2.android.tutorial.Retrofit2.L3CreatingSustainableClient.ServiceGenerator;
+import me.li2.android.tutorial.Retrofit2.RetrofitTutorial;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -36,6 +37,12 @@ import static me.li2.android.tutorial.BasicUI.LogHelper.makeLogTag;
 
 public class UploadFile extends SimpleOneButtonActivity {
     private static final String TAG = makeLogTag(UploadFile.class);
+
+    @Override
+    protected String getTitlePrefix() {
+        return RetrofitTutorial.TAG;
+    }
+
     @Override
     protected String getButtonText() {
         return "Choose file to upload";

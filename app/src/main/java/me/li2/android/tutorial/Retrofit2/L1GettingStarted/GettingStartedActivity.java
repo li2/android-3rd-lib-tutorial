@@ -9,6 +9,7 @@ import java.util.List;
 
 import me.li2.android.tutorial.BasicUI.SimpleListActivity;
 import me.li2.android.tutorial.Retrofit2.L3CreatingSustainableClient.ServiceGenerator;
+import me.li2.android.tutorial.Retrofit2.RetrofitTutorial;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,6 +43,11 @@ public class GettingStartedActivity extends SimpleListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         theBasicsOfRetrofit();
+    }
+
+    @Override
+    protected String getTitlePrefix() {
+        return RetrofitTutorial.TAG;
     }
 
     private void theBasicsOfRetrofit() {

@@ -8,8 +8,9 @@ import org.simpleframework.xml.core.Persister;
 
 import java.io.File;
 
-import me.li2.android.tutorial.Retrofit2.L3CreatingSustainableClient.ServiceGenerator;
 import me.li2.android.tutorial.BasicUI.SimpleOneButtonActivity;
+import me.li2.android.tutorial.Retrofit2.L3CreatingSustainableClient.ServiceGenerator;
+import me.li2.android.tutorial.Retrofit2.RetrofitTutorial;
 import me.li2.android.tutorial.StorageUtils.StorageUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,6 +29,11 @@ public class IntegrateXMLConverter extends SimpleOneButtonActivity {
     private static final String TAG = makeLogTag(IntegrateXMLConverter.class);
     private static final int PERMISSION_REQUEST_WRITE_STORAGE = 21;
     private Weather mWeather;
+
+    @Override
+    protected String getTitlePrefix() {
+        return RetrofitTutorial.TAG;
+    }
 
     @Override
     protected String getButtonText() {

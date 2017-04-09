@@ -6,6 +6,7 @@ import java.util.Map;
 import me.li2.android.tutorial.BasicUI.SimpleOneButtonActivity;
 import me.li2.android.tutorial.Retrofit2.L3CreatingSustainableClient.ServiceGenerator;
 import me.li2.android.tutorial.Retrofit2.L9IntegrateXMLConverter.Weather;
+import me.li2.android.tutorial.Retrofit2.RetrofitTutorial;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,6 +28,11 @@ public class QueryParameters extends SimpleOneButtonActivity {
     private static final String QUERY_PARAM_APIKEY = "b1b15e88fa797225412429c1c50c122a1";
 
     private long mQueryTimes;
+
+    @Override
+    protected String getTitlePrefix() {
+        return RetrofitTutorial.TAG;
+    }
 
     @Override
     protected String getButtonText() {

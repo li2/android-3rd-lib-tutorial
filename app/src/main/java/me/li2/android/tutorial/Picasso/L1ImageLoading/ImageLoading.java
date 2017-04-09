@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import me.li2.android.tutorial.BasicUI.SimpleListActivity;
 import me.li2.android.tutorial.BasicUI.SimpleListFragment;
+import me.li2.android.tutorial.Picasso.PicassoTutorial;
 
 /**
  * Created by weiyi on 09/04/2017.
@@ -31,6 +32,11 @@ public class ImageLoading extends SimpleListActivity {
                 setListData(mLoadingOptions);
             }
         }, 250);
+    }
+
+    @Override
+    protected String getTitlePrefix() {
+        return PicassoTutorial.TAG;
     }
 
     private ArrayList<String> options() {
