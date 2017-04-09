@@ -65,14 +65,37 @@ public class ImageLoading extends SimpleListActivity {
             case 0:
                 loadImageFromURL(URL);
                 break;
+            case 1:
+                loadImageFromResources(imageResourceId);
+                break;
         }
     }
 
     private static final String URL = "http://i.imgur.com/9gbQ7YR.jpg";
 
+    /**
+     * Start an image request using the specified path.
+     * <p>
+     * This path may be a remote URL, file resource (prefixed with {@code file:}), content resource
+     * (prefixed with {@code content:}), or android resource (prefixed with {@code
+     * android.resource:}.
+     * <p>
+     * @param url
+     */
     private void loadImageFromURL(String url) {
         Picasso.with(this)
                 .load(url)
+                .into(showImageView());
+    }
+
+    private int imageResourceId = R.drawable.retrofit_upload_file;
+    
+    /**
+     * Start an image request using the specified drawable resource ID.
+     */
+    private void loadImageFromResources(int resourceId) {
+        Picasso.with(this)
+                .load(resourceId)
                 .into(showImageView());
     }
 
