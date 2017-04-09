@@ -2,6 +2,7 @@ package me.li2.android.tutorial.Picasso.L1ImageLoading;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -12,13 +13,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.nbsp.materialfilepicker.MaterialFilePicker;
+import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import me.li2.android.tutorial.BasicUI.SimpleListActivity;
 import me.li2.android.tutorial.BasicUI.SimpleListFragment;
 import me.li2.android.tutorial.Picasso.PicassoTutorial;
+import me.li2.android.tutorial.R;
 
 /**
  * Created by weiyi on 09/04/2017.
@@ -68,6 +73,9 @@ public class ImageLoading extends SimpleListActivity {
             case 1:
                 loadImageFromResources(imageResourceId);
                 break;
+            case 2:
+                chooseFile();
+                break;
         }
     }
 
@@ -100,6 +108,13 @@ public class ImageLoading extends SimpleListActivity {
     }
 
     /**
+     * Start an image request using the specified image file.
+     */
+    private void loadImageFromFile(File file) {
+        Picasso.with(this)
+                .load(file)
+                .into(showImageView());
+    }
      * Popup ImageView, give its constructor a non-dialog theme can show ImageView in full screen. and
      * android.R.style.ThemeOverlay_Material_Dark will not change the statusBar's color.
      * http://stackoverflow.com/a/24946375/2722270
@@ -123,5 +138,23 @@ public class ImageLoading extends SimpleListActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT));
         builder.show();
         return imageView;
+    }
+
+    private static final int REQUEST_FILE = 21;
+
+    private void chooseFile() {
+        new MaterialFilePicker()
+                .withActivity(this)
+                .withRequestCode(REQUEST_FILE)
+                .start();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_FILE && resultCode == RESULT_OK) {
+            String filePath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
+            File file = new File(filePath);
+            loadImageFromFile(file);
+        }
     }
 }
