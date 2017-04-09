@@ -22,13 +22,16 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Retrofit2.RetrofitTutorialActivity"/>
+        <activity android:name=".Retrofit2.RetrofitTutorial"/>
         <activity android:name=".Retrofit2.L1GettingStarted.GettingStartedActivity"/>
         <activity android:name=".Retrofit2.L5SendObjectsInRequestBody.SendObjectsInRequestBody"/>
         <activity android:name=".Retrofit2.L9IntegrateXMLConverter.IntegrateXMLConverter"/>
         <activity android:name=".Retrofit2.L11QueryParameters.QueryParameters"/>
         <activity android:name=".Retrofit2.L14SendDataFormUrlencoded.SendDataFormUrlencoded"/>
         <activity android:name=".Retrofit2.L15UploadFiles.UploadFile"/>
+
+        <activity android:name=".Picasso.PicassoTutorial"/>
+        <activity android:name=".Picasso.L1ImageLoading.ImageLoading"/>
 
         <activity android:name="net.rdrei.android.dirchooser.DirectoryChooserActivity" />
 

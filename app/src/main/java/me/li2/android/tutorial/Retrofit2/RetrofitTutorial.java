@@ -13,7 +13,7 @@ import me.li2.android.tutorial.BasicUI.SimpleTutorialActivity;
  * https://github.com/li2
  */
 
-public class RetrofitTutorialActivity extends SimpleTutorialActivity {
+public class RetrofitTutorial extends SimpleTutorialActivity {
     @Override
     public Class[] getTutorialActivities() {
         Class[] tutorialActivities = new Class[]{

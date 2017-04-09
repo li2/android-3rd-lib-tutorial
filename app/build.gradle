@@ -62,4 +62,7 @@ dependencies {
 
     // File Chooser
     compile 'com.nbsp:library:1.2'
+
+    // Image manipulations
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }
