@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import me.li2.android.tutorial.BasicUI.SimpleListActivity;
 import me.li2.android.tutorial.BasicUI.SimpleListFragment;
 import me.li2.android.tutorial.Picasso.PicassoTutorial;
 import me.li2.android.tutorial.R;
+import me.li2.android.tutorial.StorageUtils.ResourceUtils;
 
 /**
  * Created by weiyi on 09/04/2017.
@@ -56,16 +58,15 @@ public class ImageLoading extends SimpleListActivity {
 
     private ArrayList<String> options() {
         ArrayList<String> options = new ArrayList<>();
-        options.add("Url");
-        options.add("Resources");
-        options.add("File");
-        options.add("Uri");
+        options.add("From Url");
+        options.add("From Resources");
+        options.add("From File");
+        options.add("From Uri");
         return options;
     }
 
     @Override
     protected void onSimpleListItemClick(int position) {
-        Toast.makeText(ImageLoading.this, "Loading Image from " + mLoadingOptions.get(position), Toast.LENGTH_SHORT).show();
         switch (position) {
             case 0:
                 loadImageFromURL(URL);
@@ -75,6 +76,10 @@ public class ImageLoading extends SimpleListActivity {
                 break;
             case 2:
                 chooseFile();
+                break;
+            case 3:
+                Uri uri = ResourceUtils.resourceIdToUri(this, imageResourceId);
+                loadImageFromUri(uri);
                 break;
         }
     }
@@ -91,6 +96,7 @@ public class ImageLoading extends SimpleListActivity {
      * @param url
      */
     private void loadImageFromURL(String url) {
+        Toast.makeText(ImageLoading.this, "Loading Image from URL: " + url, Toast.LENGTH_SHORT).show();
         Picasso.with(this)
                 .load(url)
                 .into(showImageView());
@@ -102,6 +108,7 @@ public class ImageLoading extends SimpleListActivity {
      * Start an image request using the specified drawable resource ID.
      */
     private void loadImageFromResources(int resourceId) {
+        Toast.makeText(ImageLoading.this, "Loading Image from resource ID : " + resourceId, Toast.LENGTH_SHORT).show();
         Picasso.with(this)
                 .load(resourceId)
                 .into(showImageView());
@@ -111,10 +118,24 @@ public class ImageLoading extends SimpleListActivity {
      * Start an image request using the specified image file.
      */
     private void loadImageFromFile(File file) {
+        Toast.makeText(ImageLoading.this, "Loading Image from File: " + file.getPath(), Toast.LENGTH_SHORT).show();
         Picasso.with(this)
                 .load(file)
                 .into(showImageView());
     }
+
+    /**
+     * Start an image request using the specified URI.
+     * @param uri
+     */
+    private void loadImageFromUri(Uri uri) {
+        Toast.makeText(ImageLoading.this, "Loading Image from Uri: " + uri.getPath(), Toast.LENGTH_SHORT).show();
+        Picasso.with(this)
+                .load(uri)
+                .into(showImageView());
+    }
+
+    /**
      * Popup ImageView, give its constructor a non-dialog theme can show ImageView in full screen. and
      * android.R.style.ThemeOverlay_Material_Dark will not change the statusBar's color.
      * http://stackoverflow.com/a/24946375/2722270
@@ -146,6 +167,8 @@ public class ImageLoading extends SimpleListActivity {
         new MaterialFilePicker()
                 .withActivity(this)
                 .withRequestCode(REQUEST_FILE)
+                .withFilterDirectories(false)
+                .withTitle("Choose an image file")
                 .start();
     }
 
