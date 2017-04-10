@@ -20,7 +20,6 @@ public abstract class SimpleListActivity extends BasicActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_simple_list);
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.simple_list_fragment_container_id);
 
@@ -36,6 +35,11 @@ public abstract class SimpleListActivity extends BasicActivity {
                 onSimpleListItemClick(position);
             }
         });
+    }
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_simple_list;
     }
 
     protected void onSimpleListItemClick(final int position) {
