@@ -15,7 +15,6 @@ import java.io.File;
 import java.net.URLConnection;
 
 import me.li2.android.tutorial.BasicUI.SimpleOneButtonActivity;
-import me.li2.android.tutorial.R;
 import me.li2.android.tutorial.Retrofit2.L3CreatingSustainableClient.ServiceGenerator;
 import me.li2.android.tutorial.Retrofit2.RetrofitTutorial;
 import okhttp3.MediaType;
@@ -85,11 +84,7 @@ public class UploadFile extends SimpleOneButtonActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 LOGD(TAG, "upload success " + response.body().charStream().toString());
-                /**
-                 * Refer to the image for result:
-                 */
-                int image1 = R.drawable.retrofit_upload_file;
-                int image2 = R.drawable.retrofit_upload_file_with_progress;
+                /** Result refer to image README/retrofit/retrofit_upload_file.png */
             }
 
             @Override

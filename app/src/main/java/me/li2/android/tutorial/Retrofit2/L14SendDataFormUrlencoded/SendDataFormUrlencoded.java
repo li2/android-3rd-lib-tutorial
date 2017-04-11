@@ -3,7 +3,6 @@ package me.li2.android.tutorial.Retrofit2.L14SendDataFormUrlencoded;
 import java.util.ArrayList;
 
 import me.li2.android.tutorial.BasicUI.SimpleOneButtonActivity;
-import me.li2.android.tutorial.R;
 import me.li2.android.tutorial.Retrofit2.L3CreatingSustainableClient.ServiceGenerator;
 import me.li2.android.tutorial.Retrofit2.RetrofitTutorial;
 import retrofit2.Call;
@@ -53,9 +52,7 @@ public class SendDataFormUrlencoded extends SimpleOneButtonActivity {
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                /** more details refer to this image: */
-                int image1 = R.drawable.retrofit_send_data_form_url_encoded;
-                int image2 = R.drawable.retrofit_send_data_form_url_encoded_array;
+                /** Result refer to image README/retrofit/retrofit_send_data_form_url_encoded.png */
                 LOGD(TAG, "succeed to send task " + response.body());
             }
 

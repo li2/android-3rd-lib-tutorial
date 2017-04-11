@@ -102,7 +102,7 @@ public class ImageLoading extends SimpleListActivity {
                 .into(showImageView());
     }
 
-    private int imageResourceId = R.drawable.retrofit_upload_file;
+    private int imageResourceId = R.drawable.multiple_screens_image1_full_dpi;
     
     /**
      * Start an image request using the specified drawable resource ID.
