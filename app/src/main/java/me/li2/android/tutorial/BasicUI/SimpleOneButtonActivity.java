@@ -15,7 +15,6 @@ public abstract class SimpleOneButtonActivity extends BasicActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
         mButton.setText(getButtonText());
     }
 

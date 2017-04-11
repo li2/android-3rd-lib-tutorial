@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import butterknife.ButterKnife;
+
 /**
  * Created by weiyi on 09/04/2017.
  * https://github.com/li2
@@ -17,6 +19,7 @@ public abstract class BasicActivity extends AppCompatActivity {
         if (getLayoutResId() > 0) {
             setContentView(getLayoutResId());
         }
+        ButterKnife.bind(this);
         String titlePrefix = getTitlePrefix();
         String title = getClass().getSimpleName();
         if (titlePrefix != null && titlePrefix.length() > 0) {

@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">AndroidTutorial</string>
+
+    <string name="multiple_screens_image_demo1">
+        为该 ImageView 按比例提供了 m, h, x, xx, xxx 等 5 种密度图片，mdpi 尺寸 100x100p。
+        虽然 wrap_content，但在不同密度手机上显示效果一致，因为系统会寻找合适的图片。
+    </string>
+
+    <string name="multiple_screens_image_demo2">
+        图片资源同上，但设置固定宽度：Phone 100dp，Tablet 200dp。系统在同样密度的平板和手机上使用同一张图片，
+        但因平板尺寸大，所以平板图片被拉伸了2倍，导致模糊。
+    </string>
+
+    <string name="multiple_screens_image_demo3">
+        为解决上述问题，需为平板（目前只有 m, xh 两种密度的平板）供图，这套图是基线密度的 4 倍
+        （xh 2 倍于 m, 平板图片 2 倍于手机，所以是 4 倍）。
+        如果需要同时支持手机和平板，则提供两套图：drawable-w820dp-xhdpi、drawable-xxxhdpi。
+    </string>
+
 </resources>

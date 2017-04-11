@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin">
+
+    <TextView
+        style="@style/multiple_screens_image_info_text"
+        android:id="@+id/multiple_screens_density_info_view"
+        android:layout_alignParentTop="true"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/multiple_screens_density_info_view">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/multiple_screens_image_info_text"
+                android:text="@string/multiple_screens_image_demo1"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/multiple_screens_image1_full_dpi"/>
+
+            <TextView
+                style="@style/multiple_screens_image_info_text"
+                android:text="@string/multiple_screens_image_demo2"/>
+            <ImageView
+                android:layout_width="@dimen/multiple_screens_demo_image_width"
+                android:layout_height="@dimen/multiple_screens_demo_image_width"
+                android:src="@drawable/multiple_screens_image1_full_dpi"/>
+
+            <TextView
+                style="@style/multiple_screens_image_info_text"
+                android:text="@string/multiple_screens_image_demo3"/>
+            <ImageView
+                android:layout_width="@dimen/multiple_screens_demo_image_width"
+                android:layout_height="@dimen/multiple_screens_demo_image_width"
+                android:src="@drawable/multiple_screens_image2_phone_tablet"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
