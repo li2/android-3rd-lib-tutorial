@@ -12,7 +12,7 @@ import java.util.List;
  * https://github.com/li2
  */
 
-public class SimpleTutorialActivity extends SimpleListActivity {
+public abstract class SimpleTutorialActivity extends SimpleListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +40,5 @@ public class SimpleTutorialActivity extends SimpleListActivity {
         }
     }
 
-    public Class[] getTutorialActivities() {
-        return new Class[] {};
-    }
+    public abstract Class[] getTutorialActivities();
 }

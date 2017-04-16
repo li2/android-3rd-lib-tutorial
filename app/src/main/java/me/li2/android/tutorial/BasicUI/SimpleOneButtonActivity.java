@@ -14,18 +14,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.li2.android.tutorial.R;
 
-public class SimpleOneButtonActivity extends BasicFragmentContainerActivity {
+public abstract class SimpleOneButtonActivity extends BasicFragmentContainerActivity {
     @Override
     protected Fragment createFragment() {
         return new SimpleOneButtonFragment();
     }
 
-    protected void doAction() {
-    }
+    protected abstract void doAction();
 
-    protected String getButtonText() {
-        return "DO";
-    }
+    protected abstract String getButtonText();
 
     /*
      SimpleOneButtonFragment must be a public static class to be  properly recreated from instance state.

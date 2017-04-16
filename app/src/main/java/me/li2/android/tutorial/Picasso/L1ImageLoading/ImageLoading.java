@@ -22,7 +22,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import me.li2.android.tutorial.BasicUI.SimpleListActivity;
-import me.li2.android.tutorial.BasicUI.SimpleListFragment;
 import me.li2.android.tutorial.Picasso.PicassoTutorial;
 import me.li2.android.tutorial.R;
 import me.li2.android.tutorial.StorageUtils.ResourceUtils;
