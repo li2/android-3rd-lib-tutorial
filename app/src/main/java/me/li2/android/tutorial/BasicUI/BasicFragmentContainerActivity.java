@@ -66,4 +66,11 @@ public abstract class BasicFragmentContainerActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    protected void replaceFragment(Fragment newFragment) {
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction().replace(R.id.fragmentContainer, newFragment).commit();
+        fm.executePendingTransactions();
+        mFragment = newFragment;
+    }
 }
