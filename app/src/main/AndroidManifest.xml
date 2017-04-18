@@ -34,6 +34,7 @@
 
         <activity android:name=".Picasso.PicassoTutorial"/>
         <activity android:name=".Picasso.L1ImageLoading.ImageLoading"/>
+        <activity android:name=".Picasso.L2ImageDisplaying.ImageDisplaying"/>
 
         <activity android:name=".MultipleScreens.MultipleScreensTutorial"/>
         <activity android:name=".MultipleScreens.DrawableResources"/>
