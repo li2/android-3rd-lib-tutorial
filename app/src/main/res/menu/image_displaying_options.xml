@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/image_displaying_menu_item_no_placeholder"
+          android:title="test Picasso.noPlaceholder()"
+          app:showAsAction="never"/>
+
+</menu>

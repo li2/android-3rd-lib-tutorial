@@ -3,11 +3,15 @@ package me.li2.android.tutorial.Picasso.L2ImageDisplaying;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -15,7 +19,10 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -23,6 +30,7 @@ import java.lang.annotation.RetentionPolicy;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.li2.android.tutorial.BasicUI.BasicFragmentContainerActivity;
+import me.li2.android.tutorial.BasicWidget.WidgetUtils;
 import me.li2.android.tutorial.R;
 
 import static me.li2.android.tutorial.BasicUI.LogHelper.LOGD;
@@ -41,6 +49,24 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
     public @interface GalleryFragmentType {}
     private static final int GALLERY_FRAGMENT_TYPE_LIST = 0;
     private static final int GALLERY_FRAGMENT_TYPE_GRID = 1;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.image_displaying_options, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.image_displaying_menu_item_no_placeholder:
+                testPicassoNoPlaceHolder();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     protected Fragment createFragment() {
@@ -139,12 +165,50 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
             }
             ImageView imageView = (ImageView) convertView.findViewById(R.id.gallery_item_imageView);
 
-            Picasso
-                    .with(mContext)
+            Picasso.with(mContext)
                     .load(mUrls[position])
+                    .placeholder(R.drawable.ic_android)
+                    .error(R.drawable.ic_image_broken)
                     .into(imageView);
 
             return convertView;
         }
+    }
+
+    private void testPicassoNoPlaceHolder() {
+        final ImageView imageView = WidgetUtils.popupImageView(this);
+        loadImage(ImagesData.URLS[3], imageView, false, new Callback() {
+            @Override
+            public void onSuccess() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // load the next image into the same ImageView
+                        loadImage(ImagesData.URLS[5], imageView, true, null);
+                    }
+                }, 1500);
+            }
+
+            @Override
+            public void onError() {}
+        });
+    }
+
+    private void loadImage(String url, ImageView imageView, boolean noPlaceholder, Callback callback) {
+        RequestCreator requestCreator = Picasso.with(this).load(url);
+        requestCreator.memoryPolicy(MemoryPolicy.NO_CACHE);
+
+        if (noPlaceholder) {
+            /** use case: retain the previous image in place until the second one is loaded,
+             * it results in a much smoother experience */
+            requestCreator.noPlaceholder();
+        } else {
+            /** use case: displayed until the image is loaded, to avoid empty ImageView */
+            requestCreator.placeholder(R.drawable.ic_android);
+        }
+
+        /** use case: displayed if the image cannot be loaded */
+        requestCreator.error(R.drawable.ic_image_broken);
+        requestCreator.into(imageView, callback);
     }
 }
