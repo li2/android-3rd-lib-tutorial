@@ -1,10 +1,25 @@
 {
   "settings_access":{
+    "is_only_admin_access":true,
+    "title":"Change Settings Access",
+    "has_subitems":true,
     "items":[
       {
         "is_only_admin_access":true,
         "title":"Connections",
-        "has_subitems":false
+        "has_subitems":true,
+        "items":[
+          {
+            "is_only_admin_access":true,
+            "title":"WLAN",
+            "has_subitems":false
+          },
+          {
+            "is_only_admin_access":true,
+            "title":"BlueTooth",
+            "has_subitems":false
+          }
+        ]
       },
       {
         "is_only_admin_access":true,

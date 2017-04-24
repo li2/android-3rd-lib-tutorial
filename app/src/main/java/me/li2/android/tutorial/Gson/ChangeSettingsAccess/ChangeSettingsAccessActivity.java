@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
-import java.util.ArrayList;
-
 import me.li2.android.tutorial.BasicUI.BasicFragmentContainerActivity;
 
 import static me.li2.android.tutorial.BasicUI.LogHelper.makeLogTag;
@@ -19,14 +17,17 @@ public class ChangeSettingsAccessActivity extends BasicFragmentContainerActivity
     private static final String TAG = makeLogTag(ChangeSettingsAccessActivity.class);
 
     private SettingsAccessProvider mDataProvider;
-    private ArrayList<SettingsAccessItem> mRootItems;
+    public SettingsAccessItem mCurrentItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDataProvider = new SettingsAccessProvider(this);
-        mRootItems = mDataProvider.getRootItems();
-        updateItems(mRootItems);
+
+        SettingsAccessItem rootItem = mDataProvider.getRootItem();
+        if (rootItem != null) {
+            updateView(rootItem);
+        }
     }
 
     @Override
@@ -36,18 +37,44 @@ public class ChangeSettingsAccessActivity extends BasicFragmentContainerActivity
         return fragment;
     }
 
+    // Back to Previous Screen
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                SettingsAccessItem prevItem = mDataProvider.pop();
 
+                if (prevItem == null) {
+                    finish();
+                } else {
+                    updateView(prevItem);
+                }
+                return true;
+
+            default:
+                super.onOptionsItemSelected(item);
+                return true;
+        }
+    }
+
+    // Enter into Next Screen
     private ChangeSettingsAccessFragment.OnSettingsAccessItemClickListener mOnSettingsAccessItemClickListener =
             new ChangeSettingsAccessFragment.OnSettingsAccessItemClickListener() {
                 @Override
                 public void onSettingsAccessItemClick(SettingsAccessItem item) {
-                    updateItems(item.subItems);
+                    mDataProvider.push(mCurrentItem);
+                    updateView(item);
                 }
             };
 
-    private void updateItems(ArrayList<SettingsAccessItem> items) {
-        if (mFragment != null && mFragment instanceof ChangeSettingsAccessFragment) {
-            ((ChangeSettingsAccessFragment) mFragment).setItems(items);
+    private void updateView(SettingsAccessItem item) {
+        if (item != null) {
+            mCurrentItem = item;
+            getSupportActionBar().setTitle(item.title);
+
+            if (mFragment != null && mFragment instanceof ChangeSettingsAccessFragment) {
+                ((ChangeSettingsAccessFragment) mFragment).setItems(item.subItems);
+            }
         }
     }
 }

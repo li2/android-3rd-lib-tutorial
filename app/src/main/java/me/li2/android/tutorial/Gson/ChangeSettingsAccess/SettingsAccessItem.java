@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class SettingsAccessItem {
     public String title;
     public boolean isAdminAccessOnly;
-    public ArrayList<SettingsAccessItem> subItems;
+    public ArrayList<SettingsAccessItem> subItems = new ArrayList<>();
 
     public boolean hasSubitems() {
         return subItems != null && subItems.size() > 0;

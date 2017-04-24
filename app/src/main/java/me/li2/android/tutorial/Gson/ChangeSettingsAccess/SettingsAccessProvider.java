@@ -22,7 +22,8 @@ import static me.li2.android.tutorial.BasicUI.LogHelper.makeLogTag;
 public class SettingsAccessProvider {
     private static final String TAG = makeLogTag(SettingsAccessProvider.class);
     private Context mContext;
-    private ArrayList<SettingsAccessItem> mRootItems = new ArrayList<>();
+    private ArrayList<SettingsAccessItem> mAllItems = new ArrayList<>();
+    private ArrayList<SettingsAccessItem> mChainedItems = new ArrayList<>();
 
     public SettingsAccessProvider(Context context) {
         mContext = context;
@@ -30,17 +31,51 @@ public class SettingsAccessProvider {
         try {
             JSONObject jsonBody = new JSONObject(settingsString);
             JSONObject settingsJsonObject = jsonBody.getJSONObject("settings_access");
-            JSONArray settingJsonArray = settingsJsonObject.getJSONArray("items");
-            mRootItems = parseItems(settingJsonArray);
+            parseItems(mAllItems, settingsJsonObject);
         } catch (JSONException e) {
             LOGE(TAG, "failed to parse R.raw.settings_access_data " + e.getMessage());
             e.printStackTrace();
         }
     }
 
+    // first-in last-out stack
+    public synchronized void push(SettingsAccessItem item) {
+        if (item != null) {
+            mChainedItems.add(item);
+        }
+    }
 
-    public ArrayList<SettingsAccessItem> getRootItems() {
-        return mRootItems;
+    public synchronized SettingsAccessItem pop() {
+        if (mChainedItems.isEmpty()) {
+            return null;
+        }
+        SettingsAccessItem item = mChainedItems.get(mChainedItems.size()-1);
+        mChainedItems.remove(item);
+        return item;
+    }
+
+    public SettingsAccessItem getRootItem() {
+        if (mAllItems != null && mAllItems.size() > 0) {
+            return mAllItems.get(0);
+        }
+        return null;
+    }
+
+    private void parseItems(ArrayList<SettingsAccessItem> items, JSONObject settingJsonObject) throws JSONException {
+        SettingsAccessItem item = new SettingsAccessItem();
+        items.add(item);
+        item.title = settingJsonObject.getString("title");
+        item.isAdminAccessOnly = settingJsonObject.getBoolean("is_only_admin_access");
+
+        boolean hasSubItems = settingJsonObject.getBoolean("has_subitems");
+        if (hasSubItems) {
+            JSONArray settingJsonArray = settingJsonObject.getJSONArray("items");
+            for (int i = 0; i < settingJsonArray.length(); i++) {
+                parseItems(item.subItems, settingJsonArray.getJSONObject(i));
+            }
+        } else {
+            return;
+        }
     }
 
     private ArrayList<SettingsAccessItem> parseItems(JSONArray settingJsonArray) throws JSONException {
