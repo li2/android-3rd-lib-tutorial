@@ -20,9 +20,12 @@
 
     > When loading an image, Picasso uses three sources: memory, disk and network (ordered from fastest to slowest). Once again, there is nothing you'll have to do. Picasso hides all that complexity from you, while creating intelligently sized caches for you. 
 
+* Picasso 可以在图片加载成功前显示 Placeholders 占位图，在加载失败后显示 Errors 图片。
+    
+    > An expected behavior of an application is to display a placeholder until the image is loaded and processed. If the image cannot be loaded, display an error image to make it obvious to the user when something goes wrong.
 
 
 
 ## References
 
-[Future Studio - Picasso Tutorials - Adapter Use (ListView, GridView, ...)](https://futurestud.io/tutorials/picasso-adapter-use-for-listview-gridview-etc)
+[Future Studio - Picasso Tutorials](https://futurestud.io/tutorials/picasso-series-round-up)

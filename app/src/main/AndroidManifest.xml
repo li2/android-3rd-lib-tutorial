@@ -24,6 +24,8 @@
 
         <activity android:name="net.rdrei.android.dirchooser.DirectoryChooserActivity" />
 
+        <activity android:name=".BasicUI.PhotoPageActivity"/>
+
         <activity android:name=".Retrofit2.RetrofitTutorial"/>
         <activity android:name=".Retrofit2.L1GettingStarted.GettingStartedActivity"/>
         <activity android:name=".Retrofit2.L5SendObjectsInRequestBody.SendObjectsInRequestBody"/>

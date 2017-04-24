@@ -14,6 +14,10 @@ public abstract class BasicFragmentContainerActivity extends AppCompatActivity {
 
     protected abstract Fragment createFragment();
 
+    protected void parseIntent() {
+
+    }
+
     protected int getLayoutResId() {
         return R.layout.activity_single_fragment;
     }
@@ -25,6 +29,7 @@ public abstract class BasicFragmentContainerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        parseIntent();
         setContentView(getLayoutResId());
         ButterKnife.bind(this);
 
