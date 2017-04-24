@@ -2,6 +2,7 @@ package me.li2.android.tutorial.BasicUI;
 
 import android.os.Bundle;
 
+import me.li2.android.tutorial.Gson.GsonTutorial;
 import me.li2.android.tutorial.MultipleScreens.MultipleScreensTutorial;
 import me.li2.android.tutorial.Picasso.PicassoTutorial;
 import me.li2.android.tutorial.Retrofit2.RetrofitTutorial;
@@ -19,6 +20,7 @@ public class TutorialActivity extends SimpleTutorialActivity {
                 RetrofitTutorial.class,
                 PicassoTutorial.class,
                 MultipleScreensTutorial.class,
+                GsonTutorial.class,
         };
         return tutorialActivities;
     }

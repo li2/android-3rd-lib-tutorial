@@ -42,6 +42,9 @@
         <activity android:name=".MultipleScreens.MultipleScreensTutorial"/>
         <activity android:name=".MultipleScreens.DrawableResources"/>
 
+        <activity android:name=".Gson.GsonTutorial"/>
+        <activity android:name=".Gson.ChangeSettingsAccess.ChangeSettingsAccessActivity"/>
+
     </application>
 
 </manifest>

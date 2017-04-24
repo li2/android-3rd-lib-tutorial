@@ -1,0 +1,55 @@
+{
+  "settings_access":{
+    "items":[
+      {
+        "is_only_admin_access":true,
+        "title":"Connections",
+        "has_subitems":false
+      },
+      {
+        "is_only_admin_access":true,
+        "title":"Personalization",
+        "has_subitems":false
+      },
+      {
+        "is_only_admin_access":true,
+        "title":"System",
+        "has_subitems":true,
+        "items":[
+          {
+            "is_only_admin_access":true,
+            "title":"Battery",
+            "has_subitems":false
+          },
+          {
+            "is_only_admin_access":true,
+            "title":"Storage",
+            "has_subitems":false
+          },
+          {
+            "is_only_admin_access":true,
+            "title":"Developer Options",
+            "has_subitems":true,
+            "items":[
+              {
+                "is_only_admin_access":true,
+                "title":"USB Debugging",
+                "has_subitems":false
+              },
+              {
+                "is_only_admin_access":true,
+                "title":"Show touches",
+                "has_subitems":false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "is_only_admin_access":true,
+        "title":"Applications",
+        "has_subitems":false
+      }
+    ]
+  }
+}

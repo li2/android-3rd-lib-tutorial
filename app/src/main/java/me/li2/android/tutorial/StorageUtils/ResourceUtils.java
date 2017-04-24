@@ -4,6 +4,9 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.DisplayMetrics;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * Created by weiyi on 09/04/2017.
  * https://github.com/li2
@@ -17,6 +20,21 @@ public class ResourceUtils {
         return Uri.parse(ANDROID_RESOURCE
                 + context.getApplicationContext().getPackageName()
                 + FORWARD_SLASH + resourceId);
+    }
+
+    public static String readRawFile(Context context, int resId) {
+        String result = null;
+        try {
+            InputStream is = context.getResources().openRawResource(resId);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            result = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return result;
     }
 
     private static DisplayMetrics sDisplayMetrics(Context context) {
