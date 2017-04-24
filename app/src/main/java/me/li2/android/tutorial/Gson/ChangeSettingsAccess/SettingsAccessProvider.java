@@ -22,7 +22,7 @@ import static me.li2.android.tutorial.BasicUI.LogHelper.makeLogTag;
 public class SettingsAccessProvider {
     private static final String TAG = makeLogTag(SettingsAccessProvider.class);
     private Context mContext;
-    private ArrayList<SettingsAccessItem> mItems = new ArrayList<>();
+    private ArrayList<SettingsAccessItem> mRootItems = new ArrayList<>();
 
     public SettingsAccessProvider(Context context) {
         mContext = context;
@@ -31,15 +31,16 @@ public class SettingsAccessProvider {
             JSONObject jsonBody = new JSONObject(settingsString);
             JSONObject settingsJsonObject = jsonBody.getJSONObject("settings_access");
             JSONArray settingJsonArray = settingsJsonObject.getJSONArray("items");
-            mItems = parseItems(settingJsonArray);
+            mRootItems = parseItems(settingJsonArray);
         } catch (JSONException e) {
             LOGE(TAG, "failed to parse R.raw.settings_access_data " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    public ArrayList<SettingsAccessItem> getItems() {
-        return mItems;
+
+    public ArrayList<SettingsAccessItem> getRootItems() {
+        return mRootItems;
     }
 
     private ArrayList<SettingsAccessItem> parseItems(JSONArray settingJsonArray) throws JSONException {
@@ -50,7 +51,7 @@ public class SettingsAccessProvider {
             SettingsAccessItem item = new SettingsAccessItem();
             items.add(item);
             item.title = settingJsonObject.getString("title");
-            item.isAdminAccess = settingJsonObject.getBoolean("is_only_admin_access");
+            item.isAdminAccessOnly = settingJsonObject.getBoolean("is_only_admin_access");
 
             boolean hasSubItems = settingJsonObject.getBoolean("has_subitems");
             if (hasSubItems) {
