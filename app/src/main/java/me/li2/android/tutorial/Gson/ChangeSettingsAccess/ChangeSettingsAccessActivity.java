@@ -75,10 +75,10 @@ public class ChangeSettingsAccessActivity extends BasicFragmentContainerActivity
     private void updateView(SettingsAccessItem item) {
         if (item != null) {
             mCurrentItem = item;
-            getSupportActionBar().setTitle(item.title);
+            getSupportActionBar().setTitle(item.mTitle);
 
             if (mFragment != null && mFragment instanceof ChangeSettingsAccessFragment) {
-                ((ChangeSettingsAccessFragment) mFragment).setItems(item.subItems);
+                ((ChangeSettingsAccessFragment) mFragment).setItems(item.mSubItems);
             }
         }
     }
