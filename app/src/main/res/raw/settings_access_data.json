@@ -7,16 +7,19 @@
       {
         "is_only_admin_access":true,
         "title":"Connections",
+        "pref_key":"pref_key_connections",
         "has_subitems":true,
         "items":[
           {
             "is_only_admin_access":true,
             "title":"WLAN",
+            "pref_key":"pref_key_connections_wlan",
             "has_subitems":false
           },
           {
             "is_only_admin_access":true,
             "title":"BlueTooth",
+            "pref_key":"pref_key_connections_bluetooth",
             "has_subitems":false
           }
         ]
@@ -24,36 +27,43 @@
       {
         "is_only_admin_access":true,
         "title":"Personalization",
+        "pref_key":"pref_key_personalization",
         "has_subitems":false
       },
       {
         "is_only_admin_access":true,
         "title":"System",
+        "pref_key":"pref_key_system",
         "has_subitems":true,
         "items":[
           {
             "is_only_admin_access":true,
             "title":"Battery",
+            "pref_key":"pref_key_system_battery",
             "has_subitems":false
           },
           {
             "is_only_admin_access":true,
             "title":"Storage",
+            "pref_key":"pref_key_system_storage",
             "has_subitems":false
           },
           {
             "is_only_admin_access":true,
             "title":"Developer Options",
+            "pref_key":"pref_key_system_developerOptions",
             "has_subitems":true,
             "items":[
               {
                 "is_only_admin_access":true,
                 "title":"USB Debugging",
+                "pref_key":"pref_key_system_developerOptions_usbDebugging",
                 "has_subitems":false
               },
               {
                 "is_only_admin_access":true,
                 "title":"Show touches",
+                "pref_key":"pref_key_system_developerOptions_showTouches",
                 "has_subitems":false
               }
             ]
@@ -63,6 +73,7 @@
       {
         "is_only_admin_access":true,
         "title":"Applications",
+        "pref_key":"pref_key_applications",
         "has_subitems":false
       }
     ]

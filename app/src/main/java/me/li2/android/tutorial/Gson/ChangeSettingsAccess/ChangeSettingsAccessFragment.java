@@ -111,7 +111,7 @@ public class ChangeSettingsAccessFragment extends Fragment {
         public void bindSettingsAccessItem(SettingsAccessItem item, int position) {
             if (item != null) {
                 mItem = item;
-                mAdminCheckBox.setChecked(item.isAdminAccessOnly);
+                mAdminCheckBox.setChecked(item.isAdminAccessOnly());
                 mTitleView.setText(item.title);
                 mNextArrowView.setVisibility(item.hasSubitems() ? View.VISIBLE : View.INVISIBLE);
             }
