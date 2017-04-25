@@ -17,7 +17,6 @@ public class ChangeSettingsAccessActivity extends BasicFragmentContainerActivity
     private static final String TAG = makeLogTag(ChangeSettingsAccessActivity.class);
 
     private SettingsAccessProvider mDataProvider;
-    public SettingsAccessItem mCurrentItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +61,7 @@ public class ChangeSettingsAccessActivity extends BasicFragmentContainerActivity
             new ChangeSettingsAccessFragment.OnSettingsAccessItemClickListener() {
                 @Override
                 public void onItemClick(SettingsAccessItem item) {
-                    mDataProvider.push(mCurrentItem);
+                    mDataProvider.push();
                     updateView(item);
                 }
 
@@ -74,7 +73,7 @@ public class ChangeSettingsAccessActivity extends BasicFragmentContainerActivity
 
     private void updateView(SettingsAccessItem item) {
         if (item != null) {
-            mCurrentItem = item;
+            mDataProvider.setCurrentItem(item);
             getSupportActionBar().setTitle(item.mTitle);
 
             if (mFragment != null && mFragment instanceof ChangeSettingsAccessFragment) {

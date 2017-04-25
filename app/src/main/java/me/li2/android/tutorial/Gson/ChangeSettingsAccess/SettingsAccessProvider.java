@@ -30,6 +30,7 @@ public class SettingsAccessProvider {
     private String mJsonString;
     private ArrayList<SettingsAccessItem> mAllItems = new ArrayList<>();
     private ArrayList<SettingsAccessItem> mChainedItems = new ArrayList<>();
+    public SettingsAccessItem mCurrentItem;
 
     public SettingsAccessProvider(Context context) {
         mContext = context;
@@ -46,9 +47,9 @@ public class SettingsAccessProvider {
     }
 
     // first-in last-out stack
-    public synchronized void push(SettingsAccessItem item) {
-        if (item != null) {
-            mChainedItems.add(item);
+    public synchronized void push() {
+        if (mCurrentItem != null) {
+            mChainedItems.add(mCurrentItem);
         }
     }
 
@@ -66,6 +67,10 @@ public class SettingsAccessProvider {
             return mAllItems.get(0);
         }
         return null;
+    }
+
+    public void setCurrentItem(SettingsAccessItem currentItem) {
+        mCurrentItem = currentItem;
     }
 
     private static final String JSON_OBJECT_KEY_HAS_SUBITEMS = "has_subitems";
@@ -93,8 +98,34 @@ public class SettingsAccessProvider {
         }
         return mStorage.readTextFile(fileName);
     }
-    
-    public void updateItem(SettingsAccessItem item, boolean checked) {
-        item.setAdminAccessOnly(checked);
+
+    /**
+     * Update item checked status.
+     * <p>
+     * If one subitem is unchecked, then all parent item should be unchecked
+     * If all subitems are checked, then the parent item should be checked, recursion ...
+     */
+    public void updateItem(SettingsAccessItem selectedSubItem, boolean checked) {
+        selectedSubItem.setAdminAccessOnly(checked);
+
+        ArrayList<SettingsAccessItem> parentItems = new ArrayList<>();
+        parentItems.addAll(mChainedItems);
+        parentItems.add(mCurrentItem);
+
+        for (int i = parentItems.size()-1 ; i > 0; i--) {
+            SettingsAccessItem item = parentItems.get(i);
+            updateItemCheckedStatus(item);
+        }
+    }
+
+    private void updateItemCheckedStatus(SettingsAccessItem item) {
+        boolean allChecked = true;
+        for (SettingsAccessItem subitem : item.mSubItems) {
+            if (!subitem.isAdminAccessOnly()) {
+                allChecked = false;
+                break;
+            }
+        }
+        item.setAdminAccessOnly(allChecked);
     }
 }

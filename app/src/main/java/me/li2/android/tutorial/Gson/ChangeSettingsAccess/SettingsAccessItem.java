@@ -65,10 +65,12 @@ public class SettingsAccessItem {
     }
 
     public void setAdminAccessOnly(boolean adminAccessOnly) {
-        mIsAdminAccessOnly = adminAccessOnly;
-        mPreferences
-                .edit()
-                .putBoolean(mPrefKey, adminAccessOnly)
-                .apply();
+        if (mIsAdminAccessOnly != adminAccessOnly) {
+            mIsAdminAccessOnly = adminAccessOnly;
+            mPreferences
+                    .edit()
+                    .putBoolean(mPrefKey, adminAccessOnly)
+                    .apply();
+        }
     }
 }

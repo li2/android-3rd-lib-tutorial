@@ -130,7 +130,7 @@ public class ChangeSettingsAccessFragment extends Fragment {
                 new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                        if (mOnSettingsAccessItemClickListener != null) {
+                        if (compoundButton.isPressed() && mOnSettingsAccessItemClickListener != null) {
                             mOnSettingsAccessItemClickListener.onCheckedChanged(mItem, checked);
                         }
                     }
