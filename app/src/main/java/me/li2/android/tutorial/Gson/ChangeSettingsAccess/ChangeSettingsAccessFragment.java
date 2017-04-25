@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,7 +28,8 @@ public class ChangeSettingsAccessFragment extends Fragment {
     private OnSettingsAccessItemClickListener mOnSettingsAccessItemClickListener;
 
     public interface OnSettingsAccessItemClickListener {
-        void onSettingsAccessItemClick(SettingsAccessItem item);
+        void onItemClick(SettingsAccessItem item);
+        void onCheckedChanged(SettingsAccessItem item, boolean checked);
     }
 
     @Override
@@ -100,6 +102,7 @@ public class ChangeSettingsAccessFragment extends Fragment {
         public SettingsAccessViewHolder(View itemView) {
             super(itemView);
             mAdminCheckBox = (CheckBox) itemView.findViewById(R.id.settings_access_only_admin_checkBox);
+            mAdminCheckBox.setOnCheckedChangeListener(mOnCheckedChangeListener);
             mTitleView = (TextView) itemView.findViewById(R.id.settings_access_title_textView);
             mNextArrowView = (ImageView) itemView.findViewById(R.id.settings_access_next_arrowView);
             itemView.setOnClickListener(this);
@@ -116,11 +119,21 @@ public class ChangeSettingsAccessFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            if (mItem != null && mItem.hasSubitems()) {
+            if (mItem.hasSubitems()) {
                 if (mOnSettingsAccessItemClickListener != null) {
-                    mOnSettingsAccessItemClickListener.onSettingsAccessItemClick(mItem);
+                    mOnSettingsAccessItemClickListener.onItemClick(mItem);
                 }
             }
         }
+
+        private CompoundButton.OnCheckedChangeListener mOnCheckedChangeListener =
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                        if (mOnSettingsAccessItemClickListener != null) {
+                            mOnSettingsAccessItemClickListener.onCheckedChanged(mItem, checked);
+                        }
+                    }
+                };
     }
 }

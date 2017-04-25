@@ -9,31 +9,38 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import me.li2.android.tutorial.R;
-import me.li2.android.tutorial.StorageUtils.ResourceUtils;
+import me.li2.android.tutorial.StorageUtils.InternalStorage;
 
 import static me.li2.android.tutorial.BasicUI.LogHelper.LOGE;
 import static me.li2.android.tutorial.BasicUI.LogHelper.makeLogTag;
 
 /**
+ * http://www.jsoneditoronline.org/
+ *
  * Created by weiyi on 24/04/2017.
  * https://github.com/li2
  */
 
 public class SettingsAccessProvider {
     private static final String TAG = makeLogTag(SettingsAccessProvider.class);
+    private static final String SETTINGS_ACCESS_DATA_JSON_FILE = "settings_access_data.json";
+
     private Context mContext;
+    private InternalStorage mStorage;
+    private String mJsonString;
     private ArrayList<SettingsAccessItem> mAllItems = new ArrayList<>();
     private ArrayList<SettingsAccessItem> mChainedItems = new ArrayList<>();
 
     public SettingsAccessProvider(Context context) {
         mContext = context;
-        String settingsString = ResourceUtils.readRawFile(mContext, R.raw.settings_access_data);
+        mStorage = new InternalStorage(mContext);
+        mJsonString = readJsonFile(SETTINGS_ACCESS_DATA_JSON_FILE);
         try {
-            JSONObject jsonBody = new JSONObject(settingsString);
+            JSONObject jsonBody = new JSONObject(mJsonString);
             JSONObject settingsJsonObject = jsonBody.getJSONObject("settings_access");
             parseItems(mAllItems, settingsJsonObject);
         } catch (JSONException e) {
-            LOGE(TAG, "failed to parse R.raw.settings_access_data " + e.getMessage());
+            LOGE(TAG, "failed to parse JSON: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -78,24 +85,17 @@ public class SettingsAccessProvider {
         }
     }
 
-    private ArrayList<SettingsAccessItem> parseItems(JSONArray settingJsonArray) throws JSONException {
-        ArrayList<SettingsAccessItem> items = new ArrayList<>();
-
-        for (int i = 0; i < settingJsonArray.length(); i++) {
-            JSONObject settingJsonObject = settingJsonArray.getJSONObject(i);
-            SettingsAccessItem item = new SettingsAccessItem();
-            items.add(item);
-            item.title = settingJsonObject.getString("title");
-            item.isAdminAccessOnly = settingJsonObject.getBoolean("is_only_admin_access");
-
-            boolean hasSubItems = settingJsonObject.getBoolean("has_subitems");
-            if (hasSubItems) {
-                item.subItems = parseItems(settingJsonObject.getJSONArray("items"));
-            } else {
-                continue;
-            }
+    private String readJsonFile(String fileName) {
+        if (!mStorage.isFileExist(fileName)) {
+            mStorage.createFile(fileName);
+            mStorage.copyRawToFile(R.raw.settings_access_data, fileName);
         }
+        return mStorage.readTextFile(fileName);
+    }
 
-        return items;
+    // update Json file
+    public void updateItem(SettingsAccessItem item, boolean checked) {
+        item.isAdminAccessOnly = checked;
+        // TODO
     }
 }

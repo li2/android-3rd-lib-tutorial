@@ -61,9 +61,14 @@ public class ChangeSettingsAccessActivity extends BasicFragmentContainerActivity
     private ChangeSettingsAccessFragment.OnSettingsAccessItemClickListener mOnSettingsAccessItemClickListener =
             new ChangeSettingsAccessFragment.OnSettingsAccessItemClickListener() {
                 @Override
-                public void onSettingsAccessItemClick(SettingsAccessItem item) {
+                public void onItemClick(SettingsAccessItem item) {
                     mDataProvider.push(mCurrentItem);
                     updateView(item);
+                }
+
+                @Override
+                public void onCheckedChanged(SettingsAccessItem item, boolean checked) {
+                    mDataProvider.updateItem(item, checked);
                 }
             };
 
