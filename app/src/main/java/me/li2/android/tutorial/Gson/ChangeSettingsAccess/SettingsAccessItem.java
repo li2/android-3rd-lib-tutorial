@@ -25,6 +25,7 @@ public class SettingsAccessItem {
     public String mTitle = "";
     private String mPrefKey = "";
     private boolean mIsAdminAccessOnly = true;
+    public SettingsAccessItem mParentItem;
     public ArrayList<SettingsAccessItem> mSubItems = new ArrayList<>();
 
 

@@ -29,8 +29,7 @@ public class SettingsAccessProvider {
     private InternalStorage mStorage;
     private String mJsonString;
     private ArrayList<SettingsAccessItem> mAllItems = new ArrayList<>();
-    private ArrayList<SettingsAccessItem> mChainedItems = new ArrayList<>();
-    public SettingsAccessItem mCurrentItem;
+    private SettingsAccessItem mCurrentItem;
 
     public SettingsAccessProvider(Context context) {
         mContext = context;
@@ -39,27 +38,11 @@ public class SettingsAccessProvider {
         try {
             JSONObject jsonBody = new JSONObject(mJsonString);
             JSONObject settingsJsonObject = jsonBody.getJSONObject("settings_access");
-            parseItems(mAllItems, settingsJsonObject);
+            parseItems(null, mAllItems, settingsJsonObject);
         } catch (JSONException e) {
             LOGE(TAG, "failed to parse JSON: " + e.getMessage());
             e.printStackTrace();
         }
-    }
-
-    // first-in last-out stack
-    public synchronized void push() {
-        if (mCurrentItem != null) {
-            mChainedItems.add(mCurrentItem);
-        }
-    }
-
-    public synchronized SettingsAccessItem pop() {
-        if (mChainedItems.isEmpty()) {
-            return null;
-        }
-        SettingsAccessItem item = mChainedItems.get(mChainedItems.size()-1);
-        mChainedItems.remove(item);
-        return item;
     }
 
     public SettingsAccessItem getRootItem() {
@@ -69,24 +52,36 @@ public class SettingsAccessProvider {
         return null;
     }
 
+    public SettingsAccessItem getPrevItem() {
+        if (mCurrentItem != null) {
+            return mCurrentItem.mParentItem;
+        }
+        return null;
+    }
+
     public void setCurrentItem(SettingsAccessItem currentItem) {
         mCurrentItem = currentItem;
     }
 
+    // should be same with Json file
     private static final String JSON_OBJECT_KEY_HAS_SUBITEMS = "has_subitems";
     private static final String JSON_OBJECT_KEY_ITEMS = "items";
 
-    private void parseItems(ArrayList<SettingsAccessItem> items, JSONObject settingJsonObject) throws JSONException {
+    private void parseItems(SettingsAccessItem parentItem, ArrayList<SettingsAccessItem> items, JSONObject settingJsonObject)
+            throws JSONException {
         SettingsAccessItem item = new SettingsAccessItem(mContext, settingJsonObject);
+        item.mParentItem = parentItem;
         items.add(item);
 
         boolean hasSubItems = settingJsonObject.getBoolean(JSON_OBJECT_KEY_HAS_SUBITEMS);
         if (hasSubItems) {
             JSONArray settingJsonArray = settingJsonObject.getJSONArray(JSON_OBJECT_KEY_ITEMS);
             for (int i = 0; i < settingJsonArray.length(); i++) {
-                parseItems(item.mSubItems, settingJsonArray.getJSONObject(i));
+                // recursion
+                parseItems(item, item.mSubItems, settingJsonArray.getJSONObject(i));
             }
         } else {
+            // exit recursion if has no subitems
             return;
         }
     }
@@ -101,31 +96,58 @@ public class SettingsAccessProvider {
 
     /**
      * Update item checked status.
-     * <p>
-     * If one subitem is unchecked, then all parent item should be unchecked
-     * If all subitems are checked, then the parent item should be checked, recursion ...
      */
     public void updateItem(SettingsAccessItem selectedSubItem, boolean checked) {
+        // update itself
         selectedSubItem.setAdminAccessOnly(checked);
 
-        ArrayList<SettingsAccessItem> parentItems = new ArrayList<>();
-        parentItems.addAll(mChainedItems);
-        parentItems.add(mCurrentItem);
+        // update parent-items
+        updateParentItemsCheckedStatus(selectedSubItem);
 
-        for (int i = parentItems.size()-1 ; i > 0; i--) {
-            SettingsAccessItem item = parentItems.get(i);
-            updateItemCheckedStatus(item);
+        // update sub-items
+        updateSubitemsCheckedStatus(selectedSubItem);
+    }
+
+    /**
+     * Uncheck any subitem belong to the checked high-level item will lead the high-level item unchecked.
+     * Check all subitems belong ....... unchecked .................. lead ................... checked.
+     * @param item
+     */
+    private void updateParentItemsCheckedStatus(SettingsAccessItem item) {
+        SettingsAccessItem parentItem = item.mParentItem;
+        if (parentItem != null) {
+            if (parentItem.hasSubitems()) {
+                boolean allSubChecked = true;
+                for (SettingsAccessItem subitem : parentItem.mSubItems) {
+                    if (!subitem.isAdminAccessOnly()) {
+                        allSubChecked = false;
+                        break;
+                    }
+                }
+                parentItem.setAdminAccessOnly(allSubChecked);
+            }
+            // recursion
+            updateParentItemsCheckedStatus(parentItem);
+        } else {
+            // exit recursion if has no parent
+            return;
         }
     }
 
-    private void updateItemCheckedStatus(SettingsAccessItem item) {
-        boolean allChecked = true;
-        for (SettingsAccessItem subitem : item.mSubItems) {
-            if (!subitem.isAdminAccessOnly()) {
-                allChecked = false;
-                break;
+    /**
+     * Check / Uncheck the high level item will make it's sub-items all checked / unchecked.
+     * @param item
+     */
+    private void updateSubitemsCheckedStatus(SettingsAccessItem item) {
+        if (item.hasSubitems()) {
+            for (SettingsAccessItem subitem : item.mSubItems) {
+                subitem.setAdminAccessOnly(item.isAdminAccessOnly());
+                // recursion
+                updateSubitemsCheckedStatus(subitem);
             }
+        } else {
+            // exit recursion if has no subitems
+            return;
         }
-        item.setAdminAccessOnly(allChecked);
     }
 }

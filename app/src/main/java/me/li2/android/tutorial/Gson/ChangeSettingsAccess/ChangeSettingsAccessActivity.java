@@ -41,7 +41,7 @@ public class ChangeSettingsAccessActivity extends BasicFragmentContainerActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                SettingsAccessItem prevItem = mDataProvider.pop();
+                SettingsAccessItem prevItem = mDataProvider.getPrevItem();
 
                 if (prevItem == null) {
                     finish();
@@ -61,7 +61,6 @@ public class ChangeSettingsAccessActivity extends BasicFragmentContainerActivity
             new ChangeSettingsAccessFragment.OnSettingsAccessItemClickListener() {
                 @Override
                 public void onItemClick(SettingsAccessItem item) {
-                    mDataProvider.push();
                     updateView(item);
                 }
 
