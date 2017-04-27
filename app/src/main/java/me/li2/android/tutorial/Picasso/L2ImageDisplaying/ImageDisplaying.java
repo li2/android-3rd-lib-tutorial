@@ -1,7 +1,6 @@
 package me.li2.android.tutorial.Picasso.L2ImageDisplaying;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IntDef;
@@ -60,8 +59,14 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.image_displaying_menu_item_no_placeholder:
+            case R.id.imageDisplaying_menuItem_noPlaceholder:
                 testPicassoNoPlaceHolder();
+                return true;
+            case R.id.imageDisplaying_menuItem_listView:
+                setGalleryFragmentType(GALLERY_FRAGMENT_TYPE_LIST);
+                return true;
+            case R.id.imageDisplaying_menuItem_gridView:
+                setGalleryFragmentType(GALLERY_FRAGMENT_TYPE_GRID);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -72,18 +77,6 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
     protected Fragment createFragment() {
         LOGD(TAG, "Rotate screen to show images with ListView for Portrait, and GridView for Landscape");
         return new GalleryListFragment();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        LOGD(TAG, "orientation changed to " + newConfig.orientation);
-
-        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            setGalleryFragmentType(GALLERY_FRAGMENT_TYPE_LIST);
-        } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            setGalleryFragmentType(GALLERY_FRAGMENT_TYPE_GRID);
-        }
     }
 
     private void setGalleryFragmentType(@GalleryFragmentType int type) {
