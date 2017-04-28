@@ -1,4 +1,4 @@
-package me.li2.android.tutorial.MultipleScreens;
+package me.li2.android.tutorial.View.MultipleScreens;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 import me.li2.android.tutorial.BasicUI.BasicFragmentContainerActivity;
 import me.li2.android.tutorial.R;
 import me.li2.android.tutorial.StorageUtils.ResourceUtils;
+import me.li2.android.tutorial.View.ViewTutorial;
 
 /**
  * Created by weiyi on 10/04/2017.
@@ -22,7 +23,7 @@ import me.li2.android.tutorial.StorageUtils.ResourceUtils;
 public class DrawableResources extends BasicFragmentContainerActivity {
     @Override
     protected String getTitlePrefix() {
-        return MultipleScreensTutorial.TAG;
+        return ViewTutorial.TAG;
     }
 
     @Override

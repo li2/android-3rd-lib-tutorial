@@ -39,8 +39,9 @@
         <activity android:name=".Picasso.L2ImageDisplaying.ImageDisplaying"
                   android:configChanges="orientation|keyboardHidden|screenSize"/>
 
-        <activity android:name=".MultipleScreens.MultipleScreensTutorial"/>
-        <activity android:name=".MultipleScreens.DrawableResources"/>
+        <activity android:name=".View.ViewTutorial"/>
+        <activity android:name=".View.ImageViewScaleType"/>
+        <activity android:name=".View.MultipleScreens.DrawableResources"/>
 
         <activity android:name=".Gson.GsonTutorial"/>
         <activity android:name=".Gson.ChangeSettingsAccess.ChangeSettingsAccessActivity"/>

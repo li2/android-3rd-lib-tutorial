@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import butterknife.ButterKnife;
@@ -14,16 +16,18 @@ public abstract class BasicFragmentContainerActivity extends AppCompatActivity {
 
     protected abstract Fragment createFragment();
 
-    protected void parseIntent() {
+    protected void parseIntent() {}
 
+    protected String getTitlePrefix() {
+        return "";
     }
 
     protected int getLayoutResId() {
         return R.layout.activity_single_fragment;
     }
 
-    protected String getTitlePrefix() {
-        return "";
+    protected int getOptionsMenuRes() {
+        return R.menu.tutorial_options;
     }
 
     @Override
@@ -59,6 +63,13 @@ public abstract class BasicFragmentContainerActivity extends AppCompatActivity {
             // instead of findFragmentBy..., it's a convenient way to use a filed to hold the committed fragment.
             mFragment = fragment;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(getOptionsMenuRes(), menu);
+        return true;
     }
 
     @Override

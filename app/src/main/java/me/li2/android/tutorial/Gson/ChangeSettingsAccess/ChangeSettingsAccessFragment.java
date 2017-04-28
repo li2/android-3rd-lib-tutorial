@@ -75,7 +75,7 @@ public class ChangeSettingsAccessFragment extends Fragment {
 
         @Override
         public SettingsAccessViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(mContext).inflate(R.layout.view_settings_access, parent, false);
+            View itemView = LayoutInflater.from(mContext).inflate(R.layout.view_settings_access_item, parent, false);
             return new SettingsAccessViewHolder(itemView);
         }
 

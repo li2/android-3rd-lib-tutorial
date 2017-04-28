@@ -1,18 +1,20 @@
-package me.li2.android.tutorial.MultipleScreens;
+package me.li2.android.tutorial.View;
 
 import me.li2.android.tutorial.BasicUI.SimpleTutorialActivity;
+import me.li2.android.tutorial.View.MultipleScreens.DrawableResources;
 
 /**
  * Created by weiyi on 10/04/2017.
  * https://github.com/li2
  */
 
-public class MultipleScreensTutorial extends SimpleTutorialActivity {
-    public static final String TAG = "MultipleScreens";
+public class ViewTutorial extends SimpleTutorialActivity {
+    public static final String TAG = "View";
 
     @Override
     public Class[] getTutorialActivities() {
         Class[] tutorialActivities = new Class[] {
+                ImageViewScaleType.class,
                 DrawableResources.class,
         };
         return tutorialActivities;

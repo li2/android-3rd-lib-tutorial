@@ -8,8 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,10 +48,8 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
     private static final int GALLERY_FRAGMENT_TYPE_GRID = 1;
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.image_displaying_options, menu);
-        return true;
+    protected int getOptionsMenuRes() {
+        return R.menu.image_displaying_options;
     }
 
     @Override

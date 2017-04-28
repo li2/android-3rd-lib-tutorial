@@ -157,4 +157,16 @@ public class ResourceUtils {
                 + "Screen Available Width=" + ResourceUtils.getScreenAvailableDpWidth(context) + "dp"
                 ;
     }
+
+    /**
+     * Convert the dps to pixels, based on density scale
+     * @param dp value expressed in dps
+     * @return value expressed in pixels
+     */
+    public static int dpToPixel(Context context, int dp) {
+        // Get the screen's density scaling factor
+        float scale = context.getResources().getDisplayMetrics().density;
+        // Add 0.5f to round the figure up to the nearest whole number
+        return (int) (dp * scale + 0.5f);
+    }
 }
