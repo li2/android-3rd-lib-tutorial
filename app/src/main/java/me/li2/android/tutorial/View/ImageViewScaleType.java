@@ -1,6 +1,5 @@
 package me.li2.android.tutorial.View;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,12 +7,17 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.li2.android.tutorial.BasicUI.BasicFragmentContainerActivity;
+import me.li2.android.tutorial.BasicUtils.ViewUtils;
 import me.li2.android.tutorial.R;
 import me.li2.android.tutorial.StorageUtils.ResourceUtils;
 
@@ -66,12 +70,18 @@ public class ImageViewScaleType extends BasicFragmentContainerActivity {
 
     private void setImageViewsHeight(int height) {
         if (mFragment != null && mFragment instanceof ImageViewScaleTypeFragment) {
-            ((ImageViewScaleTypeFragment) mFragment).setImageViewsHeight(this, height);
+            ((ImageViewScaleTypeFragment) mFragment).setImageViewsHeight(height);
+            String info = "Original size 120 x 120dp\nImageView match_parent x " + height + "dp";
+            ((ImageViewScaleTypeFragment) mFragment).setInfo(info);
         }
     }
 
     public static class ImageViewScaleTypeFragment extends Fragment {
-        private static LinearLayout mLayout;
+        @BindView(R.id.imageScaleType_layoutView)
+        View mView;
+
+        @BindView(R.id.imageScaleType_infoView)
+        TextView mInfoView;
 
         public ImageViewScaleTypeFragment() {
         }
@@ -80,23 +90,32 @@ public class ImageViewScaleType extends BasicFragmentContainerActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_image_view_scale_type, container, false);
-            mLayout = (LinearLayout) view.findViewById(R.id.imageViewsLayout);
+            ButterKnife.bind(this, view);
             return view;
         }
 
-        public static void setImageViewsHeight(Context context, int height) { // in dp
-            height = ResourceUtils.dpToPixel(context, height);
+        public void setImageViewsHeight(int height) {
+            List<View> views = ViewUtils.getAllChildrenBFS(mView);
 
-            for (int i = 0; i < mLayout.getChildCount(); i++) {
-                View view = mLayout.getChildAt(i);
-                
+            for (int i = 0; i < views.size(); i++) {
+                View view = views.get(i);
                 if (view instanceof  ImageView) {
-                    LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, height); // in pixel
-                    int margin = ResourceUtils.dpToPixel(context, 4);
-                    lp.setMargins(margin, margin, margin, margin);
-                    view.setLayoutParams(lp);
+                    view.setLayoutParams(buildLayoutParams(height));
                 }
             }
+        }
+
+        private LayoutParams buildLayoutParams(int height) { // in dp
+            height = ResourceUtils.dpToPixel(getContext(), height);
+
+            LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, height); // in pixel
+            int margin = ResourceUtils.dpToPixel(getContext(), 4);
+            lp.setMargins(margin, margin, margin, margin);
+            return lp;
+        }
+
+        public void setInfo(String info) {
+            mInfoView.setText(info);
         }
     }
 }
