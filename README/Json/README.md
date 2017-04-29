@@ -1,7 +1,7 @@
 # JSON Tutorial
 
 
-## Requirement - Lock / Unlock Settings Item
+## Case - Lock / Unlock Settings Item
 
 Git Log Tag: [ GSON Tutorial ] - [ Change Settings Access ]
 
