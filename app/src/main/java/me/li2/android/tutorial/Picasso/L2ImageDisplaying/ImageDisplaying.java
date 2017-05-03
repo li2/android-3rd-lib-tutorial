@@ -7,6 +7,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -154,11 +155,27 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
             }
             ImageView imageView = (ImageView) convertView.findViewById(R.id.gallery_item_imageView);
 
-            Picasso.with(mContext)
-                    .load(mUrls[position])
-                    .placeholder(R.drawable.ic_android)
-                    .error(R.drawable.ic_image_broken)
-                    .into(imageView);
+            // catch the case that the passed image URL is either null or an empty string
+            if (TextUtils.isEmpty(mUrls[position])) {
+                // option 1: cancel Picasso request and clear ImageView
+                Picasso.with(mContext)
+                        .cancelRequest(imageView);
+                // this avoids the situation where an incorrect image from a previous ListView item gets displayed.
+                // however, it looks weird in the UI, since ImageView might still occupy the space in the UI.
+                imageView.setImageDrawable(null);
+
+                // option 2: load placeholder
+                Picasso.with(mContext)
+                        .load(R.drawable.ic_image_broken)
+                        .into(imageView);
+
+            } else {
+                Picasso.with(mContext)
+                        .load(mUrls[position])
+                        .placeholder(R.drawable.ic_android)
+                        .error(R.drawable.ic_image_broken)
+                        .into(imageView);
+            }
 
             return convertView;
         }

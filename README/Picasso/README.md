@@ -1,5 +1,7 @@
 # Picasso Tutorial
 
+[codes](../../app/src/main/java/me/li2/android/tutorial/Picasso)
+
 
 ## Displaying images in ListView / GridView
 
@@ -23,6 +25,9 @@
 * Picasso 可以在图片加载成功前显示 Placeholders 占位图，在加载失败后显示 Errors 图片。
     
     > An expected behavior of an application is to display a placeholder until the image is loaded and processed. If the image cannot be loaded, display an error image to make it obvious to the user when something goes wrong.
+
+* java.lang.IllegalArgumentException: Path must not be empty
+    > catch the case that the passed image URL is either null or an empty string.
 
 
 
