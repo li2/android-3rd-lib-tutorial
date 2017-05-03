@@ -30,6 +30,10 @@
     > catch the case that the passed image URL is either null or an empty string.
 
 
+## Advanced Loading & Optimizations
+
+* `.get()` synchronously loads the image and returns a Bitmap object. 
+
 
 ## References
 

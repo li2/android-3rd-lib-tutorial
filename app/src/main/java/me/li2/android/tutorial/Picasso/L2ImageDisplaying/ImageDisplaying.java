@@ -1,6 +1,7 @@
 package me.li2.android.tutorial.Picasso.L2ImageDisplaying;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IntDef;
@@ -22,13 +23,14 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
+import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.li2.android.tutorial.BasicUI.BasicFragmentContainerActivity;
-import me.li2.android.tutorial.BasicWidget.WidgetUtils;
+import me.li2.android.tutorial.BasicUtils.ViewUtils;
 import me.li2.android.tutorial.R;
 
 import static me.li2.android.tutorial.BasicUI.LogHelper.LOGD;
@@ -59,12 +61,19 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
             case R.id.imageDisplaying_menuItem_noPlaceholder:
                 testPicassoNoPlaceHolder();
                 return true;
+
+            case R.id.imageDisplaying_menuItem_get:
+                testPicassoGet();
+                return true;
+
             case R.id.imageDisplaying_menuItem_listView:
                 setGalleryFragmentType(GALLERY_FRAGMENT_TYPE_LIST);
                 return true;
+
             case R.id.imageDisplaying_menuItem_gridView:
                 setGalleryFragmentType(GALLERY_FRAGMENT_TYPE_GRID);
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -182,7 +191,7 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
     }
 
     private void testPicassoNoPlaceHolder() {
-        final ImageView imageView = WidgetUtils.popupImageView(this);
+        final ImageView imageView = ViewUtils.popupImageView(this);
         loadImage(ImagesData.URLS[3], imageView, false, new Callback() {
             @Override
             public void onSuccess() {
@@ -192,7 +201,7 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
                         // load the next image into the same ImageView
                         loadImage(ImagesData.URLS[5], imageView, true, null);
                     }
-                }, 1500);
+                }, 1000);
             }
 
             @Override
@@ -216,5 +225,23 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
         /** use case: displayed if the image cannot be loaded */
         requestCreator.error(R.drawable.ic_image_broken);
         requestCreator.into(imageView, callback);
+    }
+
+    private void testPicassoGet() {
+        final ImageView imageView = ViewUtils.popupImageView(ImageDisplaying.this);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Bitmap bitmap = Picasso.with(ImageDisplaying.this)
+                            .load(ImagesData.URLS[3])
+                            .get();
+                    imageView.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }
