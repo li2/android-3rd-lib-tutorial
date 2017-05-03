@@ -2,6 +2,7 @@ package me.li2.android.tutorial.Picasso.L2ImageDisplaying;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IntDef;
@@ -22,6 +23,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
+import com.squareup.picasso.Target;
 
 import java.io.IOException;
 import java.lang.annotation.Retention;
@@ -34,6 +36,7 @@ import me.li2.android.tutorial.BasicUtils.ViewUtils;
 import me.li2.android.tutorial.R;
 
 import static me.li2.android.tutorial.BasicUI.LogHelper.LOGD;
+import static me.li2.android.tutorial.BasicUI.LogHelper.LOGE;
 import static me.li2.android.tutorial.BasicUI.LogHelper.makeLogTag;
 
 /**
@@ -64,6 +67,10 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
 
             case R.id.imageDisplaying_menuItem_get:
                 testPicassoGet();
+                return true;
+
+            case R.id.imageDisplaying_menuItem_target:
+                testPicassoTarget();
                 return true;
 
             case R.id.imageDisplaying_menuItem_listView:
@@ -191,6 +198,7 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
     }
 
     private void testPicassoNoPlaceHolder() {
+        LOGD(TAG, "test Picasso .noPlaceHolder()");
         final ImageView imageView = ViewUtils.popupImageView(this);
         loadImage(ImagesData.URLS[3], imageView, false, new Callback() {
             @Override
@@ -228,6 +236,7 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
     }
 
     private void testPicassoGet() {
+        LOGD(TAG, "test Picasso .get()");
         final ImageView imageView = ViewUtils.popupImageView(ImageDisplaying.this);
 
         new Thread(new Runnable() {
@@ -244,4 +253,31 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
             }
         }).start();
     }
+
+    private void testPicassoTarget() {
+        LOGD(TAG, "test Picasso Target Interface");
+        Picasso.with(this)
+                .load(ImagesData.URLS[3])
+                .into(mTarget);
+    }
+
+    // Important: always declare the target implementation as a field, not anonymously!
+    // The garbage collector could otherwise destroy your target object and you'll never get the bitmap.
+    private Target mTarget = new Target() {
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            ViewUtils.popupImageView(ImageDisplaying.this).setImageBitmap(bitmap);
+            LOGD(TAG, "Picasso loaded from " + from);
+        }
+
+        @Override
+        public void onBitmapFailed(Drawable errorDrawable) {
+            LOGE(TAG, "Picasso loaded failed");
+        }
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+        }
+    };
 }

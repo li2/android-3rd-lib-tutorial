@@ -34,6 +34,14 @@
 
 * `.get()` synchronously loads the image and returns a Bitmap object. 
 
+* Use interface `Target` as Callback Mechanism.
+ 
+    > So far, we've always used an ImageView as parameter for `.into()`. That is not the complete functionality of `.into()`. It is also possible to use an implementation of the `Target` interface.
+    >
+    > Picasso will load the image just like before, but instead of displaying it in an ImageView, it'll return the Bitmap (or the error!) through the `Target` callback.
+    >
+    > whenever you need the raw bitmap use either `.get()` or an implementation of `Target` to receive the image.
+
 
 ## References
 

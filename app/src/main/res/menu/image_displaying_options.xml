@@ -18,4 +18,8 @@
           android:title="test Picasso get()"
           app:showAsAction="never"/>
 
+    <item android:id="@+id/imageDisplaying_menuItem_target"
+          android:title="test Picasso Target"
+          app:showAsAction="never"/>
+
 </menu>

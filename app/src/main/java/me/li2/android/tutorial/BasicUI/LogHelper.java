@@ -26,7 +26,7 @@ public class LogHelper {
         return makeLogTag(cls.getSimpleName());
     }
 
-    private static final int TOAST_DURATION = Toast.LENGTH_LONG;
+    private static final int TOAST_DURATION = Toast.LENGTH_SHORT;
 
     public static void LOGD(String tag, CharSequence text) {
         Toast.makeText(MainApplication.getAppContext(), text, TOAST_DURATION).show();
