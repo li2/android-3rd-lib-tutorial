@@ -41,7 +41,7 @@
 
         <activity android:name=".View.ViewTutorial"/>
         <activity android:name=".View.ImageViewScaleType"/>
-        <activity android:name=".View.MultipleScreens.DrawableResources"/>
+        <activity android:name=".View.MultipleScreenDrawableResources"/>
 
         <activity android:name=".Gson.GsonTutorial"/>
         <activity android:name=".Gson.ChangeSettingsAccess.ChangeSettingsAccessActivity"/>

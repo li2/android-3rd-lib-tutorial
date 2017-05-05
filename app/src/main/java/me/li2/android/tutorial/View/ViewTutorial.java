@@ -1,7 +1,6 @@
 package me.li2.android.tutorial.View;
 
 import me.li2.android.tutorial.BasicUI.SimpleTutorialActivity;
-import me.li2.android.tutorial.View.MultipleScreens.DrawableResources;
 
 /**
  * Created by weiyi on 10/04/2017.
@@ -15,7 +14,7 @@ public class ViewTutorial extends SimpleTutorialActivity {
     public Class[] getTutorialActivities() {
         Class[] tutorialActivities = new Class[] {
                 ImageViewScaleType.class,
-                DrawableResources.class,
+                MultipleScreenDrawableResources.class,
         };
         return tutorialActivities;
     }
