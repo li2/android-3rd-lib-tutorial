@@ -3,6 +3,10 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="general_list_padding">4dp</dimen>
+
     <!-- xxxhdpi 400x400pixel -->
     <dimen name="multiple_screens_demo_image_width">100dp</dimen>
+
+    <dimen name="notification_big_view_height">128dp</dimen>
 </resources>

@@ -17,4 +17,13 @@
         如果需要同时支持手机和平板，则提供两套图：drawable-w820dp-xhdpi、drawable-xxxhdpi。
     </string>
 
+    <string name="notification_title">Notification Title</string>
+    <string name="notification_text">Notification Text</string>
+    <string name="notification_ticker">Notification Ticker</string>
+    <string name="notification_action_button">Action Button</string>
+    <string name="notification_customized_title">Custom Notification Title</string>
+    <string name="notification_customized_text">Custom Notification Text</string>
+    <string name="notification_customized_ticker">Custom Notification Ticker</string>
+    <string name="notification">Notification</string>
+
 </resources>

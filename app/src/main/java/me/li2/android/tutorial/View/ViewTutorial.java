@@ -15,6 +15,7 @@ public class ViewTutorial extends SimpleTutorialActivity {
         Class[] tutorialActivities = new Class[] {
                 ImageViewScaleType.class,
                 MultipleScreenDrawableResources.class,
+                NotificationTest.class,
         };
         return tutorialActivities;
     }
