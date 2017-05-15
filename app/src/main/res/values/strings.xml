@@ -23,6 +23,10 @@
     <string name="notification_action_button">Action Button</string>
     <string name="notification_customized_title">Custom Notification Title</string>
     <string name="notification_customized_text">Custom Notification Text</string>
+    <string name="notification_customized_big_text">
+        This tutorial shows how to show longer text in the notification content, which only available
+        on JELLY_BEAN (OS 4.1, API level >= 16), and how to update notification.
+    </string>
     <string name="notification_customized_ticker">Custom Notification Ticker</string>
     <string name="notification">Notification</string>
 

@@ -1,15 +1,14 @@
 package me.li2.android.tutorial.View;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
-import android.widget.RemoteViews;
 
 import java.util.ArrayList;
 
 import me.li2.android.tutorial.BasicUI.SimpleListActivity;
+import me.li2.android.tutorial.BasicWidget.NotificationCustomized;
 import me.li2.android.tutorial.R;
 
 /**
@@ -18,11 +17,24 @@ import me.li2.android.tutorial.R;
  */
 
 public class NotificationTest extends SimpleListActivity {
+    private NotificationManager mNotificationManager;
+    private NotificationCustomized.Builder mNotificationBuilder;
+    private static final int CUSTOMIZED_NOTIFICATION_ID = 21;
+
+    @Override
+    protected String getTitlePrefix() {
+        return ViewTutorial.TAG;
+    }
+
     @Override
     protected ArrayList<String> initListData() {
+        // Create Notification Manager
+        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
         ArrayList<String> list = new ArrayList<>();
         list.add("Notification");
         list.add("Customized Notification");
+        list.add("Update Notification");
         return list;
     }
 
@@ -35,6 +47,12 @@ public class NotificationTest extends SimpleListActivity {
 
             case 1:
                 customNotification();
+                break;
+
+            case 2:
+                if (mNotificationBuilder != null) {
+                    updateNotification();
+                }
                 break;
         }
     }
@@ -54,7 +72,9 @@ public class NotificationTest extends SimpleListActivity {
                 // Set Title
                 .setContentTitle(getString(R.string.notification_title))
                 // Set Text
-                .setContentText(getString(R.string.notification_text))
+                .setContentText(getString(R.string.notification_customized_text))
+                // Set Big Text
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.notification_customized_big_text)))
                 // Add an Action Button below Notification
                 .addAction(R.drawable.ic_android, getString(R.string.notification_action_button), pIntent)
                 // Set PendingIntent into Notification
@@ -62,49 +82,30 @@ public class NotificationTest extends SimpleListActivity {
                 // Dismiss Notification
                 .setAutoCancel(true);
 
-        // Create Notification Manager
-        NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         // Build Notification with Notification Manager
-        notificationmanager.notify(0, builder.build());
+        mNotificationManager.notify(0, builder.build());
     }
 
-    public void customNotification() {
-        // Using RemoteViews to bind custom layouts into Notification
-
-        // normal content view
-        RemoteViews normalView = new RemoteViews(getPackageName(),
-                R.layout.view_notification);
-        normalView.setImageViewResource(R.id.notification_image, R.drawable.ic_android);
-        normalView.setTextViewText(R.id.notification_title, getString(R.string.notification_customized_title));
-        normalView.setTextViewText(R.id.notification_text, getString(R.string.notification_customized_text));
-
-        // big content view
-        RemoteViews bigView = new RemoteViews(getPackageName(),
-                R.layout.view_notification_expanded);
-        bigView.setImageViewResource(R.id.notificationExpanded_image, R.drawable.ic_android);
-        bigView.setTextViewText(R.id.notificationExpanded_title, getString(R.string.notification_customized_title));
-        bigView.setTextViewText(R.id.notificationExpanded_text, getString(R.string.notification_customized_text));
-
-
+    private void customNotification() {
         Intent intent = new Intent(this, ViewTutorial.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setTicker(getString(R.string.notification_customized_ticker))
-                // no need to set contentTitle & contentText & actionButton
-                .setAutoCancel(true)
+        mNotificationBuilder = new NotificationCustomized.Builder(this)
+                .setIcon(R.drawable.ic_android)
+                .setContentTitle(getString(R.string.notification_customized_title))
+                .setContentText(getString(R.string.notification_customized_text))
                 .setContentIntent(pIntent)
-                // Set RemoteViews into Notification
-                .setCustomContentView(normalView)
-                .setCustomBigContentView(bigView)
-                // push the notification to the top of the list to expand big view by default.
-                .setPriority(Notification.PRIORITY_HIGH)
-                .setOngoing(true)
                 ;
+        // Sets an ID for the notification, so it can be updated
+        mNotificationManager.notify(CUSTOMIZED_NOTIFICATION_ID, mNotificationBuilder.build());
+    }
 
-        NotificationManager notificationmanager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationmanager.notify(0, builder.build());
+    // Use the SAME Builder and ID for each update.
+    private void updateNotification() {
+        mNotificationBuilder
+                .setContentText(getString(R.string.notification_customized_big_text));
+        // Because the ID remains unchanged, the existing notification is updated.
+        mNotificationManager.notify(CUSTOMIZED_NOTIFICATION_ID, mNotificationBuilder.build());
     }
 }

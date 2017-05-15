@@ -9,4 +9,5 @@
     <dimen name="multiple_screens_demo_image_width">100dp</dimen>
 
     <dimen name="notification_big_view_height">128dp</dimen>
+    <dimen name="notification_button_height">32dp</dimen>
 </resources>
