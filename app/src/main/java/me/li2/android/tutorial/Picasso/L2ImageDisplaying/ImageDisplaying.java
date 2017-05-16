@@ -88,7 +88,6 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
 
     @Override
     protected Fragment createFragment() {
-        LOGD(TAG, "Rotate screen to show images with ListView for Portrait, and GridView for Landscape");
         return new GalleryListFragment();
     }
 
@@ -122,6 +121,7 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
             View view = inflater.inflate(R.layout.fragment_gallery_list, container, false);
             ButterKnife.bind(this, view);
             mListView.setAdapter(new GalleryAdapter(getActivity(), ImagesData.URLS));
+            mListView.setOnScrollListener(new SampleScrollListener(getContext()));
             return view;
         }
     }
@@ -138,6 +138,7 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
             View view = inflater.inflate(R.layout.fragment_gallery_grid, container, false);
             ButterKnife.bind(this, view);
             mGridView.setAdapter(new GalleryAdapter(getActivity(), ImagesData.URLS));
+            mGridView.setOnScrollListener(new SampleScrollListener(getContext()));
             return view;
         }
     }
@@ -189,6 +190,7 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
                 Picasso.with(mContext)
                         .load(mUrls[position])
                         .placeholder(R.drawable.ic_android)
+                        .tag(this)
                         .error(R.drawable.ic_image_broken)
                         .into(imageView);
             }
