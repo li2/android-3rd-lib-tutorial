@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.support.annotation.IntDef;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
@@ -21,12 +22,18 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 import com.squareup.picasso.Target;
+import com.squareup.picasso.Transformation;
 
 import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import me.li2.android.tutorial.BasicUI.BasicFragmentContainerActivity;
+import me.li2.android.tutorial.Picasso.L2ImageDisplaying.BlurTransformation;
+import me.li2.android.tutorial.Picasso.L2ImageDisplaying.GrayscaleTransformation;
 import me.li2.android.tutorial.Picasso.L2ImageDisplaying.ImagesData;
 import me.li2.android.tutorial.R;
 
@@ -150,28 +157,49 @@ public class PhotoPageActivity extends BasicFragmentContainerActivity {
 
     @Override
     protected int getOptionsMenuRes() {
-        return R.menu.image_photo_page_options;
+        return R.menu.image_picasso_options;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (mPhotoPath == null) {
+            menu.clear();
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.imageDisplaying_menuItem_noPlaceholder:
-                if (mPhotoPath != null) {
-                    testPicassoNoPlaceHolder();
-                }
+            case R.id.imagePicasso_menuItem_noPlaceholder:
+                testPicassoNoPlaceHolder();
                 return true;
 
-            case R.id.imageDisplaying_menuItem_get:
-                if (mPhotoPath != null) {
-                    testPicassoGet();
-                }
+            case R.id.imagePicasso_menuItem_get:
+                testPicassoGet();
                 return true;
 
-            case R.id.imageDisplaying_menuItem_target:
-                if (mPhotoPath != null) {
-                    testPicassoTarget();
-                }
+            case R.id.imagePicasso_menuItem_target:
+                testPicassoTarget();
+                return true;
+
+            case R.id.imagePicasso_menuItem_rotate:
+                testPicassoRotation();
+                return true;
+
+            case R.id.imagePicasso_menuItem_transformBlur:
+                testPicassoTransformation(new BlurTransformation(this));
+                return true;
+
+            case R.id.imagePicasso_menuItem_transformGrayscale:
+                testPicassoTransformation(new GrayscaleTransformation(Picasso.with(this)));
+                return true;
+
+            case R.id.imagePicasso_menuItem_transformBlurAndGrayscale:
+                List<Transformation> transformations = new ArrayList<>();
+                transformations.add(new BlurTransformation(this));
+                transformations.add(new GrayscaleTransformation(Picasso.with(this)));
+                testPicassoTransformation(transformations);
                 return true;
 
             default:
@@ -269,4 +297,29 @@ public class PhotoPageActivity extends BasicFragmentContainerActivity {
 
         }
     };
+
+    private int mRotateTimes;
+
+    private void testPicassoRotation() {
+        LOGD(TAG, "test Picasso Rotation");
+        mRotateTimes = (mRotateTimes %4 ==0) ? 0 : mRotateTimes;
+        ++mRotateTimes;
+
+        Picasso.with(this)
+                .load(mPhotoPath)
+                .rotate(mRotateTimes*90)
+                .into(mFragment.getPhotoView());
+    }
+
+    private void testPicassoTransformation(Transformation transformation) {
+        testPicassoTransformation(Arrays.asList(new Transformation[] {transformation}));
+    }
+
+    private void testPicassoTransformation(List<Transformation> transformations) {
+        LOGD(TAG, "test Picasso Transformation");
+        Picasso.with(this)
+                .load(mPhotoPath)
+                .transform(transformations)
+                .into(mFragment.getPhotoView());
+    }
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/imagePicasso_menuItem_noPlaceholder"
+          android:title="test noPlaceholder()"
+          app:showAsAction="never"/>
+
+    <item android:id="@+id/imagePicasso_menuItem_get"
+          android:title="test get()"
+          app:showAsAction="never"/>
+
+    <item android:id="@+id/imagePicasso_menuItem_target"
+          android:title="test interface Target"
+          app:showAsAction="never"/>
+
+    <item android:id="@+id/imagePicasso_menuItem_rotate"
+          android:title="test Rotate"
+          app:showAsAction="never"/>
+
+    <item android:id="@+id/imagePicasso_menuItem_transformBlur"
+          android:title="test Transform - Blur"
+          app:showAsAction="never"/>
+
+    <item android:id="@+id/imagePicasso_menuItem_transformGrayscale"
+          android:title="test Transform - Grayscale"
+          app:showAsAction="never"/>
+
+    <item android:id="@+id/imagePicasso_menuItem_transformBlurAndGrayscale"
+          android:title="test Transforms - Blur &amp; Grayscale"
+          app:showAsAction="never"/>
+
+</menu>

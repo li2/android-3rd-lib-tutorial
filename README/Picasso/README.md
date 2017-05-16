@@ -130,6 +130,23 @@
         }
     }
 
+### Image Rotation and Transformation
+
+> Picasso is agnostic enough to allow any image manipulation with the generic Transformation interface. *(注：agnostic 不可知论者，agnostic enough to allow 足以允许。)*
+
+    Picasso  
+        .with(context)
+        .load(url)
+        .rotate(90f) // simply rotates the image by the parameter degrees.
+        .into(imageView);
+        
+    Picasso  
+        .with(context)
+        .load(url)
+        .transform(new BlurTransformation(context))
+        .into(imageView);
+
+
 ## References
 
 [Picasso](http://square.github.io/picasso/)
