@@ -4,11 +4,15 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import me.li2.android.tutorial.BasicUI.SimpleListActivity;
 import me.li2.android.tutorial.BasicWidget.NotificationCustomized;
+import me.li2.android.tutorial.Picasso.L2ImageDisplaying.ImagesData;
 import me.li2.android.tutorial.R;
 
 /**
@@ -32,9 +36,10 @@ public class NotificationTest extends SimpleListActivity {
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         ArrayList<String> list = new ArrayList<>();
-        list.add("Notification");
-        list.add("Customized Notification");
-        list.add("Update Notification");
+        list.add("Create Notification with Big Text");
+        list.add("Create Customized Notification with Big Content View");
+        list.add("Update Customized Notification Content Text");
+        list.add("Load Images to Customized Notification by Picasso");
         return list;
     }
 
@@ -42,22 +47,31 @@ public class NotificationTest extends SimpleListActivity {
     protected void onSimpleListItemClick(int position) {
         switch (position) {
             case 0:
-                notification();
+                createNotification();
                 break;
 
             case 1:
-                customNotification();
+                createCustomNotification();
                 break;
 
             case 2:
                 if (mNotificationBuilder != null) {
-                    updateNotification();
+                    updateCustomNotification();
+                } else {
+                    Toast.makeText(this, "Create customized notification firstly !", Toast.LENGTH_SHORT).show();
                 }
                 break;
+
+            case 3:
+                if (mNotificationBuilder != null) {
+                    loadImageToNotificationByPicasso();
+                } else {
+                    Toast.makeText(this, "Create customized notification firstly !", Toast.LENGTH_SHORT).show();
+                }
         }
     }
 
-    public void notification() {
+    public void createNotification() {
         // Open Activity on Notification Click
         Intent intent = new Intent(this, ViewTutorial.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent,
@@ -86,7 +100,7 @@ public class NotificationTest extends SimpleListActivity {
         mNotificationManager.notify(0, builder.build());
     }
 
-    private void customNotification() {
+    private void createCustomNotification() {
         Intent intent = new Intent(this, ViewTutorial.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
@@ -102,10 +116,20 @@ public class NotificationTest extends SimpleListActivity {
     }
 
     // Use the SAME Builder and ID for each update.
-    private void updateNotification() {
+    private void updateCustomNotification() {
         mNotificationBuilder
                 .setContentText(getString(R.string.notification_customized_big_text));
         // Because the ID remains unchanged, the existing notification is updated.
         mNotificationManager.notify(CUSTOMIZED_NOTIFICATION_ID, mNotificationBuilder.build());
+    }
+
+    private void loadImageToNotificationByPicasso() {
+        Picasso.with(this)
+                .load(ImagesData.URLS[0])
+                .into(mNotificationBuilder.getBigContentView(),
+                        R.id.notification_image,
+                        CUSTOMIZED_NOTIFICATION_ID,
+                        mNotificationBuilder.build()
+                );
     }
 }

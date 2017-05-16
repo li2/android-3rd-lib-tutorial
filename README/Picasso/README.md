@@ -1,6 +1,17 @@
 # Picasso Tutorial
 
-[codes](../../app/src/main/java/me/li2/android/tutorial/Picasso)
+[tutorial codes](../../app/src/main/java/me/li2/android/tutorial/Picasso)
+
+> A powerful image downloading and caching library for Android.
+> Picasso allows for hassle-free image loading in your application—often in one line of code!
+> 
+>     Picasso.with(context).load("http://i.imgur.com/DvpvklR.png").into(imageView);
+> 
+> Many common pitfalls of image loading on Android are handled automatically by Picasso:
+>
+> - Handling ImageView recycling and download cancelation in an adapter.
+> - Complex image transformations with minimal memory use.
+> - Automatic memory and disk caching.
 
 
 ## Displaying images in ListView / GridView
@@ -32,7 +43,11 @@
 
 ## Advanced Loading & Optimizations
 
-* `.get()` synchronously loads the image and returns a Bitmap object. 
+* `.get()` synchronously loads the image and returns a Bitmap object.
+
+        Bitmap bitmap = Picasso.with(this)
+                            .load(url)
+                            .get();
 
 * Use interface `Target` as Callback Mechanism.
  
@@ -42,7 +57,31 @@
     >
     > whenever you need the raw bitmap use either `.get()` or an implementation of `Target` to receive the image.
 
+        Picasso.with(this)
+                .load(ImagesData.URLS[3])
+                .into(mTarget);
+        
+        private Target mTarget = new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {}
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {}
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {}
+        };
+        
+* Load Images to Custom Notifications with RemoteViews
+
+        Picasso.with(this)
+                .load(ImagesData.URLS[0])
+                .into(mNotificationBuilder.getBigContentView(),
+                        R.id.notification_image,
+                        CUSTOMIZED_NOTIFICATION_ID,
+                        mNotificationBuilder.build()
+                );
+
 
 ## References
 
+[Picasso](http://square.github.io/picasso/)
 [Future Studio - Picasso Tutorials](https://futurestud.io/tutorials/picasso-series-round-up)

@@ -158,5 +158,13 @@ public class NotificationCustomized {
             mContentExpandedView.setImageViewResource(R.id.icon, resourceId);
             return this;
         }
+
+        public RemoteViews getContentView() {
+            return mContentNormalView;
+        }
+
+        public RemoteViews getBigContentView() {
+            return mContentExpandedView;
+        }
     }
 }
