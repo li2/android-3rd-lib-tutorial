@@ -10,7 +10,7 @@ import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
 import java.util.ArrayList;
 
-import me.li2.android.tutorial.BasicUI.PhotoPageActivity;
+import me.li2.android.tutorial.Picasso.PhotoPageActivity;
 import me.li2.android.tutorial.BasicUI.SimpleListActivity;
 import me.li2.android.tutorial.Picasso.PicassoTutorial;
 import me.li2.android.tutorial.R;

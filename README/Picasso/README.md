@@ -12,7 +12,7 @@
 
 ## Loading images from
 
-[PhotoPageFragment.java](../../app/src/main/java/me/li2/android/tutorial/BasicUI/PhotoPageFragment.java)
+[PhotoPageFragment.java](../../app/src/main/java/me/li2/android/tutorial/Picasso/PhotoPageFragment.java)
 
 - a URL
 - a specified drawable resource ID

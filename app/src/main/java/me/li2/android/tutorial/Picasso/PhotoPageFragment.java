@@ -1,5 +1,6 @@
-package me.li2.android.tutorial.BasicUI;
+package me.li2.android.tutorial.Picasso;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -138,6 +139,31 @@ public class PhotoPageFragment extends Fragment {
         return view;
     }
 
+    public ImageView getPhotoView() {
+        return mPhotoView;
+    }
+
+    public void updateImage(final Bitmap bitmap) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mPhotoView != null) {
+                    mPhotoView.setImageBitmap(bitmap);
+                }
+            }
+        });
+    }
+
+    public void clearImage() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mPhotoView != null) {
+                    mPhotoView.setImageResource(R.drawable.ic_android);
+                }
+            }
+        });
+    }
 
     private void loadImage(String path) {
         mPhotoDescriptionView.setText("Loading Image from Path: " + path);
