@@ -42,6 +42,7 @@
         <activity android:name=".View.ImageViewScaleType"/>
         <activity android:name=".View.MultipleScreenDrawableResources"/>
         <activity android:name=".View.NotificationTest"/>
+        <activity android:name=".View.SimpleRecyclerView"/>
 
         <activity android:name=".Gson.GsonTutorial"/>
         <activity android:name=".Gson.ChangeSettingsAccess.ChangeSettingsAccessActivity"/>

@@ -55,17 +55,17 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
 
     @Override
     protected int getOptionsMenuRes() {
-        return R.menu.image_displaying_options;
+        return R.menu.layout_type_options;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.imageDisplaying_menuItem_listView:
+            case R.id.layoutType_menuItem_listView:
                 setGalleryFragmentType(GALLERY_FRAGMENT_TYPE_LIST);
                 return true;
 
-            case R.id.imageDisplaying_menuItem_gridView:
+            case R.id.layoutType_menuItem_gridView:
                 setGalleryFragmentType(GALLERY_FRAGMENT_TYPE_GRID);
                 return true;
 

@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/imageDisplaying_menuItem_listView"
+    <item android:id="@+id/layoutType_menuItem_listView"
           android:title="Layout - ListView"
           app:showAsAction="never"/>
 
-    <item android:id="@+id/imageDisplaying_menuItem_gridView"
+    <item android:id="@+id/layoutType_menuItem_gridView"
           android:title="Layout - GridView"
           app:showAsAction="never"/>
 

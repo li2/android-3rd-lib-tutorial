@@ -16,6 +16,7 @@ public class ViewTutorial extends SimpleTutorialActivity {
                 ImageViewScaleType.class,
                 MultipleScreenDrawableResources.class,
                 NotificationTest.class,
+                SimpleRecyclerView.class,
         };
         return tutorialActivities;
     }
