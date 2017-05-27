@@ -12,7 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.li2.android.tutorial.BasicUI.BasicFragmentContainerActivity;
 import me.li2.android.tutorial.R;
-import me.li2.android.tutorial.StorageUtils.ResourceUtils;
+import me.li2.android.tutorial.BasicUtils.ResourceUtils;
 
 /**
  * Created by weiyi on 10/04/2017.

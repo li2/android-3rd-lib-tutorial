@@ -9,8 +9,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import me.li2.android.tutorial.R;
-import me.li2.android.tutorial.StorageUtils.InternalStorage;
-import me.li2.android.tutorial.StorageUtils.ResourceUtils;
+import me.li2.android.tutorial.BasicUtils.StorageUtils.InternalStorage;
+import me.li2.android.tutorial.BasicUtils.ResourceUtils;
 
 import static me.li2.android.tutorial.BasicUI.LogHelper.LOGE;
 import static me.li2.android.tutorial.BasicUI.LogHelper.makeLogTag;

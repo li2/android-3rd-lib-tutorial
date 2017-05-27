@@ -47,6 +47,8 @@
         <activity android:name=".Gson.GsonTutorial"/>
         <activity android:name=".Gson.ChangeSettingsAccess.ChangeSettingsAccessActivity"/>
 
+        <activity android:name=".BasicUtils.StorageUtils.StorageTutorial"/>
+
     </application>
 
 </manifest>

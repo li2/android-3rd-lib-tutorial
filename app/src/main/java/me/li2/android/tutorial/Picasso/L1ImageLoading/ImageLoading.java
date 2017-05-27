@@ -2,19 +2,17 @@ package me.li2.android.tutorial.Picasso.L1ImageLoading;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.Handler;
 
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
 import java.util.ArrayList;
 
-import me.li2.android.tutorial.Picasso.PhotoPageActivity;
 import me.li2.android.tutorial.BasicUI.SimpleListActivity;
+import me.li2.android.tutorial.BasicUtils.ResourceUtils;
+import me.li2.android.tutorial.Picasso.PhotoPageActivity;
 import me.li2.android.tutorial.Picasso.PicassoTutorial;
 import me.li2.android.tutorial.R;
-import me.li2.android.tutorial.StorageUtils.ResourceUtils;
 
 /**
  * Created by weiyi on 09/04/2017.
@@ -22,30 +20,13 @@ import me.li2.android.tutorial.StorageUtils.ResourceUtils;
  */
 
 public class ImageLoading extends SimpleListActivity {
-
-    private ArrayList<String> mLoadingOptions = new ArrayList<>();
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mLoadingOptions = buildOptions();
-        /**
-         * It's weird if not postDelay, the {@link SimpleListFragment#getActivity()} always return null.
-         */
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setListData(mLoadingOptions);
-            }
-        }, 250);
-    }
-
     @Override
     protected String getTitlePrefix() {
         return PicassoTutorial.TAG;
     }
 
-    private ArrayList<String> buildOptions() {
+    @Override
+    protected ArrayList<String> initListData() {
         ArrayList<String> options = new ArrayList<>();
         options.add("From Url");
         options.add("From Resources");

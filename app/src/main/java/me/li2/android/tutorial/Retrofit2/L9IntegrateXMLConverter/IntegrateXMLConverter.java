@@ -11,7 +11,7 @@ import java.io.File;
 import me.li2.android.tutorial.BasicUI.SimpleOneButtonActivity;
 import me.li2.android.tutorial.Retrofit2.L3CreatingSustainableClient.ServiceGenerator;
 import me.li2.android.tutorial.Retrofit2.RetrofitTutorial;
-import me.li2.android.tutorial.StorageUtils.StorageUtils;
+import me.li2.android.tutorial.BasicUtils.StorageUtils.StorageUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

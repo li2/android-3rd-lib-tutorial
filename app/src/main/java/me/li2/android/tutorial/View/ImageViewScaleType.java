@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 import me.li2.android.tutorial.BasicUI.BasicFragmentContainerActivity;
 import me.li2.android.tutorial.BasicUtils.ViewUtils;
 import me.li2.android.tutorial.R;
-import me.li2.android.tutorial.StorageUtils.ResourceUtils;
+import me.li2.android.tutorial.BasicUtils.ResourceUtils;
 
 /**
  * Created by weiyi on 28/04/2017.

@@ -1,4 +1,4 @@
-package me.li2.android.tutorial.StorageUtils;
+package me.li2.android.tutorial.BasicUtils;
 
 import android.content.Context;
 import android.net.Uri;

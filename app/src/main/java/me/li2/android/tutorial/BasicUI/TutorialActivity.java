@@ -2,10 +2,11 @@ package me.li2.android.tutorial.BasicUI;
 
 import android.os.Bundle;
 
+import me.li2.android.tutorial.BasicUtils.StorageUtils.StorageTutorial;
 import me.li2.android.tutorial.Gson.GsonTutorial;
-import me.li2.android.tutorial.View.ViewTutorial;
 import me.li2.android.tutorial.Picasso.PicassoTutorial;
 import me.li2.android.tutorial.Retrofit2.RetrofitTutorial;
+import me.li2.android.tutorial.View.ViewTutorial;
 
 public class TutorialActivity extends SimpleTutorialActivity {
     @Override
@@ -21,6 +22,7 @@ public class TutorialActivity extends SimpleTutorialActivity {
                 PicassoTutorial.class,
                 ViewTutorial.class,
                 GsonTutorial.class,
+                StorageTutorial.class,
         };
         return tutorialActivities;
     }
