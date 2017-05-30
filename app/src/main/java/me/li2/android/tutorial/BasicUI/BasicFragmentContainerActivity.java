@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -11,7 +12,13 @@ import android.view.MenuItem;
 import butterknife.ButterKnife;
 import me.li2.android.tutorial.R;
 
+import static me.li2.android.tutorial.BasicUI.LogHelper.makeLogTag;
+
 public abstract class BasicFragmentContainerActivity extends AppCompatActivity {
+    private static final String TAG = makeLogTag("BasicActivity");
+    private static final String LIEF_CYCLE = makeLogTag("LifeCycle");
+    private final String mClassName = getClass().getSimpleName();
+
     protected Fragment mFragment;
 
     protected abstract Fragment createFragment();
@@ -33,6 +40,7 @@ public abstract class BasicFragmentContainerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(LIEF_CYCLE, mClassName + " onCreate");
         parseIntent();
         setContentView(getLayoutResId());
         ButterKnife.bind(this);
@@ -54,6 +62,7 @@ public abstract class BasicFragmentContainerActivity extends AppCompatActivity {
 
         // Or create a new CrimeFragment,
         if (fragment == null) {
+            Log.d(LIEF_CYCLE, mClassName + " createFragment");
             fragment = createFragment();
             // Create a new fragment transaction, include one add operation in it, and then commit it.
             fm.beginTransaction().add(R.id.fragmentContainer, fragment).commit();
@@ -61,8 +70,38 @@ public abstract class BasicFragmentContainerActivity extends AppCompatActivity {
             // findFragmentById() or findFragmentByTag(), then we can get the fragment.
             fm.executePendingTransactions();
             // instead of findFragmentBy..., it's a convenient way to use a filed to hold the committed fragment.
-            mFragment = fragment;
         }
+        mFragment = fragment;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(LIEF_CYCLE, mClassName + " onStart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(LIEF_CYCLE, mClassName + " onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(LIEF_CYCLE, mClassName + " onPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(LIEF_CYCLE, mClassName + " onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(LIEF_CYCLE, mClassName + " onDestroy");
     }
 
     @Override

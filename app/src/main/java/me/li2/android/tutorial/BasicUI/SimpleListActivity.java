@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * Created by weiyi on 25/03/2017.
  * https://github.com/li2
@@ -52,21 +53,20 @@ public abstract class SimpleListActivity extends BasicFragmentContainerActivity 
         mListData = initListData();
 
         super.onCreate(savedInstanceState);
+    }
 
-        /*
-         * NO need to set listener here, instead, it's better in {@link SimpleListFragment#createFragment()}
-         *
+    @Override
+    protected void onResume() {
+        super.onResume();
+        /** it's better set listener here */
         if (mFragment != null && mFragment instanceof SimpleListFragment) {
-            ((SimpleListFragment) mFragment).setOnSimpleListItemClickListener(
-                    new SimpleListFragment.OnSimpleListItemClickListener() {
-                        @Override
-                        public void onListItemClick(int position) {
-                            onSimpleListItemClick(position);
-                        }
-                    }
-            );
+            ((SimpleListFragment) mFragment).setOnSimpleListItemClickListener(new SimpleListFragment.OnSimpleListItemClickListener() {
+                @Override
+                public void onListItemClick(int position) {
+                    onSimpleListItemClick(position);
+                }
+            });
         }
-        */
     }
 
     @Override
@@ -77,18 +77,13 @@ public abstract class SimpleListActivity extends BasicFragmentContainerActivity 
         } else {
             fragment = new SimpleListFragment();
         }
-
-        /** it's better set listener here */
-        fragment.setOnSimpleListItemClickListener(new SimpleListFragment.OnSimpleListItemClickListener() {
-            @Override
-            public void onListItemClick(int position) {
-                onSimpleListItemClick(position);
-            }
-        });
-
         return fragment;
     }
 
+
+    /**
+     * SimpleListFragment
+     */
     public static class SimpleListFragment extends ListFragment {
         private static final String ARG_KEY_TITLES = "arg_key_titles";
         private static final String SIMPLE_DATA_LIST_KEY_TITLE = "title";
@@ -114,6 +109,7 @@ public abstract class SimpleListActivity extends BasicFragmentContainerActivity 
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            setRetainInstance(true);
             Bundle args = getArguments();
             if (args != null) {
                 List<String> titles = args.getStringArrayList(ARG_KEY_TITLES);
