@@ -13,7 +13,7 @@ import me.li2.android.tutorial.R;
  */
 
 public class SimpleRecyclerView extends BasicFragmentContainerActivity {
-    private SimpleRecyclerFragment mFragment;
+    private SimpleRecyclerFragment mRecyclerFragment;
 
     @Override
     protected String getTitlePrefix() {
@@ -22,8 +22,8 @@ public class SimpleRecyclerView extends BasicFragmentContainerActivity {
 
     @Override
     protected Fragment createFragment() {
-        mFragment = new SimpleRecyclerFragment();
-        return mFragment;
+        mRecyclerFragment = new SimpleRecyclerFragment();
+        return mRecyclerFragment;
     }
 
     @Override
@@ -34,12 +34,16 @@ public class SimpleRecyclerView extends BasicFragmentContainerActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.layoutType_menuItem_listView:
-                mFragment.setRecyclerViewLayoutManager(SimpleRecyclerFragment.LayoutManagerType.LINEAR_LAYOUT_MANAGER);
+            case R.id.layoutType_menuItem_listView_horizontal:
+                mRecyclerFragment.setLayout(SimpleRecyclerFragment.LayoutType.LINEAR_HORIZONTAL);
+                return true;
+
+            case R.id.layoutType_menuItem_listView_vertical:
+                mRecyclerFragment.setLayout(SimpleRecyclerFragment.LayoutType.LINEAR_VERTICAL);
                 return true;
 
             case R.id.layoutType_menuItem_gridView:
-                mFragment.setRecyclerViewLayoutManager(SimpleRecyclerFragment.LayoutManagerType.GRID_LAYOUT_MANAGER);
+                mRecyclerFragment.setLayout(SimpleRecyclerFragment.LayoutType.GRID);
                 return true;
 
             default:

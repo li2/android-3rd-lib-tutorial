@@ -35,15 +35,16 @@ public class SimpleRecyclerFragment extends Fragment {
 
     private static final String TAG = "SimpleRecyclerFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
-    private static final int SPAN_COUNT = 2;
-    private static final int DATASET_COUNT = 60;
+    private static final int SPAN_COUNT = 3;
+    private static final int DATASET_COUNT = 21;
 
-    public enum LayoutManagerType {
-        GRID_LAYOUT_MANAGER,
-        LINEAR_LAYOUT_MANAGER
+    public enum LayoutType {
+        GRID,
+        LINEAR_HORIZONTAL,
+        LINEAR_VERTICAL,
     }
 
-    protected LayoutManagerType mCurrentLayoutManagerType;
+    protected LayoutType mCurrentLayoutType;
 
     protected RecyclerView mRecyclerView;
     protected SimpleRecyclerAdapter mAdapter;
@@ -73,14 +74,13 @@ public class SimpleRecyclerFragment extends Fragment {
         // elements are laid out.
         mLayoutManager = new LinearLayoutManager(getActivity());
 
-        mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
+        mCurrentLayoutType = LayoutType.LINEAR_VERTICAL;
 
         if (savedInstanceState != null) {
             // Restore saved layout manager type.
-            mCurrentLayoutManagerType = (LayoutManagerType) savedInstanceState
-                    .getSerializable(KEY_LAYOUT_MANAGER);
+            mCurrentLayoutType = (LayoutType) savedInstanceState.getSerializable(KEY_LAYOUT_MANAGER);
         }
-        setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
+        setLayout(mCurrentLayoutType);
 
         mAdapter = new SimpleRecyclerAdapter(mDataset);
         // Set SimpleRecyclerAdapter as the adapter for RecyclerView.
@@ -93,9 +93,9 @@ public class SimpleRecyclerFragment extends Fragment {
     /**
      * Set RecyclerView's LayoutManager to the one given.
      *
-     * @param layoutManagerType Type of layout manager to switch to.
+     * @param layoutType Type of layout manager to switch to.
      */
-    public void setRecyclerViewLayoutManager(LayoutManagerType layoutManagerType) {
+    public void setLayout(LayoutType layoutType) {
         int scrollPosition = 0;
 
         // If a layout manager has already been set, get current scroll position.
@@ -104,18 +104,26 @@ public class SimpleRecyclerFragment extends Fragment {
                     .findFirstCompletelyVisibleItemPosition();
         }
 
-        switch (layoutManagerType) {
-            case GRID_LAYOUT_MANAGER:
+        switch (layoutType) {
+            case GRID:
                 mLayoutManager = new GridLayoutManager(getActivity(), SPAN_COUNT);
-                mCurrentLayoutManagerType = LayoutManagerType.GRID_LAYOUT_MANAGER;
+                mCurrentLayoutType = LayoutType.GRID;
                 break;
-            case LINEAR_LAYOUT_MANAGER:
-                mLayoutManager = new LinearLayoutManager(getActivity());
-                mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
+
+            case LINEAR_HORIZONTAL:
+            case LINEAR_VERTICAL:
+                LinearLayoutManager lm = new LinearLayoutManager(getActivity());
+                int orientation = (layoutType == LayoutType.LINEAR_HORIZONTAL)
+                        ? LinearLayoutManager.HORIZONTAL
+                        : LinearLayoutManager.VERTICAL;
+                lm.setOrientation(orientation);
+                mLayoutManager = lm;
+                mCurrentLayoutType = layoutType;
                 break;
+
             default:
                 mLayoutManager = new LinearLayoutManager(getActivity());
-                mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
+                mCurrentLayoutType = LayoutType.LINEAR_VERTICAL;
         }
 
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -125,7 +133,7 @@ public class SimpleRecyclerFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         // Save currently selected layout manager.
-        savedInstanceState.putSerializable(KEY_LAYOUT_MANAGER, mCurrentLayoutManagerType);
+        savedInstanceState.putSerializable(KEY_LAYOUT_MANAGER, mCurrentLayoutType);
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -136,7 +144,7 @@ public class SimpleRecyclerFragment extends Fragment {
     private void initDataset() {
         mDataset = new String[DATASET_COUNT];
         for (int i = 0; i < DATASET_COUNT; i++) {
-            mDataset[i] = "This is element #" + i;
+            mDataset[i] = "Element #" + i;
         }
     }
 }

@@ -61,7 +61,7 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.layoutType_menuItem_listView:
+            case R.id.layoutType_menuItem_listView_vertical:
                 setGalleryFragmentType(GALLERY_FRAGMENT_TYPE_LIST);
                 return true;
 

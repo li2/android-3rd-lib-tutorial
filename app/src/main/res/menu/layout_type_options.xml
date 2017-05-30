@@ -2,8 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/layoutType_menuItem_listView"
-          android:title="Layout - ListView"
+    <item android:id="@+id/layoutType_menuItem_listView_horizontal"
+          android:title="Layout - ListView - Horizontal"
+          app:showAsAction="never"/>
+
+    <item android:id="@+id/layoutType_menuItem_listView_vertical"
+          android:title="Layout - ListView - Vertical"
           app:showAsAction="never"/>
 
     <item android:id="@+id/layoutType_menuItem_gridView"

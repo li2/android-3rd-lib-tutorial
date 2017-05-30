@@ -25,6 +25,8 @@ import android.widget.TextView;
 
 import android.R;
 
+import static me.li2.android.tutorial.BasicUI.LogHelper.LOGD;
+
 
 /**
  * Provide views to RecyclerView with data from mDataSet.
@@ -47,7 +49,7 @@ public class SimpleRecyclerAdapter extends RecyclerView.Adapter<SimpleRecyclerAd
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "Element " + getPosition() + " clicked.");
+                    LOGD(TAG, "Element " + getAdapterPosition() + " clicked.");
                 }
             });
             textView = (TextView) v.findViewById(R.id.text1);
@@ -75,6 +77,10 @@ public class SimpleRecyclerAdapter extends RecyclerView.Adapter<SimpleRecyclerAd
         // Create a new view.
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(android.R.layout.simple_list_item_1, viewGroup, false);
+
+        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        v.setLayoutParams(lp);
 
         return new ViewHolder(v);
     }
