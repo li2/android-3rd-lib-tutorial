@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IntDef;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import me.li2.android.tutorial.BasicUI.BasicFragmentContainerActivity;
+import me.li2.android.tutorial.BasicWidget.SimpleRecyclerView.SimpleRecyclerFragment;
 import me.li2.android.tutorial.Picasso.L2ImageDisplaying.BlurTransformation;
 import me.li2.android.tutorial.Picasso.L2ImageDisplaying.GrayscaleTransformation;
 import me.li2.android.tutorial.Picasso.L2ImageDisplaying.ImagesData;
@@ -119,6 +121,11 @@ public class PhotoPageActivity extends BasicFragmentContainerActivity {
     }
 
     @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_photo_page;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -200,6 +207,14 @@ public class PhotoPageActivity extends BasicFragmentContainerActivity {
                 transformations.add(new BlurTransformation(this));
                 transformations.add(new GrayscaleTransformation(Picasso.with(this)));
                 testPicassoTransformation(transformations);
+                return true;
+
+            case R.id.imagePicasso_menuItem_additionalTransformations:
+                if (mTransformFragment == null) {
+                    addTransformFragment();
+                } else if (!mTransformFragment.isVisible()) {
+                    mTransformFragment.show();
+                }
                 return true;
 
             default:
@@ -321,5 +336,37 @@ public class PhotoPageActivity extends BasicFragmentContainerActivity {
                 .load(mPhotoPath)
                 .transform(transformations)
                 .into(mFragment.getPhotoView());
+    }
+
+
+    private SimpleRecyclerFragment mTransformFragment;
+
+    private void addTransformFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        SimpleRecyclerFragment fragment =
+                (SimpleRecyclerFragment) fm.findFragmentById(R.id.transformFragmentContainer);
+
+        if (fragment == null) {
+            String[] dataset = new String[] {"CropCircle"};
+            fragment = SimpleRecyclerFragment.newInstance(dataset, SimpleRecyclerFragment.LayoutType.LINEAR_HORIZONTAL);
+            fm.beginTransaction().add(R.id.transformFragmentContainer, fragment).commit();
+            
+            fragment.setOnItemClickListener(new SimpleRecyclerFragment.OnItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    mTransformFragment.hide();
+                    LOGD(TAG, "onItemClick " + position);
+                }
+            });
+        }
+
+        mTransformFragment = fragment;
+    }
+
+    private void removeTransformFragment() {
+        if (mTransformFragment != null && mTransformFragment.isAdded()) {
+            FragmentManager fm = getSupportFragmentManager();
+            fm.beginTransaction().remove(mTransformFragment).commit();
+        }
     }
 }

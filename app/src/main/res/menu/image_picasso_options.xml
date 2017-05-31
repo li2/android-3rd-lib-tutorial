@@ -3,31 +3,35 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/imagePicasso_menuItem_noPlaceholder"
-          android:title="test noPlaceholder()"
+          android:title="noPlaceholder()"
           app:showAsAction="never"/>
 
     <item android:id="@+id/imagePicasso_menuItem_get"
-          android:title="test get()"
+          android:title="get()"
           app:showAsAction="never"/>
 
     <item android:id="@+id/imagePicasso_menuItem_target"
-          android:title="test interface Target"
+          android:title="interface Target"
           app:showAsAction="never"/>
 
     <item android:id="@+id/imagePicasso_menuItem_rotate"
-          android:title="test Rotate"
+          android:title="Rotate"
           app:showAsAction="never"/>
 
     <item android:id="@+id/imagePicasso_menuItem_transformBlur"
-          android:title="test Transform - Blur"
+          android:title="Transform - Blur"
           app:showAsAction="never"/>
 
     <item android:id="@+id/imagePicasso_menuItem_transformGrayscale"
-          android:title="test Transform - Grayscale"
+          android:title="Transform - Grayscale"
           app:showAsAction="never"/>
 
     <item android:id="@+id/imagePicasso_menuItem_transformBlurAndGrayscale"
-          android:title="test Transforms - Blur &amp; Grayscale"
+          android:title="Transforms - Blur &amp; Grayscale"
+          app:showAsAction="never"/>
+
+    <item android:id="@+id/imagePicasso_menuItem_additionalTransformations"
+          android:title="Additional Transforms"
           app:showAsAction="never"/>
 
 </menu>

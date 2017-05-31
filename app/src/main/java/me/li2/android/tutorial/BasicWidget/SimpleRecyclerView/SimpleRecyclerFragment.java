@@ -18,6 +18,7 @@ package me.li2.android.tutorial.BasicWidget.SimpleRecyclerView;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,7 +35,9 @@ import me.li2.android.tutorial.R;
 public class SimpleRecyclerFragment extends Fragment {
 
     private static final String TAG = "SimpleRecyclerFragment";
-    private static final String KEY_LAYOUT_MANAGER = "layoutManager";
+    private static final String ARG_KEY_LAYOUT_TYPE = "arg_key_layoutType";
+    private static final String ARG_KEY_DATASET = "arg_key_dataset";
+
     private static final int SPAN_COUNT = 3;
     private static final int DATASET_COUNT = 21;
 
@@ -51,16 +54,48 @@ public class SimpleRecyclerFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private SimpleRecyclerAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private LayoutType mCurrentLayoutType;
     private String[] mDataset;
+    private LayoutType mCurrentLayoutType = LayoutType.LINEAR_VERTICAL;
+    private OnItemClickListener mOnItemClickListener;
+
+
+    public SimpleRecyclerFragment() {
+
+    }
+
+    public static SimpleRecyclerFragment newInstance(String[] dataset, LayoutType layoutType) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_KEY_LAYOUT_TYPE, layoutType);
+        args.putSerializable(ARG_KEY_DATASET, dataset);
+
+        SimpleRecyclerFragment fragment = new SimpleRecyclerFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        Bundle args = getArguments();
+        if (args != null) {
+            mCurrentLayoutType = (LayoutType) args.getSerializable(ARG_KEY_LAYOUT_TYPE);
+            mDataset = (String[]) args.getSerializable(ARG_KEY_DATASET);
+        }
+
+        if (savedInstanceState != null) {
+            // Restore saved layout manager type.
+            mCurrentLayoutType = (LayoutType) savedInstanceState.getSerializable(ARG_KEY_LAYOUT_TYPE);
+        }
 
         // Initialize dataset, this data would usually come from a local content provider or
         // remote server.
-        initDataset();
+        if (mDataset == null) {
+            initDataset();
+        }
+
+        mAdapter = new SimpleRecyclerAdapter(mDataset);
+        setOnItemClickListener(mOnItemClickListener);
     }
 
     @Override
@@ -68,24 +103,13 @@ public class SimpleRecyclerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_simple_recycler_view, container, false);
         rootView.setTag(TAG);
+        rootView.setBackgroundColor(ContextCompat.getColor(rootView.getContext(), android.R.color.background_light));
 
         // BEGIN_INCLUDE(initializeRecyclerView)
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
 
-        // LinearLayoutManager is used here, this will layout the elements in a similar fashion
-        // to the way ListView would layout elements. The RecyclerView.LayoutManager defines how
-        // elements are laid out.
-        mLayoutManager = new LinearLayoutManager(getActivity());
-
-        mCurrentLayoutType = LayoutType.LINEAR_VERTICAL;
-
-        if (savedInstanceState != null) {
-            // Restore saved layout manager type.
-            mCurrentLayoutType = (LayoutType) savedInstanceState.getSerializable(KEY_LAYOUT_MANAGER);
-        }
         setLayout(mCurrentLayoutType);
 
-        mAdapter = new SimpleRecyclerAdapter(mDataset);
         // Set SimpleRecyclerAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
         // END_INCLUDE(initializeRecyclerView)
@@ -129,6 +153,9 @@ public class SimpleRecyclerFragment extends Fragment {
                 mCurrentLayoutType = LayoutType.LINEAR_VERTICAL;
         }
 
+        // LinearLayoutManager is used here, this will layout the elements in a similar fashion
+        // to the way ListView would layout elements. The RecyclerView.LayoutManager defines how
+        // elements are laid out.
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.scrollToPosition(scrollPosition);
     }
@@ -136,13 +163,14 @@ public class SimpleRecyclerFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         // Save currently selected layout manager.
-        savedInstanceState.putSerializable(KEY_LAYOUT_MANAGER, mCurrentLayoutType);
+        savedInstanceState.putSerializable(ARG_KEY_LAYOUT_TYPE, mCurrentLayoutType);
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mOnItemClickListener = listener;
         if (mAdapter != null) {
-            mAdapter.setOnItemClickListener(onItemClickListener);
+            mAdapter.setOnItemClickListener(listener);
         }
     }
 
@@ -150,6 +178,23 @@ public class SimpleRecyclerFragment extends Fragment {
         mDataset = dataset;
         if (mAdapter != null) {
             mAdapter.setDataSet(dataset);
+        }
+    }
+
+
+    public void show() {
+        if (getActivity() != null && isAdded() && !isVisible()) {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .show(this)
+                    .commit();
+        }
+    }
+
+    public void hide() {
+        if (getActivity() != null && isAdded() && isVisible()) {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .hide(this)
+                    .commit();
         }
     }
 
