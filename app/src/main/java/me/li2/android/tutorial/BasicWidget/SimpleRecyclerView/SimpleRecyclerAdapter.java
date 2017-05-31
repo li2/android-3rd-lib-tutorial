@@ -16,16 +16,13 @@
 
 package me.li2.android.tutorial.BasicWidget.SimpleRecyclerView;
 
+import android.R;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import android.R;
-
-import static me.li2.android.tutorial.BasicUI.LogHelper.LOGD;
 
 
 /**
@@ -35,12 +32,13 @@ public class SimpleRecyclerAdapter extends RecyclerView.Adapter<SimpleRecyclerAd
     private static final String TAG = "SimpleRecyclerAdapter";
 
     private String[] mDataSet;
+    private SimpleRecyclerFragment.OnItemClickListener mOnItemClickListener;
 
     // BEGIN_INCLUDE(recyclerViewSampleViewHolder)
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
 
         public ViewHolder(View v) {
@@ -49,7 +47,10 @@ public class SimpleRecyclerAdapter extends RecyclerView.Adapter<SimpleRecyclerAd
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    LOGD(TAG, "Element " + getAdapterPosition() + " clicked.");
+                    Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
+                    if (mOnItemClickListener != null) {
+                        mOnItemClickListener.onItemClick(getAdapterPosition());
+                    }
                 }
             });
             textView = (TextView) v.findViewById(R.id.text1);
@@ -68,6 +69,15 @@ public class SimpleRecyclerAdapter extends RecyclerView.Adapter<SimpleRecyclerAd
      */
     public SimpleRecyclerAdapter(String[] dataSet) {
         mDataSet = dataSet;
+    }
+
+    public void setDataSet(String[] dataSet) {
+        mDataSet = dataSet;
+        notifyDataSetChanged();
+    }
+
+    public void setOnItemClickListener(SimpleRecyclerFragment.OnItemClickListener l) {
+        mOnItemClickListener = l;
     }
 
     // BEGIN_INCLUDE(recyclerViewOnCreateViewHolder)

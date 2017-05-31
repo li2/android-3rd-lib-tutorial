@@ -38,18 +38,21 @@ public class SimpleRecyclerFragment extends Fragment {
     private static final int SPAN_COUNT = 3;
     private static final int DATASET_COUNT = 21;
 
+    public interface OnItemClickListener {
+        void onItemClick(final int position);
+    }
+
     public enum LayoutType {
         GRID,
         LINEAR_HORIZONTAL,
         LINEAR_VERTICAL,
     }
 
-    protected LayoutType mCurrentLayoutType;
-
-    protected RecyclerView mRecyclerView;
-    protected SimpleRecyclerAdapter mAdapter;
-    protected RecyclerView.LayoutManager mLayoutManager;
-    protected String[] mDataset;
+    private RecyclerView mRecyclerView;
+    private SimpleRecyclerAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private LayoutType mCurrentLayoutType;
+    private String[] mDataset;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -135,6 +138,19 @@ public class SimpleRecyclerFragment extends Fragment {
         // Save currently selected layout manager.
         savedInstanceState.putSerializable(KEY_LAYOUT_MANAGER, mCurrentLayoutType);
         super.onSaveInstanceState(savedInstanceState);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        if (mAdapter != null) {
+            mAdapter.setOnItemClickListener(onItemClickListener);
+        }
+    }
+
+    public void setDataset(String[] dataset) {
+        mDataset = dataset;
+        if (mAdapter != null) {
+            mAdapter.setDataSet(dataset);
+        }
     }
 
     /**

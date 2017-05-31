@@ -7,13 +7,16 @@ import me.li2.android.tutorial.BasicUI.BasicFragmentContainerActivity;
 import me.li2.android.tutorial.BasicWidget.SimpleRecyclerView.SimpleRecyclerFragment;
 import me.li2.android.tutorial.R;
 
+import static me.li2.android.tutorial.BasicUI.LogHelper.LOGD;
+import static me.li2.android.tutorial.BasicUI.LogHelper.makeLogTag;
+
 /**
  * Created by weiyi on 17/05/2017.
  * https://github.com/li2
  */
 
 public class SimpleRecyclerView extends BasicFragmentContainerActivity {
-    private SimpleRecyclerFragment mRecyclerFragment;
+    private static final String TAG = makeLogTag(SimpleRecyclerView.class);
 
     @Override
     protected String getTitlePrefix() {
@@ -22,8 +25,20 @@ public class SimpleRecyclerView extends BasicFragmentContainerActivity {
 
     @Override
     protected Fragment createFragment() {
-        mRecyclerFragment = new SimpleRecyclerFragment();
-        return mRecyclerFragment;
+        return new SimpleRecyclerFragment();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mFragment != null && mFragment instanceof SimpleRecyclerFragment) {
+            ((SimpleRecyclerFragment) mFragment).setOnItemClickListener(new SimpleRecyclerFragment.OnItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    LOGD(TAG, "onItemClick " + position);
+                }
+            });
+        }
     }
 
     @Override
@@ -35,19 +50,25 @@ public class SimpleRecyclerView extends BasicFragmentContainerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.layoutType_menuItem_listView_horizontal:
-                mRecyclerFragment.setLayout(SimpleRecyclerFragment.LayoutType.LINEAR_HORIZONTAL);
+                setRecyclerViewLayout(SimpleRecyclerFragment.LayoutType.LINEAR_HORIZONTAL);
                 return true;
 
             case R.id.layoutType_menuItem_listView_vertical:
-                mRecyclerFragment.setLayout(SimpleRecyclerFragment.LayoutType.LINEAR_VERTICAL);
+                setRecyclerViewLayout(SimpleRecyclerFragment.LayoutType.LINEAR_VERTICAL);
                 return true;
 
             case R.id.layoutType_menuItem_gridView:
-                mRecyclerFragment.setLayout(SimpleRecyclerFragment.LayoutType.GRID);
+                setRecyclerViewLayout(SimpleRecyclerFragment.LayoutType.GRID);
                 return true;
 
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void setRecyclerViewLayout(SimpleRecyclerFragment.LayoutType layoutType) {
+        if (mFragment != null && mFragment instanceof SimpleRecyclerFragment) {
+            ((SimpleRecyclerFragment) mFragment).setLayout(layoutType);
         }
     }
 }
