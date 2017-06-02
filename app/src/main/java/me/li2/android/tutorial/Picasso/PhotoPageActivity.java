@@ -30,8 +30,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+import jp.wasabeef.picasso.transformations.MaskTransformation;
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
+import jp.wasabeef.picasso.transformations.gpu.PixelationFilterTransformation;
 import me.li2.android.tutorial.BasicUI.BasicFragmentContainerActivity;
 import me.li2.android.tutorial.BasicWidget.SimpleRecyclerView.SimpleRecyclerFragment;
 import me.li2.android.tutorial.Picasso.L2ImageDisplaying.BlurTransformation;
@@ -212,8 +217,11 @@ public class PhotoPageActivity extends BasicFragmentContainerActivity {
             case R.id.imagePicasso_menuItem_additionalTransformations:
                 if (mTransformFragment == null) {
                     addTransformFragment();
+                    mTransformationDataset = buildTransformationDataset();
                 } else if (!mTransformFragment.isVisible()) {
                     mTransformFragment.show();
+                } else if (mTransformFragment.isVisible()) {
+                    mTransformFragment.hide();
                 }
                 return true;
 
@@ -338,7 +346,13 @@ public class PhotoPageActivity extends BasicFragmentContainerActivity {
                 .into(mFragment.getPhotoView());
     }
 
+    /** Additional Picasso Transformations */
+    private static final String TRANSFORM_PIXEL = "Pixel";
+    private static final String TRANSFORM_CROP_CIRCLE = "Crop Circle";
+    private static final String TRANSFORM_ROUNDED_CORNERS = "Rounded Corners";
+    private static final String TRANSFORM_MASK = "Mask";
 
+    private HashMap<String, Transformation> mTransformationDataset;
     private SimpleRecyclerFragment mTransformFragment;
 
     private void addTransformFragment() {
@@ -347,15 +361,14 @@ public class PhotoPageActivity extends BasicFragmentContainerActivity {
                 (SimpleRecyclerFragment) fm.findFragmentById(R.id.transformFragmentContainer);
 
         if (fragment == null) {
-            String[] dataset = new String[] {"CropCircle"};
-            fragment = SimpleRecyclerFragment.newInstance(dataset, SimpleRecyclerFragment.LayoutType.LINEAR_HORIZONTAL);
+            final String[] options = new String[] {TRANSFORM_PIXEL, TRANSFORM_MASK, TRANSFORM_CROP_CIRCLE, TRANSFORM_ROUNDED_CORNERS};
+            fragment = SimpleRecyclerFragment.newInstance(options, SimpleRecyclerFragment.LayoutType.LINEAR_HORIZONTAL);
             fm.beginTransaction().add(R.id.transformFragmentContainer, fragment).commit();
             
             fragment.setOnItemClickListener(new SimpleRecyclerFragment.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    mTransformFragment.hide();
-                    LOGD(TAG, "onItemClick " + position);
+                    testPicassoTransformation(mTransformationDataset.get(options[position]));
                 }
             });
         }
@@ -363,10 +376,14 @@ public class PhotoPageActivity extends BasicFragmentContainerActivity {
         mTransformFragment = fragment;
     }
 
-    private void removeTransformFragment() {
-        if (mTransformFragment != null && mTransformFragment.isAdded()) {
-            FragmentManager fm = getSupportFragmentManager();
-            fm.beginTransaction().remove(mTransformFragment).commit();
-        }
+
+    private HashMap<String, Transformation> buildTransformationDataset() {
+        HashMap<String, Transformation> dataset = new HashMap<>();
+        dataset.put(TRANSFORM_PIXEL, new PixelationFilterTransformation(this, 20));
+        dataset.put(TRANSFORM_CROP_CIRCLE, new CropCircleTransformation());
+        dataset.put(TRANSFORM_ROUNDED_CORNERS, new RoundedCornersTransformation(30, 0,
+                RoundedCornersTransformation.CornerType.ALL));
+        dataset.put(TRANSFORM_MASK, new MaskTransformation(this, R.drawable.ic_android));
+        return dataset;
     }
 }
