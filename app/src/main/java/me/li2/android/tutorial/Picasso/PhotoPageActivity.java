@@ -376,7 +376,6 @@ public class PhotoPageActivity extends BasicFragmentContainerActivity {
         mTransformFragment = fragment;
     }
 
-
     private HashMap<String, Transformation> buildTransformationDataset() {
         HashMap<String, Transformation> dataset = new HashMap<>();
         dataset.put(TRANSFORM_PIXEL, new PixelationFilterTransformation(this, 20));

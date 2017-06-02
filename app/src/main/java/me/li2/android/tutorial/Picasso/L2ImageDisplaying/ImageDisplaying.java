@@ -137,8 +137,10 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             String url = ImagesData.URLS[position];
-            Intent intent = PhotoPageActivity.newIntentToLoadPath(MainApplication.getAppContext(), url);
-            view.getContext().startActivity(intent);
+            if (!TextUtils.isEmpty(url)) {
+                Intent intent = PhotoPageActivity.newIntentToLoadPath(MainApplication.getAppContext(), url);
+                view.getContext().startActivity(intent);
+            }
         }
     };
 
@@ -153,6 +155,15 @@ public class ImageDisplaying extends BasicFragmentContainerActivity {
             super(context, 0);
             mContext = context;
             mUrls = urls;
+
+            // Cache Indicators
+            Picasso.with(context).setIndicatorsEnabled(true);
+
+            // Logging
+            Picasso.with(context).setLoggingEnabled(true);
+
+            // Snapshot
+            LOGD(TAG, Picasso.with(context).getSnapshot().toString());
         }
 
         @Override

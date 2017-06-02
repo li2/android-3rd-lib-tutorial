@@ -66,7 +66,6 @@
             Picasso.with(mContext)
                     .load(R.drawable.ic_image_broken)
                     .into(imageView);
-    
         } 
 
 
@@ -145,6 +144,18 @@
         .load(url)
         .transform(new BlurTransformation(context))
         .into(imageView);
+
+
+
+## Influencing Image Caching ##
+
+> If the image was not requested recently, and consequently the image is not in memory cache, Picasso will check the disk cache next. If it's not available on disk, only then Picasso will start the network request.
+> In conclusion, Picasso will check memory -> disk -> network.
+
+
+## Cache Indicators, Logging & Snapshot ##
+
+一些用来调试的机制：图片左上角的颜色块表示缓存来源；log开关；状态快照。但好像用处不大。
 
 
 ## References
