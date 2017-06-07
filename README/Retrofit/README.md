@@ -24,6 +24,7 @@
     GET /users/:username/repos
 
 问题是如何通过 Retrofit 描述这个 API ？
+https://api.github.com/users/li2/repos
 
 
 ### How to Describe API Endpoints you want to interact with
@@ -38,12 +39,12 @@
 - The `@Path` annotation: 使用 Retrofit 的路径参数替换功能。
     > the usage of Retrofit's path parameter replacement functionality: the `{user}` path will be replaced with given variable values when calling this method. 
 
-- return `List<GitHubRepo>`: Retrofit makes sure the server response gets mapped correctly（由创建 Retrofit REST client 时指定的 converter 实现）。
+- return `List<GitHubRepo>`: Retrofit makes sure the server response gets mapped correctly, and you won't have to do any manual parsing.（由创建 Retrofit REST client 时指定的 converter 实现）。
 
 
 ### Create a data model class `GitHubRepo` to map the server response data
 
-下面是从 [server response data（JSON 文件）](https://api.github.com/users/li2/repos) 中截取的一段：
+下面是从 server response data（JSON 文件）中截取的一段：
 
     [
       {
@@ -114,6 +115,55 @@ Once you’ve invoked `.enqueue` on the created `call` object **the request will
     });
 
 
+## Basics of API Description
+
+### HTTP Method
+
+前面讲过 “用 HTTP 协议里的动词（GET, POST, PUT, DELETE）来实现资源的添加，修改，删除等状态扭转操作”，Retrofit 通过注解来声明：use the appropriate Retrofit annotations for each HTTP method: `@GET`, `@POST`, `@PUT`, `@DELETE`, `@PATCH` or `@HEAD`.
+
+### HTTP Resource Location
+
+在创建 Retrofit REST client 时已经配置了 base URL，而对于每个 HTTP 方法，还需要添加 relative endpoint URL，比如上文的例子 `@GET("/users/{user}/repos")`, 这种方式有很多优点（比如更容易实现 dynamic base URLs）。
+
+但 Retrofit 仍然允许指定 full URL（后文会讲到它的作用）。
+
+### Method Name & Return Type & Parameters
+
+Retrofit 不关心方法名，但仍然需要选择有意义的名字 Nevertheless, you should choose a name, which helps you and other developers to understand what API request this is.
+
+方法的返回类型很重要，You have to define what kind of data you expect from the server:
+
+- `List<GitHubRepo>`: map the server response to data model class
+- `ResponseBody`: the raw response
+- `Void`: don't care at all what the server responds
+
+可以传递很多种类型的参数：
+
+- `@Body`: send Java objects as request body.
+- `@Url`: use dynamic URLs.
+- `@Field`: send data as form-urlencoded.
+
+### Path Parameters
+
+**路径参数**是 URL 的一部分，相当于占位符，需要在向 server 发起请求时被替换。这属于 **dynamic URLs**.
+
+REST APIs are build on dynamic URLs. You access the resource by replacing parts of the URL, 比如上文中获取 GitHub 用户 repositories 的例子：https://api.github.com/users/li2/repos ，这个 URL 中的 li2 就是 path parameters：
+
+- `@GET("/users/{user}/repos")`: `{}` 是 URL 占位符，indicates to Retrofit that the value is dynamic and will be set when the request is being made.
+- `reposForUser(@Path("user") String user)`: `@Path()` function parameter 是替换占位符的参数, where the @Path value matches the placeholder in the URL.
+
+
+### Query Parameters
+
+**查询参数**也属于 dynamic URLs. 比如 http://samples.openweathermap.org/data/2.5/weather?q=London&mode=xml&appid=b1b15e88fa797225412429c1c50c122a1 `?` 表示这是查询参数，`?q=London`是第一个查询参数，`mode=xml` 是第二个参数，参数间以 `&` 连接。
+
+查询参数对要请求的资源做了更具体的描述。和路参数不同的是，不需要添加到 annotation URL 中。 You can simply add a method parameter with `@Query()` and a query parameter name, describe the type:
+
+    @GET("http://samples.openweathermap.org/data/2.5/weather/")
+    Call<Weather> getLondonWeather(
+            @Query("q") String location,
+            @Query("mode") String format,
+            @Query("appid") String apiKey);
 
 
 ## Reference
