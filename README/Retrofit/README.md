@@ -166,6 +166,25 @@ REST APIs are build on dynamic URLs. You access the resource by replacing parts 
             @Query("appid") String apiKey);
 
 
+## Creating a Sustainable Android Client
+
+创建一个 Retrofit Client 需要做一些基本配置，比如 base URL, converter，如果项目中有很多请求 (have dozens of network requests throughout your app)，最佳实践是把这些配置封装成一个类 separating into one clean class [ServiceGenerator.java](../../app/src/main/java/me/li2/android/tutorial/Retrofit2/L3CreatingSustainableClient/ServiceGenerator.java)：
+
+    public class ServiceGenerator {
+        private static Retrofit retrofit = builder.build();
+        
+        // 入口参数 serviceClass 是 annotated interface for API requests,
+        // 比如上文中的 public interface GitHubClient.
+        public static <S> S createService(Class<S> serviceClass) {
+            return retrofit.create(serviceClass);
+        }
+    }
+
+然后用一行代码就可以创建一个 Retrofit REST client:
+
+    GitHubClient client = ServiceGenerator.createService(GitHubClient.class);
+    
+
 ## Reference
 
 - [怎样用通俗的语言解释 REST，以及 RESTful？- 覃超的回答](https://www.zhihu.com/question/28557115/answer/48094438)
