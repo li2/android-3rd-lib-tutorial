@@ -1,6 +1,11 @@
-# Retrofit Tutorial
+Retrofit Tutorial
+=================
 
-## Getting Started and Creating an Android Client
+# PART A - Create Retrofit Client
+
+In this first part, you’ll learn how to set up your Retrofit client as the base for executing requests.
+
+## L01 - Getting Started and Creating an Android Client
 
 ### Retrofit 是什么？
 
@@ -106,6 +111,9 @@ Once you’ve invoked `.enqueue` on the created `call` object **the request will
         public void onResponse(Call<List<GitHubRepo>> call, Response<List<GitHubRepo>> response) {
             // the network call was a success and we got a response
             List<GitHubRepo> repos = response.body();
+            
+            // get raw response
+            Response raw = response.raw();
         }
 
         @Override
@@ -115,7 +123,7 @@ Once you’ve invoked `.enqueue` on the created `call` object **the request will
     });
 
 
-## Basics of API Description
+## L02 - Basics of API Description
 
 ### HTTP Method
 
@@ -166,7 +174,7 @@ REST APIs are build on dynamic URLs. You access the resource by replacing parts 
             @Query("appid") String apiKey);
 
 
-## Creating a Sustainable Android Client
+## L03 - Creating a Sustainable Android Client
 
 创建一个 Retrofit Client 需要做一些基本配置，比如 base URL, converter，如果项目中有很多请求 (have dozens of network requests throughout your app)，最佳实践是把这些配置封装成一个类 separating into one clean class [ServiceGenerator.java](../../app/src/main/java/me/li2/android/tutorial/Retrofit2/L3CreatingSustainableClient/ServiceGenerator.java)：
 
@@ -185,8 +193,29 @@ REST APIs are build on dynamic URLs. You access the resource by replacing parts 
     GitHubClient client = ServiceGenerator.createService(GitHubClient.class);
     
 
+# PART B - Sending Your First Request
+
+In this part you’ll use the Retrofit client to execute your first requests.
+
+## L04 Synchronous and Asynchronous Requests
+
+Within Retrofit 2, every request is wrapped into a `Call` object. The actual synchronous or asynchronous request is executed differently using the desired method on a later created `call` object. 使用相同的 API 定义获取 call, 然后调用 call 的不同方法实现同步、异步。
+
+Synchronous methods provide the ability to use the return value directly, because the operation blocks everything else during your network request.
+
+synchronous requests trigger app crashes on Android 4.0 or newer. You’ll run into the `NetworkOnMainThreadException` error, so you have to handle the request execution in a separated thread by yourself.
+
+    // execute(): Synchronously send the request and return its response.
+    List<GitHubRepo> repos = call.execute().body();
+
+    // enqueue(): Asynchronously send the request and notify callback of its response.
+    // 参考上文的具体实现.
+    call.enqueue(new Callback<List<GitHubRepo>>() {
+        ...
+    }
+
 ## Reference
 
 - [怎样用通俗的语言解释 REST，以及 RESTful？- 覃超的回答](https://www.zhihu.com/question/28557115/answer/48094438)
 - [Feature Studio - Retrofit — Getting Started and Creating an Android Client](https://futurestud.io/tutorials/retrofit-getting-started-and-android-client)
-- [Feature Studio - Retrofit Learning Paths](https://futurestud.io/learningpaths)
+- [Feature Studio - Retrofit Learning Paths](https://futurestud.io/learningpaths/retrofit-basics)
