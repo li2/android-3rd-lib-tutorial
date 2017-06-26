@@ -197,7 +197,7 @@ REST APIs are build on dynamic URLs. You access the resource by replacing parts 
 
 In this part you’ll use the Retrofit client to execute your first requests.
 
-## L04 Synchronous and Asynchronous Requests
+## L04 - Synchronous and Asynchronous Requests
 
 Within Retrofit 2, every request is wrapped into a `Call` object. The actual synchronous or asynchronous request is executed differently using the desired method on a later created `call` object. 使用相同的 API 定义获取 call, 然后调用 call 的不同方法实现同步、异步。
 
@@ -215,7 +215,7 @@ synchronous requests trigger app crashes on Android 4.0 or newer. You’ll run i
     }
     
 
-## L05 URL Handling, Resolution and Parsing
+## L05 - URL Handling, Resolution and Parsing
 
 Retrofit handles the relationship between API base URL and request endpoint URL in a logical manner. You’ll learn in detail how Retrofit assembles complete URLs.
 
@@ -272,7 +272,7 @@ In `Example 4`, we’re not using the path segment for the API, but instead a su
     endpoint: //api.futurestud.io/
     Result:   https://api.futurestud.io/
 
-## L06 Send Objects in Request Body
+## L06 - Send Objects in Request Body
 
 Learn how to define and send Java objects in an HTTP request body with Retrofit. Sending data to the server is one of the most fundamental tasks of Retrofit.
 
@@ -306,8 +306,8 @@ Learn how to define and send Java objects in an HTTP request body with Retrofit.
 
     Call<Task> createTasks(@Body List<Task> tasks);
     java.lang.IllegalStateException: Expected BEGIN_ARRAY but was STRING at line 1 column 1 path $
-    
-是因为 API 定义的返回类型 `Call<返回类型>`， 和 server 返回的数据类型不匹配。
+
+一定要严格定义 API 中的返回类型 `Call<返回类型>`，因为其代表了服务器的 response type。如果服务器返回的是 String，而 API 定义了 Call<Task>, 就会导致crash，这是因为 Retrofit 和 Gson 无法把 String 映射成 Java 对象。
 
 > The type in the Call<> describes the server response type. Your first option says the server should respond with a JSON object. http://requestb.in/10hf7r31 responds with a string, so Retrofit and Gson can't map that to a Java object. The second option with Call<void> ignores the server response and doesn't do any mapping. That's why you won't run into an issue.
 >
@@ -316,8 +316,47 @@ Learn how to define and send Java objects in an HTTP request body with Retrofit.
 > Answer from FutureStudio: http://disq.us/p/1hdcx4v
 
 
+# PART C - Payload Conversion
+
+In this part you’ll learn how to convert request and response payloads with Retrofit.
+
+## L07 - Introduction to (Multiple) Converters
+
+Get to know all provided standard converters and how to use them for mapping from and to various standard formats.
+
+## L08 - Adding & Customizing the Gson Converter
+
+Learn how to integrate and customize the Gson converter to map all of your JSON request and responses automatically.
+
+## L09 - How to Integrate XML Converter
+
+[IntegrateXMLConverter.java](../../app/src/main/java/me/li2/android/tutorial/Retrofit2/L9IntegrateXMLConverter)
+ 这里使用 [OpenWeather](https://openweathermap.org/current#current_XML) 作为测试 Server，它提供了测试数据（[JSON](http://samples.openweathermap.org/data/2.5/weather?q=London&appid=b1b15e88fa797225412429c1c50c122a1) & [XML](http://samples.openweathermap.org/data/2.5/weather?q=London&mode=xml&appid=b1b15e88fa797225412429c1c50c122a1)），因此不需要注册获取 API key 就可以调用 Server API 了。
+
+使用 `SimpleXML` converter 把 XML 文件映射为 Java object，这里的**关键是根据 XML 文件定义 Java Class**（目前还未找到自动转换工具，Gsonformat 是一个 Android Studio 插件，可以转换 GSON file 到 Java Class），使用 `@Root`, `@Element`, `@Attribute`，细节参阅 [link](http://www.vogella.com/tutorials/Retrofit/article.html#exercise-using-retrofit-to-convert-xml-response-from-an-rss-feed)。
+
+遇到一个 crash，涉及 Dealing with Multiple Converters：[commit](1583211)
+
+     com.google.gson.JsonSyntaxException: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+
+原因：
+
+> The GsonConverter thinks it can handle any data and (mistakenly) also accept XML data.
+> When dealing with Multiple Converters, make sure to add `SimpleXmlConverter` before the `GsonConverter`, to support both XML and JSON within your app.
+> 
+> Make sure you specify the special-purpose converters with limited abilities first and general converters (like Gson) last. [link1](http://disq.us/p/1fuwzgz), [link2](https://speakerdeck.com/jakewharton/making-retrofit-work-for-you-ohio-devfest-2016)
+
+缺少 GSON converter 造成的 crash，`List<GitHubRepo>` 是 API 的返回数据类型：
+
+    IllegalArgumentException: Unable to create converter for List<GitHubRepo>
+    IllegalArgumentException: Could not locate ResponseBody converter for List<GitHubRepo>
+
+
+
 ## Reference
 
 - [怎样用通俗的语言解释 REST，以及 RESTful？- 覃超的回答](https://www.zhihu.com/question/28557115/answer/48094438)
 - [Feature Studio - Retrofit — Getting Started and Creating an Android Client](https://futurestud.io/tutorials/retrofit-getting-started-and-android-client)
 - [Feature Studio - Retrofit Learning Paths](https://futurestud.io/learningpaths/retrofit-basics)
+- [Using Retrofit to convert XML response from an RSS feed](http://www.vogella.com/tutorials/Retrofit/article.html#exercise-using-retrofit-to-convert-xml-response-from-an-rss-feed)
+- [Simple XML Tutorial](http://simple.sourceforge.net/download/stream/doc/tutorial/tutorial.php)
