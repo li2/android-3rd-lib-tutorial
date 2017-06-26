@@ -272,7 +272,48 @@ In `Example 4`, we’re not using the path segment for the API, but instead a su
     endpoint: //api.futurestud.io/
     Result:   https://api.futurestud.io/
 
+## L06 Send Objects in Request Body
 
+Learn how to define and send Java objects in an HTTP request body with Retrofit. Sending data to the server is one of the most fundamental tasks of Retrofit.
+
+参考「L02 - Basics of API Description」，`@Body` 是可以传递的参数类型之一：
+[SendObjectsInRequestBody.java](../../app/src/main/java/me/li2/android/tutorial/Retrofit2/L5SendObjectsInRequestBody)
+
+    public interface TaskService {
+        @POST("http://requestb.in/10hf7r31")
+        Call<String> createTasks(@Body List<Task> tasks);
+    }
+
+    private void createTasks() {
+        List<Task> tasks = new ArrayList<>();
+        int id=1;
+        tasks.add(new Task(id++, "li2"));
+        tasks.add(new Task(id++, "Programming"));
+
+        TaskService taskService = ServiceGenerator.createService(TaskService.class);
+        taskService.createTasks(tasks).enqueue(new Callback<String>() {
+        });
+    }
+
+[RequestBin](http://requestb.in/) 是一个非常棒的免费网站，可以用来测试 POST 请求。使用方法也很简单，进入网站，点击「+Create a RequestBin」得到一个 url，用来接收 POST 请求；然后通过浏览器观察 post 数据。测试结果见下图：
+
+> RequestBin is a HTTP test server that accepts GET/Post calls for testing POST requests.
+> RequestBin gives you a URL that will collect requests made to it and let you inspect them in a human-friendly way. [link](http://stackoverflow.com/a/9770981/2722270)
+
+![send object](retrofit_send_objects_in_request_body.png)
+
+最开始 API 定义是这样的导致了 crash:
+
+    Call<Task> createTasks(@Body List<Task> tasks);
+    java.lang.IllegalStateException: Expected BEGIN_ARRAY but was STRING at line 1 column 1 path $
+    
+是因为 API 定义的返回类型 `Call<返回类型>`， 和 server 返回的数据类型不匹配。
+
+> The type in the Call<> describes the server response type. Your first option says the server should respond with a JSON object. http://requestb.in/10hf7r31 responds with a string, so Retrofit and Gson can't map that to a Java object. The second option with Call<void> ignores the server response and doesn't do any mapping. That's why you won't run into an issue.
+>
+> On the other hand, the method's return type is critical. You have to define what kind of data you expect from the server. If you don't care at all what the server responds, you can use Void. In all those cases, you'll have to wrap it into a typed Retrofit Call<> class.
+> 
+> Answer from FutureStudio: http://disq.us/p/1hdcx4v
 
 
 ## Reference
