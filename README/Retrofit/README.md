@@ -417,6 +417,21 @@ If your path parameter is right in the middle of the url, passing an empty strin
 
 和查询参数不同的是，不能传给路径参数 `Null`, 否则 `IllegalArgumentException`, 所以 Ensure stability by verifying that the path parameter values are always not null.
 
+## L13 - Add Custom Request Header
+
+Does your API require you to send the same header on every request? Do you want to fine tune caching? Learn how how to add custom headers to your requests.
+
+Request header 是什么？ **Headers containing more information about the resource to be fetched or about the client itself**. [link](https://developer.mozilla.org/en-US/docs/Glossary/Request_header)
+
+### Static Request Header 
+Create a Request Interceptor, and intercept the request on the network layer provided by OkHttp. These headers are passed with **every request**. Headers can be key-value-pair as one string or as a list of strings. 
+[Demo Codes: ServiceGenerator.java](../../app/src/main/java/me/li2/android/tutorial/Retrofit2/L3CreatingSustainableClient/ServiceGenerator.java)
+
+### Dynamic Header
+
+A dynamic header is passed like a parameter to the **each request** API. [link](https://futurestud.io/tutorials/retrofit-add-custom-request-header)
+[Demo Codes: WeatherService.java](../../app/src/main/java/me/li2/android/tutorial/Retrofit2/L11QueryParameters/WeatherService.java)
+
 
 
 ## Reference
