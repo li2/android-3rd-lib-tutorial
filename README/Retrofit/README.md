@@ -373,9 +373,13 @@ In this final part you’ll learn a variety of request manipulations, including 
 
 Learn how to use Retrofit to add (optional / multiple) query parameters to your requests. 参考「Basics of API Description」dynamic URLs 包含路径参数和查询参数。
 
+### Optional query parameters
+
 查询参数是一种动态 url 技术，把 `@Query("key")` 携带的 key 和方法的参数组合成 key-value，然后添加到 url 中。
 
 可以传入 `null` 参数，Retrofit skips null parameters and ignores them while assembling the request. 但 cannot pass `null` for primitive data types like `int`, `float`, `long`, etc, 所以 API 定义 API 时要使用 `Integer`, `Float`, `Long` 代替。
+
+### Add multiple query parameter with QueryMap
 
 如果参数很多时，使用`QueryMap` annotation which is a better solution to work with complex API endpoints having various options for query parameters:
 
@@ -392,7 +396,7 @@ Learn how to use Retrofit to add (optional / multiple) query parameters to your 
     options.put("appid", "b1b15e88fa797225412429c1c50c122a1");
     call = weatherService.getLondonWeather(options);    
 
-如果屏蔽 `put("mode", ...)` 会导致 RuntimeException：
+**如果屏蔽 `put("mode", ...)` 会导致 RuntimeException**：
 
     org.xmlpull.v1.XmlPullParserException: Unexpected token (position:TEXT {"coord":{"lon":...
 
@@ -405,8 +409,7 @@ Request url 不包含 `&mode=xml`, 所以 response data 是 Json 格式，而试
 Learn how to use (optional) path parameters to refine your request for single or multiple values.
 
 By passing an empty String to path parameter, Retrofit (especially OkHttp’s HttpUrl class) will “remove” the path parameter and just use the leading url part for the request.
-
-If your path parameter is right in the middle of the url, passing an empty string will result in a wrong request url:
+If your path parameter is right in the middle of the url, **passing an empty string will result in a wrong request url**:
 
     public interface GitHubClient {
         @GET("/users/{user}/repos")
@@ -415,7 +418,7 @@ If your path parameter is right in the middle of the url, passing an empty strin
 
     https://api.github.com/users//repos
 
-和查询参数不同的是，不能传给路径参数 `Null`, 否则 `IllegalArgumentException`, 所以 Ensure stability by verifying that the path parameter values are always not null.
+和查询参数不同的是，**不能传给路径参数 `Null`**, 否则 `IllegalArgumentException`, 所以 Ensure stability by verifying that the path parameter values are always not null.
 
 ## L13 - Add Custom Request Header
 
@@ -431,6 +434,46 @@ Create a Request Interceptor, and intercept the request on the network layer pro
 
 A dynamic header is passed like a parameter to the **each request** API. [link](https://futurestud.io/tutorials/retrofit-add-custom-request-header)
 [Demo Codes: WeatherService.java](../../app/src/main/java/me/li2/android/tutorial/Retrofit2/L11QueryParameters/WeatherService.java)
+
+测试结果可以参考下一节内容「Send Data Form-Urlencoded」的图片。
+
+
+## L14 - Send Data Form-Urlencoded
+
+[Demo Codes](../../app/src/main/java/me/li2/android/tutorial/Retrofit2/L14SendDataFormUrlencoded)
+
+「Basics of API Description」讲到方法可以传递的几种参数类型，本节讲解 `@Field`: send data as form-urlencoded.
+
+只需要添加注解 `@FormUrlEncoded`，which will adjust the proper mime type of your request automatically to application/x-www-form-urlencoded. 
+
+MIME (Multipurpose Internet Mail Extensions) 是描述消息内容类型的因特网标准。MIME 消息能包含文本、图像、音频、视频以及其他应用程序专用的数据。
+
+    public interface TaskService {
+        @FormUrlEncoded
+        @POST("http://requestb.in/xvnl60xv")
+        Call<String> createTask(@Field("title") String title);
+    
+        @FormUrlEncoded
+        @POST("http://requestb.in/xvnl60xv")
+        Call<String> createTasks(@Field("title") List<String> titles);
+    }
+
+还需要用注解 `@Field` 传递参数，仍然是 key-value-pair，
+可以传递一个：
+
+![](retrofit_send_data_form_url_encoded.png)
+
+也可以传递一个 List (with same key)：
+
+![](retrofit_send_data_form_url_encoded_array.png)
+
+
+### Form-Urlencoded vs. Query Parameter
+
+"What is the difference between form-urlencoded and query parameters?". In essence: the **request type**.
+
+- form-urlencoded: `POST`, are used to send data to a server or API. The data is sent within the request body and not as an url parameter.
+- query parameter: `GET`, are used when requesting data from an API or server using specific fields or filter.
 
 
 
