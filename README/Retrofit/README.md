@@ -155,7 +155,7 @@ Retrofit 不关心方法名，但仍然需要选择有意义的名字 Neverthele
 
 **路径参数**是 URL 的一部分，相当于占位符，需要在向 server 发起请求时被替换。这属于 **dynamic URLs**.
 
-REST APIs are build on dynamic URLs. You access the resource by replacing parts of the URL, 比如上文中获取 GitHub 用户 repositories 的例子：https://api.github.com/users/li2/repos ，这个 URL 中的 li2 就是 path parameters：
+REST APIs are build on dynamic URLs. You access the resource by **replacing parts of the URL**, 比如上文中获取 GitHub 用户 repositories 的例子：https://api.github.com/users/li2/repos ，这个 URL 中的 li2 就是 path parameters, the `{user}` path will be replaced with given variable values when calling this method:
 
 - `@GET("/users/{user}/repos")`: `{}` 是 URL 占位符，indicates to Retrofit that the value is dynamic and will be set when the request is being made.
 - `reposForUser(@Path("user") String user)`: `@Path()` function parameter 是替换占位符的参数, where the @Path value matches the placeholder in the URL.
@@ -165,7 +165,7 @@ REST APIs are build on dynamic URLs. You access the resource by replacing parts 
 
 **查询参数**也属于 dynamic URLs. 比如 http://samples.openweathermap.org/data/2.5/weather?q=London&mode=xml&appid=b1b15e88fa797225412429c1c50c122a1 `?` 表示这是查询参数，`?q=London`是第一个查询参数，`mode=xml` 是第二个参数，参数间以 `&` 连接。
 
-查询参数对要请求的资源做了更具体的描述（further describes the request resource）。和路参数不同的是，不需要添加到 annotation URL 中。 You can simply add a method parameter with `@Query()` and a query parameter name, describe the type:
+查询参数对要请求的资源做了更具体的描述（further describes the request resource）。和路参数不同的是，不需要添加到 annotation URL 中。 You can simply add a method parameter with `@Query()` and a query parameter name, describe the type, Retrofit will automatically **attach it to the request**:
 
     @GET("http://samples.openweathermap.org/data/2.5/weather/")
     Call<Weather> getLondonWeather(
@@ -399,6 +399,23 @@ Learn how to use Retrofit to add (optional / multiple) query parameters to your 
 Request url 不包含 `&mode=xml`, 所以 response data 是 Json 格式，而试图解析的 converter 是 SimpleXML，所以抛出了上述异常。API 定义的返回数据类型 Call<Weather> 也是针对 XML 格式的，所以该 API 被调用后期望的反馈数据就是 xml 了。
 
 如何解决这种问题呢？ TODO
+
+## L12 - Path Parameters
+
+Learn how to use (optional) path parameters to refine your request for single or multiple values.
+
+By passing an empty String to path parameter, Retrofit (especially OkHttp’s HttpUrl class) will “remove” the path parameter and just use the leading url part for the request.
+
+If your path parameter is right in the middle of the url, passing an empty string will result in a wrong request url:
+
+    public interface GitHubClient {
+        @GET("/users/{user}/repos")
+        Call<List<GitHubRepo>> reposForUser(@Path("user") String user);
+    }
+
+    https://api.github.com/users//repos
+
+和查询参数不同的是，不能传给路径参数 `Null`, 否则 `IllegalArgumentException`, 所以 Ensure stability by verifying that the path parameter values are always not null.
 
 
 
