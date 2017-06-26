@@ -213,6 +213,67 @@ synchronous requests trigger app crashes on Android 4.0 or newer. You’ll run i
     call.enqueue(new Callback<List<GitHubRepo>>() {
         ...
     }
+    
+
+## L05 URL Handling, Resolution and Parsing
+
+Retrofit handles the relationship between API base URL and request endpoint URL in a logical manner. You’ll learn in detail how Retrofit assembles complete URLs.
+
+### `baseUrl` Resolution
+
+在代码中定义一个 baseUrl，Retrofit 会把 endpoint 定义的 a relative path address 附加到 baseUrl，组成一个完整的 url。**最佳实践是在 baseUrl 尾部包含斜杠**。
+
+Using Retrofit, you're requesting a specific API that always has the same base address. This base address shares the same scheme and host and you can define it in a single place (using `Retrofit.Builder()`) and change it there if necessary without touching every endpoint in your app.
+
+The base url is used for every request and any endpoint value. You should always end your base url with a trailing slash: `/`.
+
+    # Good Practice
+    base url: https://futurestud.io/api/
+    endpoint: my/endpoint
+    Result:   https://futurestud.io/api/my/endpoint
+    
+    # Bad Practice
+    base url: https://futurestud.io/api
+    endpoint: /my/endpoint
+    Result:   https://futurestud.io/my/endpoint
+
+### Absolute Urls
+
+如果 web API 升级， 只需要改变 baseUrl，从 v2 变为 v3，所有的 endpoints 都会自动使用新的 url 进行 request，Example 1 演示了这种情况。
+
+但仍希望特别的 endpoint 仍使用 v2 API，解决方案是使用 absolute url，Example 2 演示了这种情况（即上文代码中 endpoint 的 bad practice）。
+this technique might be necessary in your app to call the appropriate endpoints. To rely on selected v2 endpoints, you can use an absolute url to directly specify an API version.
+
+    # Example 1
+    base url: https://futurestud.io/api/v3/
+    endpoint: my/endpoint
+    Result:   https://futurestud.io/api/v3/my/endpoint
+    
+    # Example 2
+    base url: https://futurestud.io/api/v3/
+    endpoint: /api/v2/another/endpoint
+    Result:   https://futurestud.io/api/v2/another/endpoint
+
+### Dynamic Urls or Passing a Full Url
+
+Example 3 用一个 complete url 替换了 baseUrl，特别适用于这种情况：需要从另一个 server 下载文件
+`Example 3` shows you the replacement of the base url when using a completely different one. This example is useful when requesting files or images that have different locations, like some files are on your own server and others are stored on Amazon’s S3.
+
+Example 4 用一个子域名替换了 baseUrl，但仍使用 baseUrl 定义的 https://
+In `Example 4`, we’re not using the path segment for the API, but instead a subdomain. We still want to keep the previously defined scheme and therefore just pass the full url with leading `//`.
+
+    # Example 3 — completely different url
+    base url: http://futurestud.io/api/ 
+    endpoint: https://api.futurestud.io/
+    Result:   https://api.futurestud.io/
+    
+    # Example 4 — Keep the base url’s scheme
+    base url: https://futurestud.io/api/
+    endpoint: //api.futurestud.io/
+    Result:   https://api.futurestud.io/
+
+
+
 
 ## Reference
 
