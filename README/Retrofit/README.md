@@ -165,7 +165,7 @@ REST APIs are build on dynamic URLs. You access the resource by replacing parts 
 
 **查询参数**也属于 dynamic URLs. 比如 http://samples.openweathermap.org/data/2.5/weather?q=London&mode=xml&appid=b1b15e88fa797225412429c1c50c122a1 `?` 表示这是查询参数，`?q=London`是第一个查询参数，`mode=xml` 是第二个参数，参数间以 `&` 连接。
 
-查询参数对要请求的资源做了更具体的描述。和路参数不同的是，不需要添加到 annotation URL 中。 You can simply add a method parameter with `@Query()` and a query parameter name, describe the type:
+查询参数对要请求的资源做了更具体的描述（further describes the request resource）。和路参数不同的是，不需要添加到 annotation URL 中。 You can simply add a method parameter with `@Query()` and a query parameter name, describe the type:
 
     @GET("http://samples.openweathermap.org/data/2.5/weather/")
     Call<Weather> getLondonWeather(
@@ -274,10 +274,11 @@ In `Example 4`, we’re not using the path segment for the API, but instead a su
 
 ## L06 - Send Objects in Request Body
 
+[Demo Codes](../../app/src/main/java/me/li2/android/tutorial/Retrofit2/L5SendObjectsInRequestBody)
+
 Learn how to define and send Java objects in an HTTP request body with Retrofit. Sending data to the server is one of the most fundamental tasks of Retrofit.
 
-参考「L02 - Basics of API Description」，`@Body` 是可以传递的参数类型之一：
-[SendObjectsInRequestBody.java](../../app/src/main/java/me/li2/android/tutorial/Retrofit2/L5SendObjectsInRequestBody)
+参考「Basics of API Description」，`@Body` 是可以传递的参数类型之一：
 
     public interface TaskService {
         @POST("http://requestb.in/10hf7r31")
@@ -330,7 +331,7 @@ Learn how to integrate and customize the Gson converter to map all of your JSON 
 
 ## L09 - How to Integrate XML Converter
 
-[IntegrateXMLConverter.java](../../app/src/main/java/me/li2/android/tutorial/Retrofit2/L9IntegrateXMLConverter)
+[Demo Codes](../../app/src/main/java/me/li2/android/tutorial/Retrofit2/L9IntegrateXMLConverter)
  这里使用 [OpenWeather](https://openweathermap.org/current#current_XML) 作为测试 Server，它提供了测试数据（[JSON](http://samples.openweathermap.org/data/2.5/weather?q=London&appid=b1b15e88fa797225412429c1c50c122a1) & [XML](http://samples.openweathermap.org/data/2.5/weather?q=London&mode=xml&appid=b1b15e88fa797225412429c1c50c122a1)），因此不需要注册获取 API key 就可以调用 Server API 了。
 
 使用 `SimpleXML` converter 把 XML 文件映射为 Java object，这里的**关键是根据 XML 文件定义 Java Class**（目前还未找到自动转换工具，Gsonformat 是一个 Android Studio 插件，可以转换 GSON file 到 Java Class），使用 `@Root`, `@Element`, `@Attribute`，细节参阅 [link](http://www.vogella.com/tutorials/Retrofit/article.html#exercise-using-retrofit-to-convert-xml-response-from-an-rss-feed)。
@@ -350,6 +351,54 @@ Learn how to integrate and customize the Gson converter to map all of your JSON 
 
     IllegalArgumentException: Unable to create converter for List<GitHubRepo>
     IllegalArgumentException: Could not locate ResponseBody converter for List<GitHubRepo>
+
+
+
+# PART D - Developer Utilities
+
+In this part you’ll learn how to analyze Retrofit’s behavior.
+
+## L10 - Log Requests and Responses
+
+You want to know what exactly Retrofit is receiving and sending to your server? Learn how to add a logging interceptor to your Android app.
+ 
+
+# PART E - Request Manipulation & Files
+
+In this final part you’ll learn a variety of request manipulations, including sending files.
+
+## L11 - Query Parameters
+
+[Demo Codes](../../app/src/main/java/me/li2/android/tutorial/Retrofit2/L11QueryParameters)
+
+Learn how to use Retrofit to add (optional / multiple) query parameters to your requests. 参考「Basics of API Description」dynamic URLs 包含路径参数和查询参数。
+
+查询参数是一种动态 url 技术，把 `@Query("key")` 携带的 key 和方法的参数组合成 key-value，然后添加到 url 中。
+
+可以传入 `null` 参数，Retrofit skips null parameters and ignores them while assembling the request. 但 cannot pass `null` for primitive data types like `int`, `float`, `long`, etc, 所以 API 定义 API 时要使用 `Integer`, `Float`, `Long` 代替。
+
+如果参数很多时，使用`QueryMap` annotation which is a better solution to work with complex API endpoints having various options for query parameters:
+
+    public interface WeatherService {
+        @GET("http://samples.openweathermap.org/data/2.5/weather/")
+        Call<Weather> getLondonWeather(@QueryMap Map<String, String> options);
+    }
+    
+    //?q=London&mode=xml&appid=b1b15e88fa797225412429c1c50c122a1
+    
+    Map<String, String> options = new HashMap<>();
+    options.put("q", "London");
+    options.put("mode", "xml");
+    options.put("appid", "b1b15e88fa797225412429c1c50c122a1");
+    call = weatherService.getLondonWeather(options);    
+
+如果屏蔽 `put("mode", ...)` 会导致 RuntimeException：
+
+    org.xmlpull.v1.XmlPullParserException: Unexpected token (position:TEXT {"coord":{"lon":...
+
+Request url 不包含 `&mode=xml`, 所以 response data 是 Json 格式，而试图解析的 converter 是 SimpleXML，所以抛出了上述异常。API 定义的返回数据类型 Call<Weather> 也是针对 XML 格式的，所以该 API 被调用后期望的反馈数据就是 xml 了。
+
+如何解决这种问题呢？ TODO
 
 
 
