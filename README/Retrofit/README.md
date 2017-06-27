@@ -446,8 +446,6 @@ A dynamic header is passed like a parameter to the **each request** API. [link](
 
 只需要添加注解 `@FormUrlEncoded`，which will adjust the proper mime type of your request automatically to application/x-www-form-urlencoded. 
 
-MIME (Multipurpose Internet Mail Extensions) 是描述消息内容类型的因特网标准。MIME 消息能包含文本、图像、音频、视频以及其他应用程序专用的数据。
-
     public interface TaskService {
         @FormUrlEncoded
         @POST("http://requestb.in/xvnl60xv")
@@ -476,6 +474,31 @@ MIME (Multipurpose Internet Mail Extensions) 是描述消息内容类型的因�
 - query parameter: `GET`, are used when requesting data from an API or server using specific fields or filter.
 
 
+## L15 - Upload Files to Server
+
+[Demo Codes](../../app/src/main/java/me/li2/android/tutorial/Retrofit2/L15UploadFiles)
+
+Does your app allow photo or video upload? Learn how to upload files to a server using Retrofit. We can also POST file to http://requestb.in, amazing !
+
+the interface definition for file uploads:
+
+    public interface FileUploadService {
+        @Multipart
+        @POST("http://requestb.in/r2k92yr2")
+        Call<ResponseBody> upload(
+                @Part("description") RequestBody description,
+                @Part MultipartBody.Part file
+        );
+    }
+    
+上传一个 Txt 文档的测试结果（教程只讲了怎样做，没有讲为什么这样做）：
+
+![upload file](retrofit_upload_file.png)
+
+[Is it possible to show progress bar when upload image via Retrofit 2?](http://stackoverflow.com/a/33384551/2722270)
+
+<img src="retrofit_upload_file_with_progress.png" width=256>
+
 
 ## Reference
 
@@ -484,3 +507,21 @@ MIME (Multipurpose Internet Mail Extensions) 是描述消息内容类型的因�
 - [Feature Studio - Retrofit Learning Paths](https://futurestud.io/learningpaths/retrofit-basics)
 - [Using Retrofit to convert XML response from an RSS feed](http://www.vogella.com/tutorials/Retrofit/article.html#exercise-using-retrofit-to-convert-xml-response-from-an-rss-feed)
 - [Simple XML Tutorial](http://simple.sourceforge.net/download/stream/doc/tutorial/tutorial.php)
+
+
+[MIME](https://en.wikipedia.org/wiki/MIME) (Multipurpose Internet Mail Extensions) is an Internet standard that extends the format of email to support（描述消息内容类型的因特网标准。MIME 消息能包含文本、图像、音频、视频以及其他应用程序专用的数据）：
+
+- Text in character sets other than ASCII
+- Non-text attachments: audio, video, images, application programs etc.
+- Message bodies with multiple parts
+- Header information in non-ASCII character sets
+
+
+[A media type](https://en.wikipedia.org/wiki/Media_type) (also MIME type and content type)[1] is a two-part identifier for file formats and format contents transmitted on the Internet, examples:
+
+- `application/x-www-form-urlencoded`: to send simple text/ ASCII data.
+- `multipart/form-data`: to send non-ASCII text or large binary data.
+
+[HTTP Message Body](https://en.wikipedia.org/wiki/HTTP_message_body) is the data bytes transmitted in an HTTP transaction message immediately following the headers if there is any.
+
+
