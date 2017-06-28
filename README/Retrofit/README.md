@@ -404,6 +404,65 @@ Request url 不包含 `&mode=xml`, 所以 response data 是 Json 格式，而试
 
 如何解决这种问题呢？ TODO
 
+### How to Add Query Parameters to Every Request?
+
+Consider this situation, where you want to add the same query parameter to every request, such as the API key.
+比如 Server API 这样定义：
+
+`?access_token=<access_token>&provider=<provider>&params`，
+
+那么 Request API 可以这样定义：
+
+    @GET("user.json")
+    Call<UserProfile> getUserProfile(
+            @Query("access_token") String access_token,
+            @Query("provider") String provider);
+
+显然 access_token 和 provider 是每个 Request API 都需要的 query parameters. Modify all Request APIs is not an easily maintainable, it’s valuable to use an interceptor:
+Intercept the actual request and get the HttpUrl. The http url is required to add query parameters since it will change the previously generated request url by appending the query parameter name and its value.
+
+    public static <S> S createService(Class<S> serviceClass, final String authToken) {
+        if (!TextUtils.isEmpty(authToken)) {
+            QueryParametersInterceptor interceptor = new QueryParametersInterceptor(authToken);
+    
+            if (!httpClient.interceptors().contains(interceptor)) {
+                httpClient.addInterceptor(interceptor); // 添加拦截器
+                builder.client(httpClient.build());
+                retrofit = builder.build();
+            }
+        }
+        return retrofit.create(serviceClass);
+    }
+
+定义拦截器：
+
+    public class QueryParametersInterceptor implements Interceptor {
+        private String authToken;
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request original = chain.request();
+            HttpUrl originalHttpUrl = original.url();
+            // 截获 url，并添加参数
+            HttpUrl url = originalHttpUrl.newBuilder()
+                    .addQueryParameter("access_token", authToken)
+                    .addQueryParameter("provider", "magellan")
+                    .build();
+            Request.Builder requestBuilder = original.newBuilder()
+                    .url(url);
+            Request request = requestBuilder.build();
+            return chain.proceed(request);
+        }
+    }
+
+然后 Request API 就可以这样定义了：
+
+    @GET("user.json")
+    Call<UserProfile> getUserProfile();
+
+有些 Server API 是把 token 放到 header 里的，参阅[Basic Authentication on Android](https://futurestud.io/tutorials/android-basic-authentication-with-retrofit) 和 [Refreshing OAuth token using Retrofit without modifying all calls](https://stackoverflow.com/a/31624433/2722270), 以及 [讨论](http://disq.us/p/19at4n3)，关于 Authentication 部分还需要学习。TODO
+
+
+
 ## L12 - Path Parameters
 
 Learn how to use (optional) path parameters to refine your request for single or multiple values.
