@@ -459,6 +459,8 @@ Intercept the actual request and get the HttpUrl. The http url is required to ad
     @GET("user.json")
     Call<UserProfile> getUserProfile();
 
+如果 query parameter 不加 token，则抓不到数据：`{"status":"unauthorized","access_token":null}`。
+
 有些 Server API 是把 token 放到 header 里的，参阅[Basic Authentication on Android](https://futurestud.io/tutorials/android-basic-authentication-with-retrofit) 和 [Refreshing OAuth token using Retrofit without modifying all calls](https://stackoverflow.com/a/31624433/2722270), 以及 [讨论](http://disq.us/p/19at4n3)，关于 Authentication 部分还需要学习。TODO
 
 
@@ -559,6 +561,65 @@ the interface definition for file uploads:
 <img src="retrofit_upload_file_with_progress.png" width=256>
 
 
+# PART F - Authentication
+
+## L1 - Basic Authentication on Android
+
+how to integrate authentication with username/email and password with Retrofit.
+
+we use a Interceptor to set the authorization header value for any HTTP request executed with this OkHttp client. But this is only done if the parameters for username and password are provided.
+
+    public static <S> S createService(Class<S> serviceClass, String username, String password) {
+        String authToken = null;
+        if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
+            authToken = Credentials.basic(username, password);
+        }
+        return createService(serviceClass, authToken);
+    }
+    
+    public static <S> S createService(Class<S> serviceClass, final String authToken) {
+        if (!TextUtils.isEmpty(authToken)) {
+            // add authentication to every requests
+            AuthenticationInterceptor interceptor2 = new AuthenticationInterceptor(authToken);
+            if (!httpClient.interceptors().contains(interceptor2)) {
+                httpClient.addInterceptor(interceptor2);
+            }
+        }
+        builder.client(httpClient.build());
+        retrofit = builder.build();
+        return retrofit.create(serviceClass);
+    }
+    
+Login request API 定义：
+
+    /*
+    URL structure: auth/access_token.<format>?username=<username>&password=<password>
+     */
+    @GET("auth/access_token.json")
+    Call<AuthToken> login(
+            @Query("username") String username,
+            @Query("password") String password);
+
+明文传输账号和密码！不安全！怎么会有这样的 Server API 定义！（deprecated now）
+[Is it secure to pass login credentials as plain text in an HTTPS URL?](https://stackoverflow.com/a/3150712/2722270)
+
+> Don't put passwords in the URL
+
+## L2 - oAuth 
+
+
+oauth 是通过向第三方网站提供 access token 而不是用户名和密码，以允许第三方获得访问本网站用户数据的能力。
+Magellan Active now supports the OAuth authorization protocol for granting other websites and applications access to your Magellan Active data. This means you will no longer have to supply another website or application with your Magellan username and password in order for them to access your data.
+
+OAuth2 authorization uses access token to access APIs instead of using username and password. 
+
+https://www.learn2crack.com/2014/01/android-oauth2-webview.html
+https://futurestud.io/tutorials/oauth-2-on-android-with-retrofit
+
+我们在 Magellan Active App 里使用 OAuth，login URL 是一样的，没有 redirectUri。
+
+
+
 ## Reference
 
 - [怎样用通俗的语言解释 REST，以及 RESTful？- 覃超的回答](https://www.zhihu.com/question/28557115/answer/48094438)
@@ -566,6 +627,7 @@ the interface definition for file uploads:
 - [Feature Studio - Retrofit Learning Paths](https://futurestud.io/learningpaths/retrofit-basics)
 - [Using Retrofit to convert XML response from an RSS feed](http://www.vogella.com/tutorials/Retrofit/article.html#exercise-using-retrofit-to-convert-xml-response-from-an-rss-feed)
 - [Simple XML Tutorial](http://simple.sourceforge.net/download/stream/doc/tutorial/tutorial.php)
+- [How can I debug a HTTP POST in Chrome?](https://stackoverflow.com/questions/15603561/how-can-i-debug-a-http-post-in-chrome)
 
 
 [MIME](https://en.wikipedia.org/wiki/MIME) (Multipurpose Internet Mail Extensions) is an Internet standard that extends the format of email to support（描述消息内容类型的因特网标准。MIME 消息能包含文本、图像、音频、视频以及其他应用程序专用的数据）：
