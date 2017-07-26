@@ -23,6 +23,8 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="0dp"
+            android:fadeScrollbars="true"
+            android:scrollbars="vertical"
             android:id="@+id/nestedScrollView">
 
             <TextView
