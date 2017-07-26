@@ -49,6 +49,11 @@
 
         <activity android:name=".BasicUtils.StorageUtils.StorageTutorial"/>
 
+        <activity
+            android:name=".View.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

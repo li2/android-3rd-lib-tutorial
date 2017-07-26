@@ -10,4 +10,7 @@
 
     <dimen name="notification_big_view_height">128dp</dimen>
     <dimen name="notification_button_height">32dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

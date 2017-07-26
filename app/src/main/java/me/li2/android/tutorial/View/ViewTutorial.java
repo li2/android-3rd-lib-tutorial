@@ -17,6 +17,7 @@ public class ViewTutorial extends SimpleTutorialActivity {
                 MultipleScreenDrawableResources.class,
                 NotificationTest.class,
                 SimpleRecyclerView.class,
+                ScrollingActivity.class,
         };
         return tutorialActivities;
     }
