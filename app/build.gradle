@@ -99,4 +99,7 @@ dependencies {
     compile ('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.10.2@aar'){
         transitive=true
     }
+
+    // Constraint Layout
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
 }
