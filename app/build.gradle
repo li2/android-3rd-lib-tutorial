@@ -87,6 +87,14 @@ dependencies {
         exclude group: 'stax', module: 'stax'
     }
 
+
+    /**
+     * ---- Map libs ---------------------------------------------------------------
+     */
+    // Google Maps
+    compile 'com.google.android.gms:play-services-maps:11.0.2'
+
+
     /**
      * ---- UI Widgets libs --------------------------------------------------------
      */
