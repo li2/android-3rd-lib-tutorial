@@ -57,6 +57,12 @@ public Builder setStyle(
 
 ![demo](view_notification.gif)
 
+
+## TODO
+
+notification theme is wrong on Android 7 !
+
+
 ## Refer
 
 

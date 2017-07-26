@@ -72,5 +72,12 @@
 dp 已经是密度无关单位，不需要在 values-mdpi/dimens.xml 等中定义。如果涉及到 Phone & Tablet，只需要在 values 和 values-w820dp 定义就可以了。
 
 
+### ViewStub
 
+    Since the other four buttons are totally same, so it will be better to reuse view_mainactivity_controlbar.xml
+    To support 3rd Apps (RTR, DVR, HOS), I think ViewStub could be a better choice, because
+    ViewStub is able to lazily inflate layout resources at runtime, that means
+    it could be flexible to inflate different views for 3rd Apps controlbar's function button. But currently,
+    if flag "USING_DVR_MENU" is true, this layout file will be inflated which not only for DVR but also for all 3rd Apps.
+    To avoid codes blending together, I use ViewStub for RTR here.
 
