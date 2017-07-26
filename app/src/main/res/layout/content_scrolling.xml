@@ -40,6 +40,7 @@
             android:layout_width="0dp"
             android:layout_height="210dp"
             android:name="me.li2.android.tutorial.BasicWidget.SimpleRecyclerView.SimpleRecyclerFragment"
+            app:layout_type="grid"
             android:layout_marginRight="0dp"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginLeft="0dp"

@@ -16,12 +16,15 @@
 
 package me.li2.android.tutorial.BasicWidget.SimpleRecyclerView;
 
+import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +74,17 @@ public class SimpleRecyclerFragment extends Fragment {
         SimpleRecyclerFragment fragment = new SimpleRecyclerFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onInflate(Context context, AttributeSet attrs, Bundle savedInstanceState) {
+        super.onInflate(context, attrs, savedInstanceState);
+
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SimpleRecyclerFragment);
+        int layoutType = a.getInt(R.styleable.SimpleRecyclerFragment_layout_type, LayoutType.LINEAR_VERTICAL.ordinal());
+        mCurrentLayoutType = LayoutType.values()[layoutType];
+
+        a.recycle();
     }
 
     @Override

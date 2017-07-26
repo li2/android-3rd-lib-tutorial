@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SimpleRecyclerFragment">
+        <attr name="layout_type" format="enum">
+            <enum name="grid" value="0"/>
+            <enum name="linear_horizontal" value="1"/>
+            <enum name="linear_vertical" value="2"/>
+        </attr>
+    </declare-styleable>
+</resources>
