@@ -7,7 +7,7 @@ import dagger.Component;
  * https://github.com/li2
  */
 
-@Component
+@Component(modules = {CarModule.class})
 public interface CarComponent {
     void inject(Car car);
 }
