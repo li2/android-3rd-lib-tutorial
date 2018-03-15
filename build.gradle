@@ -2,6 +2,7 @@
 
 buildscript {
     repositories {
+        google() // https://stackoverflow.com/a/47526376/2722270 not find com.android.tools.build.gradle 3.0.1
         jcenter()
     }
     dependencies {
