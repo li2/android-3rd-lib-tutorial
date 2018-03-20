@@ -5,12 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
-import com.nbsp.materialfilepicker.MaterialFilePicker;
-import com.nbsp.materialfilepicker.ui.FilePickerActivity;
-
-import net.rdrei.android.dirchooser.DirectoryChooserActivity;
-import net.rdrei.android.dirchooser.DirectoryChooserConfig;
-
 import java.io.File;
 import java.net.URLConnection;
 
@@ -146,6 +140,7 @@ public class UploadFile extends SimpleOneButtonActivity {
 
     // dirchooser:library can only choose directory
     private void chooseDir() {
+        /*
         Intent intent = new Intent(this, DirectoryChooserActivity.class);
         DirectoryChooserConfig config = DirectoryChooserConfig.builder()
                 .newDirectoryName("DirectoryChooseSample")
@@ -154,9 +149,11 @@ public class UploadFile extends SimpleOneButtonActivity {
                 .build();
         intent.putExtra(DirectoryChooserActivity.EXTRA_CONFIG, config);
         startActivityForResult(intent, REQUEST_FILE);
+        */
     }
 
     private void chooseFile() {
+        /*
         new MaterialFilePicker()
                 .withActivity(this)
                 .withRequestCode(REQUEST_FILE)
@@ -164,16 +161,18 @@ public class UploadFile extends SimpleOneButtonActivity {
                 //.withFilter(Pattern.compile(".*\\.jpg$")) // Filtering files and directories by file name using regexp
                 //.withFilterDirectories(false) // Set directories filterable (false by default)
                 .start();
-
+                */
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        /*
         if (requestCode == REQUEST_FILE && resultCode == RESULT_OK) {
             String filePath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
             LOGD(TAG, "file path " + filePath);
             uploadFile(Uri.parse(filePath));
         }
+        */
     }
 }
 
