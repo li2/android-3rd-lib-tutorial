@@ -3,9 +3,6 @@ package me.li2.android.tutorial.Picasso.L1ImageLoading;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.nbsp.materialfilepicker.MaterialFilePicker;
-import com.nbsp.materialfilepicker.ui.FilePickerActivity;
-
 import java.util.ArrayList;
 
 import me.li2.android.tutorial.BasicUI.SimpleListActivity;
@@ -64,20 +61,21 @@ public class ImageLoading extends SimpleListActivity {
     private static final int imageResourceId = R.drawable.multiple_screens_image1_full_dpi;
     private static final int REQUEST_FILE = 21;
 
+
     private void chooseFile() {
-        new MaterialFilePicker()
-                .withActivity(this)
-                .withRequestCode(REQUEST_FILE)
-                .withFilterDirectories(false)
-                .withTitle("Choose an image file")
-                .start();
+//        new MaterialFilePicker()
+//                .withActivity(this)
+//                .withRequestCode(REQUEST_FILE)
+//                .withFilterDirectories(false)
+//                .withTitle("Choose an image file")
+//                .start();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_FILE && resultCode == RESULT_OK) {
-            String filePath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
-            startActivity(PhotoPageActivity.newIntentToLoadFile(ImageLoading.this, filePath));
-        }
+//        if (requestCode == REQUEST_FILE && resultCode == RESULT_OK) {
+//            String filePath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
+//            startActivity(PhotoPageActivity.newIntentToLoadFile(ImageLoading.this, filePath));
+//        }
     }
 }
